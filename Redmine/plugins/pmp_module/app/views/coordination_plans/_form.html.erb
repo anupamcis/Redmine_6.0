@@ -1,0 +1,33 @@
+<%= error_messages_for 'coordination_plan' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "coordination_plan[project_id]", @project.id %>
+  <% hr =  stackholder = Employee.where(designation: HR_HEAD_ROLE, department_id: 10).first.try(:name) %>
+  <% users_name = @project.users.where.not(firstname: "CIS")&.map(&:name) + Department.find(9).employees.pluck('name') + [hr] %>
+  <p><%= f.select :stackholder_name, options_for_select((users_name.map { |obj| [obj, obj] }), @coordination_plan.stackholder_name), {required: true}, {class: "select2 small"} %></p>
+  <p><%= f.text_field :coordination_need, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :planed_date_of_receivables, :size => 25, value: !@coordination_plan.new_record? ? format_date(@coordination_plan.planed_date_of_receivables) : '' %>
+    <%= calendar_for('coordination_plan_planed_date_of_receivables') %>
+  </p><br>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".select2").select2({width: '25%'}).on('select2-open', function() {
+       var requireHeight = 600;
+        var viewportBottom = $(window).scrollTop() + $(window).height();
+        if (viewportBottom < requireHeight)
+        {
+          var marginBottom = requireHeight - viewportBottom;
+          $(".aLwrElmntOrCntntWrppr").css("marginBottom", marginBottom + "px");
+          $('html, body').animate({
+            scrollTop: $("#mySelect2").offset().top - 10
+          }, 1000);
+        }
+    });
+    $.ui.dialog.prototype._allowInteraction = function (e) {
+      return true;
+    };
+  });
+</script>

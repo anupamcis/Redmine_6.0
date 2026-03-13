@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "session": { "userId": 1, "username": "demo" },
+  "csrfToken": "mock-csrf-token"
+}
+
+

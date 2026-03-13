@@ -1,0 +1,28 @@
+<%= error_messages_for 'staff_need' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "staff_need[project_id]", @project.id %>
+
+  <p><%= f.select :role, options_from_collection_for_select(@staff_need.roles, 'name', 'name', @staff_need.role), {required: true, prompt: "select role...."}, {class: "select2 small"} %></p>
+
+  <p><%= f.text_field :no_of_persons, :size => 25, required: true %></p>
+  <p><%= f.text_field :min_experience, :size => 25 %></p>
+  <p><%= f.text_field :from_date, :size => 25, required: true, value: !@staff_need.new_record? ? format_date(@staff_need.from_date) : '' %>
+    <%= calendar_for('staff_need_from_date') %>
+  </p>
+  <p><%= f.text_field :to_date, :size => 25, required: true, value: !@staff_need.new_record? ? format_date(@staff_need.to_date) : '' %>
+    <%= calendar_for('staff_need_to_date') %>
+  </p>
+
+    <p><%= f.select :allocated_persons, options_from_collection_for_select(@project.users.joins(:company).where("firstname not like (?) and companies.default_company = ? ", "%cis%", true), 'id', 'name', @staff_need.allocated_persons.ids), {required: true}, {multiple: true, class: "select small"} %></p>
+  <br>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".select2").select2({width: '30%'});
+    $.ui.dialog.prototype._allowInteraction = function (e) {
+      return true;
+    };
+  });
+</script>

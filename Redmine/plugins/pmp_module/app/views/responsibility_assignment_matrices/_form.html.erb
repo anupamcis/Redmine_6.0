@@ -1,0 +1,12 @@
+<%= error_messages_for 'responsibility_assignment_matrix' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "filter_type", @filter_type %>
+  <% if @project.project_responsibility_assignment_matrix_filter.matrix_type.eql?("User") %>
+    <%= render :partial => 'users_matrix_form', :locals => { :f => f } %>
+  <% else %>
+    <%= render :partial => 'roles_matrix_form', :locals => { :f => f } %>
+  <% end %>
+  <br>
+</div>

@@ -1,0 +1,6 @@
+<%= title [l(:label_master_department_plural), master_departments_path], l(:label_master_department_new) %>
+
+<%= labelled_form_for @master_department do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>

@@ -1,0 +1,66 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (7.1.5.2)
+      base64
+      benchmark (>= 0.3)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      logger (>= 1.4.2)
+      minitest (>= 5.1)
+      mutex_m
+      securerandom (>= 0.3)
+      tzinfo (~> 2.0)
+    base64 (0.3.0)
+    benchmark (0.4.1)
+    bigdecimal (3.2.3)
+    concurrent-ruby (1.3.5)
+    connection_pool (2.5.4)
+    dalli (3.2.8)
+    dav4rack (0.3.0)
+      nokogiri (>= 1.4.2)
+      rack (>= 1.1.0)
+      uuidtools (~> 2.1.1)
+    drb (2.2.3)
+    i18n (1.14.7)
+      concurrent-ruby (~> 1.0)
+    logger (1.7.0)
+    mini_portile2 (2.8.9)
+    minitest (5.25.5)
+    mutex_m (0.3.0)
+    nokogiri (1.15.7)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    racc (1.8.1)
+    rack (3.2.1)
+    rake (13.3.0)
+    rubyzip (2.4.1)
+    securerandom (0.3.2)
+    simple_enum (2.3.2)
+      activesupport (>= 4.0.0)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+    uuidtools (2.1.5)
+    xapian-full-alaveteli (1.4.22.2)
+      mini_portile2 (~> 2.8)
+      rake (~> 13.0)
+    zip-zip (0.3)
+      rubyzip (>= 1.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  dalli
+  dav4rack
+  rubyzip (>= 2.3.0)
+  simple_enum
+  uuidtools
+  xapian-full-alaveteli
+  zip-zip
+
+BUNDLED WITH
+   2.1.4

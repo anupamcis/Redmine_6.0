@@ -1,0 +1,184 @@
+<%= error_messages_for 'project' %>
+
+<div class="box tabular">
+<!--[form:project]-->
+<p><%= f.text_field :name, :required => true, :size => 60 %></p>
+<p>
+  <%= f.select :application_type, options_for_select(ServiceModule::ProjectPatch::TYPES, @project.application_type),{:required => true, prompt: 'select application type...'}, {class: "small select2"} %>
+</p>
+<p><%= f.text_area :description, :rows => 8, :class => 'wiki-edit', :required => true %></p>
+<p><%= f.text_field :identifier, :required => true, :size => 60, :disabled => @project.identifier_frozen?, :maxlength => Project::IDENTIFIER_MAX_LENGTH %>
+<p><%= f.text_field :homepage, :size => 60 %></p>
+<% if User.current.admin? %>
+  <p><%= f.select :project_type, options_for_select([['Hourly', 'Hourly'], ['Project', 'Project'], ['Dedicated', 'Dedicated']], @project.project_type), {}, {:class => 'select'} %></p>
+<%else%>
+    <p><%= f.select :project_type, options_for_select([['Hourly', 'Hourly'], ['Project', 'Project'], ['Dedicated', 'Dedicated']], @project.project_type), {}, {:class => 'select', :disabled => true} %></p>
+<%end%>
+<% unless @project.identifier_frozen? %>
+  <em class="info"><%= l(:text_length_between, :min => 1, :max => Project::IDENTIFIER_MAX_LENGTH) %> <%= l(:text_project_identifier_info).html_safe %></em>
+<% end %></p>
+<p><%= f.text_field :homepage, :size => 60 %></p>
+<p><%#= f.check_box :is_public %></p>
+
+<% unless @project.allowed_parents.compact.empty? %>
+  <% if params[:action] == "settings" && User.current.admin? %>
+    <p><%= label(:project, :parent_id, l(:field_parent)) %><%= parent_project_select_tag(@project) %></p>
+  <% end %>
+<% end %>
+
+<% if params[:parent_id].present? %>
+  <% parent_project = Project.find(params[:parent_id]) %>
+  <p><%= label(:project, :parent_id, l(:field_parent)) %><b><%= parent_project.name %></b></p>
+  <%= hidden_field_tag 'project[parent_id]', parent_project.id %>
+<% end %>
+
+<% if @project.safe_attribute? 'inherit_members' %>
+<p><%= f.check_box :inherit_members %></p>
+<% end %>
+
+<% if @company.present? %>
+  <p><%= label('selected_client_company', l(:selected_client_company)) %><b><%= @company.name %></b></p>
+  <%= hidden_field_tag 'selected_client_company', @company.id %>
+<% end %>
+
+<% if @project.safe_attribute?('default_version_id') && (default_version_options = project_default_version_options(@project)).present? %>
+  <p><%= f.select :default_version_id, project_default_version_options(@project), prompt: 'Select Version' %></p>
+<% end %>
+<p style="min-width: 100px;">
+  <%= f.select :major_technology, options_for_select(Pmp.skills, @project.major_technology),{prompt: 'select technology skill...'}, {class: "small select2 project-tech"} %>
+</p>
+
+<%= wikitoolbar_for 'project_description' %>
+
+<% @project.custom_field_values.each do |value| %>
+  <p><%= custom_field_tag_with_label :project, value %></p>
+<% end %>
+<%= call_hook(:view_projects_form, :project => @project, :form => f) %>
+</div>
+
+
+<% if @service_details.present? %>
+  <fieldset class="box tabular"><legend><%= l(:selected_service_ids) %></legend>
+    <ul>
+      <% @service_details.each do |service_detail| %>
+        <li>
+        <b><%= service_detail.service_detail_name %></b>
+        <%= hidden_field_tag 'selected_service_ids[]', service_detail.id %>
+        </li>
+      <% end %>
+    </ul></br>
+  </fieldset>
+<% end %>
+
+<% if @project.new_record? %>
+  <% if User.current.admin? %>
+    <fieldset class="box tabular"><legend><%= l(:label_module_plural) %></legend>
+      <% Redmine::AccessControl.available_project_modules.each do |m| %>
+        <% if m != :user_management && m != :user_company %>
+          <label class="floating" style="float: left; width: 400px;">
+            <%= check_box_tag 'project[enabled_module_names][]', m, @project.module_enabled?(m), :id => "project_enabled_module_names_#{m}", disabled: !User.current.admin? %>
+            <%= l_or_humanize(m, :prefix => "project_module_") %>
+          </label>
+          <%# if !User.current.admin? %>
+            <%#= hidden_field_tag 'project[enabled_module_names][]', @project.module_enabled?(m) ? m : '' %>
+          <%# end %>
+          <% end %>
+        <% end %>
+    </fieldset>
+  <% else %>
+    <% Redmine::AccessControl.available_project_modules.each do |m| %>
+      <%= hidden_field_tag 'project[enabled_module_names][]', @project.module_enabled?(m) ? m : '' %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @project.new_record? || @project.module_enabled?('issue_tracking') %>
+  <% unless @trackers.empty? %>
+    <% if User.current.admin? %>
+      <fieldset class="box tabular" id="project_trackers"><legend><%=l(:label_tracker_plural)%></legend>
+        <% @trackers.each do |tracker| %>
+            <label class="floating" style="float: left; width: 400px;">
+            <%= check_box_tag 'project[tracker_ids][]', tracker.id, @project.trackers.to_a.include?(tracker), :id => nil, disabled: !User.current.admin? %>
+            <%= tracker %>
+            </label>
+            <%# if !User.current.admin? %>
+              <%#= hidden_field_tag 'project[tracker_ids][]', @project.trackers.to_a.include?(tracker) ? tracker.id : '' %>
+            <%# end %>
+        <% end %>
+      </fieldset>
+    <% else %>
+      <% @trackers.each do |tracker| %>
+       <%= hidden_field_tag 'project[tracker_ids][]', @project.trackers.to_a.include?(tracker) ? tracker.id : '' %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% unless @issue_custom_fields.empty? %>
+    <fieldset class="box tabular" id="project_issue_custom_fields"><legend><%=l(:label_custom_field_plural)%></legend>
+      <% @issue_custom_fields.each do |custom_field| %>
+          <label class="floating" style="float: left; width: 400px;">
+            <%= check_box_tag 'project[issue_custom_field_ids][]', custom_field.id, (@project.all_issue_custom_fields.include? custom_field),
+              :disabled => ((custom_field.is_for_all? || !User.current.admin?) ? "disabled" : nil),
+              :id => nil %>
+            <%= custom_field_name_tag(custom_field) %>
+          </label>
+      <% end %>
+      <%= hidden_field_tag 'project[issue_custom_field_ids][]', '' %>
+    </fieldset>
+  <% end %>
+<% end %>
+<!--[eoform:project]-->
+
+<% unless @project.identifier_frozen? %>
+  <%# content_for :header_tags do %>
+    <%= javascript_include_tag 'project_identifier' %>
+  <%# end %>
+<% end %>
+
+<% if !User.current.admin? && @project.inherit_members? && @project.parent && User.current.member_of?(@project.parent) %>
+  <%= javascript_tag do %>
+    $(document).ready(function() {
+      $("#project_inherit_members").change(function(){
+        if (!$(this).is(':checked')) {
+          if (!confirm("<%= escape_javascript(l(:text_own_membership_delete_confirmation)) %>")) {
+            $("#project_inherit_members").attr("checked", true);
+          }
+        }
+      });
+    });
+  <% end %>
+<% end %>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    $('#project_inherit_members').parent('p').hide();
+    $('#project_enabled_module_names_issue_tracking').on('change', function(){
+      if ($(this).prop('checked')){
+        $('#project_trackers, #project_issue_custom_fields').show();
+      } else {
+        $('#project_trackers, #project_issue_custom_fields').hide();
+      }
+    }).trigger('change');
+
+    $('#project_parent_id').on('change', function(){
+      if($(this).val() != ""){
+        $('#project_inherit_members').parent('p').show();
+      }else{
+        $('#project_inherit_members').parent('p').hide();
+      }
+    });
+    $(".select2").select2();
+    $.ui.dialog.prototype._allowInteraction = function (e) {
+      return true;
+    };
+  });
+<% end %>
+
+<style type="text/css">
+  .tagit-hidden-field {
+    display: none;
+  }
+  span.select2.select2-container.select2-container--default.select2-container--focus {
+    min-width: 180px;
+}
+</style>

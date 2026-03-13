@@ -1,0 +1,17 @@
+<%= error_messages_for 'back_up_detail' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "back_up_detail[project_id]", @project.id %>
+  <p><%= f.text_field :server_name, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :backup_type, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :data_detail, :required => true, :rows => 5, cols: 5 %></p>
+  <p><%= f.text_field :media_label, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :backup_frequency, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :detail_of_media_storage, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :remarks, :rows => 5, cols: 5 %></p>
+
+  <p><%= f.select :role_responsible, options_from_collection_for_select(StaffNeed.new.roles, 'name', 'name', @back_up_detail.role_responsible), {required: true, include_blank: "select role...."}, {class: "select small"} %></p>
+  <br>
+</div>
+

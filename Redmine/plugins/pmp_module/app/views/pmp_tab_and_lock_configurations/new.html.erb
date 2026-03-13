@@ -1,0 +1,6 @@
+<%= title [l(:label_pmp_tab_plural), pmp_tab_and_lock_configurations_path], l(:label_pmp_tab_new) %>
+
+<%= labelled_form_for @pmp_tab_and_lock_configuration do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>

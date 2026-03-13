@@ -1,0 +1,33 @@
+<%= stylesheet_link_tag 'modern_kanban', :plugin => 'redmine_agile' %>
+
+<%= form_tag({}) do -%>
+  <%= hidden_field_tag 'back_url', url_for(:params => request.query_parameters) %>
+  <%= hidden_field_tag 'project_id', @project.id if @project %>
+  <% board_statuses = IssueStatus.sorted %>
+<div class="agile-board autoscroll">
+  <div class="board_new_task">
+    <% if User.current.allowed_to?(:add_issues, @project, :global => false) && (@project.nil? || Issue.allowed_target_trackers(@project).any?) %>
+      <%= link_to l(:label_issue_new), _new_project_issue_path(@project), :class => 'icon icon-add new-issue' %>
+    <% end %>
+  </div>
+    <div class="flash error" style="display: none;" id="agile-board-errors">
+    </div>
+    <table class="kanban_table list issues-board <%= 'status-colors' if RedmineAgile.status_colors? %> <%= 'minimize-closed' if RedmineAgile.minimize_closed? %>">
+      <thead>
+      <%= render_board_headers(@board_columns) %>
+      </thead>
+          <tr style="text-align: center;white-space: nowrap;" class="issue <%= cycle('odd', 'even') %>">
+          <% @board_columns.each do |column| %>
+            <td class="issue-status-col <%= 'closed' if column.is_closed? %>" data-id="<%= column.id %>">
+            <% @issue_board[[column.id]].to_a.each do |issue| %>
+              <%= render :partial => 'issue_card', :locals => {:issue => issue} %>
+            <% end %>
+            </td>
+
+            <% end %>
+          </tr>
+
+    </table>
+</div>
+
+<% end %>

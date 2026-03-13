@@ -1,0 +1,26 @@
+<h3 class="title">Time sheet For Item - <%= @item.item_name %></h3>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th> <%= l(:users) %> </th>
+        <th> <%= l(:company_name)%> </th>
+        <th> <%= l(:service_id) %> </th>
+        <th> <%= l(:filled_date) %> </th>
+        <th> <%= l(:filled_hours) %> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @timesheets.each do |timesheet| %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class=""> <%= timesheet.try(:user).try(:name) %> </td>
+          <td class=""> <%= timesheet.service_detail.service.name %> </td>
+          <td class=""> <%= timesheet.service_detail.service_name %> </td>
+          <td class=""> <%= format_date(timesheet.filled_date) %> </td>
+          <td class=""> <%= l_hours_short(timesheet.filled_hrs) %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

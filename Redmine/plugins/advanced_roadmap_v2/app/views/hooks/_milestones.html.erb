@@ -1,0 +1,19 @@
+<style>
+
+.sidebar-link{ margin: 0 0 5px;  }
+.sidebar-link a{display: block;  color: #858585;}
+
+</style>
+
+
+<%- if !@project.nil? -%>
+    <h3><%= l(:label_milestone_plural) %></h3>
+    <ul>
+        <%- @project.milestones.sort.each do |milestone| -%>
+            <li>
+                <%= link_to_milestone(milestone) %>
+            </li>
+        <%- end -%>
+    </ul>
+<%- end -%>
+

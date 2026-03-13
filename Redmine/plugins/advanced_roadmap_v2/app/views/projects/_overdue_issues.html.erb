@@ -1,0 +1,39 @@
+<%
+  sql ="SELECT issues.due_date, issues.subject,  ISNULL(users.firstname, 'Anonymous')  FROM issues LEFT JOIN users ON users.id = issues.assigned_to_id WHERE issues.project_id = #{@project.id} AND issues.status_id != 5 AND issues.due_date < getdate() ORDER BY issues.due_date DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY"
+  @overdue_issues = ActiveRecord::Base.connection.exec_query(sql).rows
+%>
+<div class="col-sm-6">
+<div class="box">
+  <%if @overdue_issues.present? %>
+    <h3>Overdue Issues</h3>
+
+      <table border='1' class="list issue-report">
+        <thead>
+          <tr>
+            <th>Overdue</th>
+            <th>Task</th>
+            <th>Deadline</th>
+            <th>Employee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @overdue_issues.each do |issue| %>
+
+            <tr>
+              <td><%= due_date_tag(issue[0].to_date) %></td>
+              <td><%= issue[1] %></td>
+              <td><%= issue[0] %></td>
+              <td><%= issue[2] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+  <% else %>
+    <h3>Overdue Issues</h3>
+
+      <h3>No Overdue Issues found.</h3>
+
+  <%end%>
+</div>
+</div>

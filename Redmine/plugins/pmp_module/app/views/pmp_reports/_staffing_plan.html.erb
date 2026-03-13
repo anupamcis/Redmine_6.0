@@ -1,0 +1,29 @@
+<% if User.current.allowed_to?(:view_raci_chart, @project, global: true )%>
+  <div class="management-row">
+    <h2><%= l(:project_responsibility_assignment_matrix_filter) %></h2>
+    <%= render partial: "project_responsibility_assignment_matrix_filters_controller/index" %>
+  </div>
+<% end %>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_user_role_and_responsibilities, @project, global: true)%>
+    <h2><%= l(:user_role_and_responsibilities) %>(<span style="color: red; font-size: 14px;"><%= l(:hint_for_responsbility)%></span>)</h2>
+    <%= render partial: "user_role_and_responsibilities/index" %>
+  <%end%>
+
+  <%# if User.current.allowed_to?(:create_user_role_and_responsibilities, @project, global: true)%>
+    <%#= link_to l(:add_user_role_and_responsibility), new_project_user_role_and_responsibility_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', remote: true %>
+  <%#end%>
+</div>
+
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_staff_needs, @project, global: true)%>
+    <h2><%= l(:staff_needs) %></h2>
+    <%= render partial: "staff_needs/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_staff_needs, @project, global: true)%>
+    <%= link_to l(:add_staff_need), new_project_staff_need_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', remote: true %>
+  <%end%>
+</div>

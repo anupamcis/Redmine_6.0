@@ -1,0 +1,10 @@
+<%= error_messages_for 'security_requirement' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "customer_specific_security_requirement[project_id]", @project.id %>
+  <p><%= f.text_field :security_requirement, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :remarks, :required => true, :rows => 5, cols: 5 %></p>
+  <p><%= f.check_box :is_visible_to_client unless User.current.is_client? %>
+  <br>
+</div>

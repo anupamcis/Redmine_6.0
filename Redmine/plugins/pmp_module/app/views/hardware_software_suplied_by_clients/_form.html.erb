@@ -1,0 +1,10 @@
+<%= error_messages_for 'hardware_software_suplied_by_client' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "hardware_software_suplied_by_client[project_id]", @project.id %>
+  <p><%= f.text_field :client_supplied_item, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :remarks, :rows => 5, cols: 5 %></p>
+  <br>
+</div>
+

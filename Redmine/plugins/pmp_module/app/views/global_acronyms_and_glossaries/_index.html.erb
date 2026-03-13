@@ -1,0 +1,33 @@
+<div class="contextual">
+  <%= link_to l(:label_global_acronyms_and_glossary_new), new_global_acronyms_and_glossary_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_global_acronyms_and_glossary_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_abbreviation)%></th>
+        <th><%= l(:field_full_form) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for global_acronyms_and_glossary in @global_acronyms_and_glossaries -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="username"><%= global_acronyms_and_glossary.abbreviation %></td>
+          <td class="firstname"><%= global_acronyms_and_glossary.full_form %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_global_acronyms_and_glossary_path(global_acronyms_and_glossary), :class=>"icon icon-edit"  %>
+            <%= delete_link global_acronyms_and_glossary_path(global_acronyms_and_glossary, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_global_acronyms_and_glossary_plural)) -%>

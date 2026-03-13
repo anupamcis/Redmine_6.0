@@ -1,0 +1,32 @@
+<style type="text/css">
+  .list tbody tr td {
+    text-align: center;
+}
+</style>
+<div class="autoscroll">
+<table class="list">
+  <thead>
+    <tr>
+      <th> Cron Name</th>
+      <th> Description </th>
+      <th> Start Date </th>
+      <th> End Date </th>
+      <th> Time Taken </th>
+      <th> Edit Details </th>
+    </tr>
+  </thead>
+  <tbody>
+
+  <% SchedulerTime.all.each do |st| %>
+    <tr>
+      <% diff = (st.end_date - st.start_date) %>
+      <td><%= st.cron_name %></td>
+      <td><%= st.description %> </td>
+      <td><%= st.start_date.to_date %></td>
+      <td><%= st.end_date.to_date %> </td>
+      <td><%= diff %> seconds</td>
+      <td><%= link_to "Add/Edit Description", edit_scheduler_time_path(st.id) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

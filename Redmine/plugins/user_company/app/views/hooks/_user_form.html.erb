@@ -1,0 +1,12 @@
+<% company_id = params[:user][:company_id] if params[:user].present? %>
+<% @company = Company.find(company_id) if company_id.present? %>
+<% if User.current.admin? %>
+  <p><%= form.select :company_id, options_from_collection_for_select(Company.all, 'id', 'name',company_id), {:required => true, :prompt => 'Select Company'}, {:class => "select2, full-width"} %></p>
+<% else %>
+  <p>
+    <label for="company"><%= l(:company)%></label>
+    <b><%= @company.try(:name) %></b>
+  </p>
+<% end %>
+<%= hidden_field_tag "company_id", company_id %></p>
+<%= hidden_field_tag "project_id", params[:project_id] if params[:project_id].present? %>

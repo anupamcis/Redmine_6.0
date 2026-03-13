@@ -1,0 +1,28 @@
+<%= error_messages_for 'project_responsibility_assignment_matrix_filter' %>
+
+<div id="new_raci_chart">
+  <div style="clear: both"></div>
+  <%= labelled_form_for [@project, project_matrix_filter], html: {id: 'project-matrix-filter-form'} do |f| %>
+    <div class="box tabular">
+      <p>
+        <%= f.select :matrix_type, options_for_select(["User", "Role"], project_matrix_filter.matrix_type), {:required => true, prompt: 'select means...'}, {class: "small"} %>
+        <em class="info">
+          <span style="color: red; font-size: 14;"><%= l(:raci_hint)%></span>
+        </em>
+      </p>
+      <p>
+        <%= f.select :matrix_filter, options_from_collection_for_select(RaciChart.all, 'id', 'work_type',project_matrix_filter.matrix_filter), {:required => true }, { :multiple => true, class: "small"  } %>
+
+      </p>
+      <%= submit_tag l(:button_submit),class: "raci_button" %>
+    </div>
+  <% end %>
+  </div>
+
+  <script type="text/javascript">
+    $("#project_responsibility_assignment_matrix_filter_matrix_type").on('change', function(){
+        if ("<%= @project.responsibility_assignment_matrices.present? %>"){
+          $('.raci_button').attr('data-confirm', "If you update matrix type then project responsibility data will be reset, Then you have to reassign responsibilities for this project");
+        }
+      });
+  </script>

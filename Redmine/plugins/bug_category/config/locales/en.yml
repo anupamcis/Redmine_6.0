@@ -1,0 +1,17 @@
+# English strings go here for Rails i18n
+en:
+  # my_label: "My label"
+  bug_category: Bug category
+  label_bug_category_tab_new: Add New tab
+  label_bug_category_tab_plural: Bug Category
+  field_tab_name: Bug Category tab name
+  field_lock_percent: Precent for locking tab
+  label_information_plural: Information
+  button_create: Create
+  button_save: Save
+  create_success_message: Bug Category added successfully
+  delete_message: Bug Category deleted successfully
+  update_message: Bug Category updated successfully
+  field_bug_category: Bug category
+  bug_category: Bug Category
+  items_label: Items

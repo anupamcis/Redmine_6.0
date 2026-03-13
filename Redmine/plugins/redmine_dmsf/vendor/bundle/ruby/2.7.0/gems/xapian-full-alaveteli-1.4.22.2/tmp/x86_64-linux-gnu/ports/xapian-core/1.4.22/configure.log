@@ -1,0 +1,237 @@
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking whether UID '1000' is supported by ustar format... yes
+checking whether GID '1000' is supported by ustar format... yes
+checking how to create a ustar tar archive... gnutar
+checking whether make supports the include directive... yes (GNU style)
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... gcc3
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 1572864
+checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for archiver @FILE support... @
+checking for strip... strip
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for a working dd... /usr/bin/dd
+checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+checking for mt... mt
+checking if mt is a manifest tool... no
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... yes
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... no
+checking whether to enable maintainer-specific portions of Makefiles... no
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking dependency style of g++... gcc3
+checking how to run the C++ preprocessor... g++ -E
+checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking for g++ option to produce PIC... -fPIC -DPIC
+checking if g++ PIC flag -fPIC -DPIC works... yes
+checking if g++ static flag -static works... yes
+checking if g++ supports -c -o file.o... yes
+checking if g++ supports -c -o file.o... (cached) yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether g++ is a working C++ compiler... yes
+checking whether g++ supports C++11 features by default... yes
+checking for gcc... (cached) gcc
+checking whether the compiler supports GNU C... (cached) yes
+checking whether gcc accepts -g... (cached) yes
+checking for gcc option to enable C11 features... (cached) none needed
+checking whether gcc understands -c and -o together... (cached) yes
+checking dependency style of gcc... (cached) gcc3
+checking whether byte ordering is bigendian... no
+checking for special C compiler options needed for large files... no
+checking for _FILE_OFFSET_BITS value needed for large files... no
+checking if -lm is required for maths functions... no
+checking for g++ options needed to detect all undeclared functions... none needed
+checking whether log2 is declared... yes
+checking whether exp10 is declared... yes
+checking whether __exp10 is declared... yes
+checking for __builtin_exp10... yes
+checking if RTTI is supported... yes
+checking whether __builtin_add_overflow is declared... yes
+checking whether __builtin_sub_overflow is declared... yes
+checking whether __builtin_mul_overflow is declared... yes
+checking whether __builtin_bswap16 is declared... yes
+checking whether __builtin_bswap32 is declared... yes
+checking whether __builtin_bswap64 is declared... yes
+checking whether _byteswap_ushort is declared... no
+checking whether _byteswap_ulong is declared... no
+checking whether _byteswap_uint64 is declared... no
+checking whether __builtin_clz is declared... yes
+checking whether __builtin_clzl is declared... yes
+checking whether __builtin_clzll is declared... yes
+checking whether __builtin_ctz is declared... yes
+checking whether __builtin_ctzl is declared... yes
+checking whether __builtin_ctzll is declared... yes
+checking whether __builtin_expect is declared... yes
+checking whether __builtin_popcount is declared... yes
+checking whether __builtin_popcountl is declared... yes
+checking whether __builtin_popcountll is declared... yes
+checking whether __popcnt is declared... no
+checking whether __popcnt64 is declared... no
+checking whether _addcarry_u32 is declared... no
+checking whether _addcarry_u64 is declared... no
+checking whether _subborrow_u32 is declared... no
+checking whether _subborrow_u64 is declared... no
+checking for poll... yes
+checking for clock_gettime... yes
+checking for sleep... yes
+checking for nanosleep... yes
+checking for gettimeofday... yes
+checking for ftime... yes
+checking for srandom... yes
+checking for random... yes
+checking for sigaction... yes
+checking whether sigsetjmp is declared... yes
+checking whether siglongjmp is declared... yes
+checking for getrusage... yes
+checking for times... yes
+checking for sysconf... yes
+checking for nftw... yes
+checking for setenv... yes
+checking for _putenv_s... no
+checking whether _putenv_s is declared... no
+checking for closefrom... yes
+checking for getdirentries... yes
+checking for getrlimit... yes
+checking return type of ftime... int
+checking for sys/utsname.h... yes
+checking for gethostname... yes
+checking for ssize_t... yes
+checking for pid_t... yes
+checking for mode_t... yes
+checking size of short... 2
+checking size of int... 4
+checking size of long... 8
+checking size of long long... 8
+checking for sys/types.h... (cached) yes
+checking for 32 bit integer type... int
+checking for 64 bit integer type... long
+checking for perl... /usr/bin/perl
+checking for fcntl.h... yes
+checking for limits.h... yes
+checking for poll.h... yes
+checking for sys/select.h... yes
+checking for sys/resource.h... yes
+checking for cxxabi.h... yes
+checking for valgrind... no
+checking for eatmydata... /usr/bin/eatmydata
+checking whether strerror_r is declared... yes
+checking whether strerror_r returns char *... yes
+checking for sys_errlist and sys_nerr... no
+checking for _sys_errlist and _sys_nerr... no
+checking for strerrordesc_np... yes
+checking for  snprintf... snprintf
+checking whether fdatasync is declared... yes
+checking for library containing fdatasync... none required
+checking for fdatasync... yes
+checking for library containing timer_create... none required
+checking for timer_create() usability... yes
+checking for zlib.h... yes
+checking for library containing zlibVersion... -lz
+checking for uuid/uuid.h... yes
+checking for library containing uuid_generate... -luuid
+checking for fork... yes
+checking for library containing socketpair... none required
+checking for library containing getaddrinfo... none required
+checking for library containing inet_ntop... none required
+checking for type to use for 5th parameter to getsockopt... socklen_t
+checking for fsync... yes
+checking for posix_fadvise... yes
+checking for ftruncate... yes
+checking for pread... yes
+checking for any prototype needed for pread... none required
+checking for pwrite... yes
+checking for any prototype needed for pwrite... none required
+checking for directory separator(s)... /
+checking for link... yes
+checking for version of g++... GCC 13.3.0
+checking if g++ -fvisibility=hidden -fvisibility-inlines-hidden works... yes
+checking for g++ with -Wl,-Bsymbolic-functions in LDFLAGS... yes
+checking for g++ with -xldscope=symbolic in LDFLAGS... no
+checking for g++ with -fno-semantic-interposition in LDFLAGS... yes
+checking whether to use SSE instructions on x86... non-x86 arch (x86_64)
+checking for g++ with -fno-math-errno in CXXFLAGS... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating tests/Makefile
+config.status: creating docs/Makefile
+config.status: creating docs/doxygen_api.conf
+config.status: creating docs/doxygen_source.conf
+config.status: creating xapian-core.spec
+config.status: creating cmake/xapian-config.cmake
+config.status: creating cmake/xapian-config-version.cmake
+config.status: creating pkgconfig/xapian-core.pc
+config.status: creating makemanpage
+config.status: creating tests/runtest
+config.status: creating tests/runsrv
+config.status: creating tests/submitperftest
+config.status: creating tests/perftest/get_machine_info
+config.status: creating xapian-config
+config.status: creating config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands

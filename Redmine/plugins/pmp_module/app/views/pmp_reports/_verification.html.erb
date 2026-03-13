@@ -1,0 +1,21 @@
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_verification_plans, @project, global: true) %>
+    <h2><%= l(:verification_plans) %></h2>
+    <%= render partial: "verification_plans/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_verification_plans, @project, global: true)%>
+    <%= link_to l(:add_verification_plan), new_project_verification_plan_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_type_of_testings, @project, global: true) %>
+    <h2><%= l(:type_of_testings) %>(<span style="color: red; font-size: 14px;"><%= l(:hint_for_type_stakholder)%></span>)</h2>
+    <%= render partial: "type_of_testings/index" %>
+  <%end%>
+  
+  <% if User.current.allowed_to?(:create_type_of_testings, @project, global: true) && TypeOfTesting.where(project_id: @project.id).pluck(:global_type_of_testing_id).length < GlobalTypeOfTesting.pluck(:id).length %>
+    <%= link_to l(:add_type_of_testing), new_project_type_of_testing_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>

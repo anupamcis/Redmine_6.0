@@ -1,0 +1,34 @@
+<% risk_mitigation_plans = @project.risks.map(&:risk_mitigation_plans).flatten %>
+<% if risk_mitigation_plans.any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_risk_id) %></th>
+          <th><%= l(:field_date_occurred) %></th>
+          <th><%= l(:field_closed_date) %></th>
+          <th><%= l(:field_assigned_to) %></th>
+          <th><%= l(:field_action_taken) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for risk in risk_mitigation_plans -%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="firstname"><%= risk.risk_risk_description %></td>
+            <td class="lastname"><%= format_date(risk.date_occurred) %></td>
+            <td class="lastname"><%= format_date(risk.closed_date) %></td>
+            <td class="lastname"><%= risk.assigned_user_firstname %></td>
+            <td class="lastname"><%= risk.action_taken %></td>
+            <td class="buttons">
+              <%= link_to "edit", edit_project_risk_mitigation_plan_path(@project,risk, :back_url => request.original_fullpath), class: "icon icon-edit", remote: true if User.current.allowed_to?(:update_risks, @project, global: true) %>
+              <%= delete_link project_risk_mitigation_plan_path(@project,risk, :back_url => request.original_fullpath) if User.current.allowed_to?(:delete_risks, @project, global: true)%>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

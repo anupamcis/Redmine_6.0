@@ -1,0 +1,11 @@
+# English strings go here for Rails i18n
+en:
+  # my_label: "My label"
+  manage_users: "Manage Users"
+  permission_add_users: "Add User"
+  permission_show_users: "View User"
+  permission_index_users: "Manage Users"
+  permission_edit_users: "Edit User"
+  permission_destroy_users: "Delete User"
+  user_management: "User Management"
+  global_permissions: "Global Permissions"

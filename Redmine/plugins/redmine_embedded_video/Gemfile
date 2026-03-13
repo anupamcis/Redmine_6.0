@@ -1,0 +1,1 @@
+# gem "paperclip", "5.1.0" # Commented out to avoid version conflict with main application

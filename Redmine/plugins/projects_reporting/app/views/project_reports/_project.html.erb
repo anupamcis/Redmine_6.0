@@ -1,0 +1,20 @@
+<% project_progress =  project['project'].respond_to?(:calculate_project_percent) ? project['project'].calculate_project_percent : (project['project'].issues.present? ? (((project['project'].issues.size - project['project'].issues.open.size).to_f / project['project'].issues.size) * 100).round : 0) %>
+<% total_issues, open_issues, close_issues = project['project'].issues.size, project['project'].issues.open.size, (project['project'].issues.size - project['project'].issues.open.size) %>
+<tr>
+  <td><%= link_to project['project'].name, (respond_to?(:project_launch_page_url) ? project_launch_page_url(project['project']) : project_path(project['project'])) %></td>
+  <td><%= project['project'].respond_to?(:project_leader) ? project['project'].project_leader : "-" %></td>
+  <td><%= project['project'].respond_to?(:project_manager) ? project['project'].project_manager : "-" %></td>
+  <td><%= distance_of_time_in_words_to_now(project['datetime']) %></td>
+  <td><%=  open_issues %></td>
+  <td><%=  close_issues %></td>
+  <td><%= total_issues %></td>
+  <td>
+    <div class="w3-progress-container" title="<%= project_progress %>%">
+      <div class="w3-progressbar w3-green" style="width:<%= project_progress %>%;">
+      </div>
+    </div>
+    <div class="progres_value">
+        <%= project_progress %>%
+      </div>
+  </td>
+</tr>

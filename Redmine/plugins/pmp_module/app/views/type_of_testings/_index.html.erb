@@ -1,0 +1,73 @@
+<% if @project.try(:type_of_testings).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_type_of_testing) %></th>
+          <th><%= l(:field_testing_method) %></th>
+          <th><%= l(:field_stakeholder) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for type_of_testing in @project.type_of_testings -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= type_of_testing.type_of_testing %></td>
+          <td class="lastname"><%= type_of_testing.testing_method.html_safe %></td>
+          <td>
+          <% stakeholders = type_of_testing.stakeholder.present? ? type_of_testing.stakeholder : [] %>
+          <div class="span_stakeholder <%= 'hide' unless type_of_testing.stakeholder.present? %>">
+            <span class="stakeholder-pesron-name" stakeholder="<%=type_of_testing.stakeholder.to_a %>" project-id="<%=@project.id%>" testing_id="<%=type_of_testing.id%>"><%=stakeholders.present? ? stakeholders.join(", ") : "" %>
+            </span>
+          </div>
+          <div class="select_tag_stakeholder <%= 'hide' if stakeholders.present? %>">
+            <%= select_tag "stakeholder", options_from_collection_for_select(StaffNeed.new.roles, 'name', 'name', stakeholders ), class: "stakeholders-select-#{type_of_testing.id}", project_id: "#{@project.id}",testing_id: "#{type_of_testing.id}", multiple: true%>
+            <%= button_tag "Save", class: "update-reporting-person" %>
+          </div>
+          </td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_type_of_testing_path(@project,type_of_testing, :back_url => request.original_fullpath), class: "icon icon-edit", :title => "Edit", remote: true if User.current.allowed_to?(:update_type_of_testings, @project, global: true)%>
+            <%= delete_link project_type_of_testing_path(@project,type_of_testing, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_type_of_testings, @project, global: true)%>
+          </td>
+
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<% if User.current.allowed_to?(:create_type_of_testings, @project, global: true) %>
+  <%= link_to "Add more", add_more_new_project_type_of_testings_path(@project, :back_url => request.original_fullpath), class: "pull-left", :title => "Add", remote: true %>&nbsp;
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.update-reporting-person').on('click',function(){
+      var dropdown = $(this).parent().find("select");
+      var stakeholder = dropdown.val();
+      var projectId = dropdown.attr('project_id');
+      var typeOfTesting = dropdown.attr('testing_id');
+      $.ajax({
+        url: "/projects/"+projectId+"/type_of_testings/"+typeOfTesting,
+        dataType: 'script',
+        data: { type_of_testing: {stakeholder: stakeholder } },
+        type: 'PUT',
+        success: function(res) {
+        },
+        error: function(res){
+        }
+      });
+    });
+
+    // reset dropdown when click on the reporting person name
+    $(document).on('click','.stakeholder-pesron-name', function(){
+      $(this).parents('td:first').find('.select_tag_stakeholder').removeClass('hide');
+      $(this).parent().hide();
+    });
+
+    $('.stakeholder-pesron-name').css( 'cursor', 'pointer' );
+  });
+</script>

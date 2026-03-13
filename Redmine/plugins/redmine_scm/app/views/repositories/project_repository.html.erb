@@ -1,0 +1,43 @@
+<% unless controller_name == 'admin' && action_name == 'index' %>
+  <% content_for :sidebar do %>
+    <h3><%=l(:label_administration) if User.current.admin? %></h3>
+    <%= render :partial => 'admin/menu' %>
+  <% end %>
+<% end %>
+
+<h2>Find Repository Projects</h2>
+<input id="search_by_repository_name" type="text" placeholder="Find Repository">
+<% if @repositories.present? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th>Project Name</th>
+          <th>Project Identifier</th>
+          <th>Repository Identifier</th>
+          <th>Repository Url</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render :partial => 'repository', :collection => @repositories %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <br><br>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<script type="text/javascript">
+  $(document).on("keyup", "#search_by_repository_name", function(){
+    var query = $(this).val();
+    $.ajax({
+      url: '<%= admin_project_repository_url %>',
+      dataType: "script",
+      data: { query: query },
+      method: "GET",
+        success:function(){
+      }
+    });
+  });
+</script>

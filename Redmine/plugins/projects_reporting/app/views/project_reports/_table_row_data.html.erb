@@ -1,0 +1,56 @@
+<% total_issue_count = project.issues.size %>
+<% issues_with_count =
+     if project.respond_to?(:project_issues_with_count)
+       project.project_issues_with_count
+     else
+       project.issues.group_by(&:status).map { |k, v| [k.try(:name), v.try(:count)] }.to_h
+     end %>
+<% total_estimated_hours =
+     if project.respond_to?(:estimated_hours_sum)
+       project.estimated_hours_sum
+     else
+       project.issues.map { |issue| issue.estimated_hours if issue.status.name == 'Closed' }.compact.sum
+     end
+   total_spent_hours =
+     if project.respond_to?(:project_total_time_entries)
+       project.project_total_time_entries
+     else
+       project.issues.includes(:time_entries).where(status_id: 5).map { |issue| issue.time_entries.map(&:hours).compact.sum }.compact.sum
+     end
+%>
+
+<% project_start_date = project.respond_to?(:start_date) && project.start_date.present? ? project.start_date : project.created_on %>
+<% today = Time.now %>
+<% raw_end = (project.respond_to?(:end_date) && project.end_date.present?) ? project.end_date : project.created_on %>
+<% project_end_date = raw_end && raw_end > today ? today : raw_end %>
+
+<%
+  paid_hours = if project.respond_to?(:calculate_paid_and_spent_hours)
+                  project.calculate_paid_and_spent_hours(total_estimated_hours, 'estimated')
+                else
+                  0.0
+                end
+  spent_hours = if project.respond_to?(:calculate_paid_and_spent_hours)
+                   project.calculate_paid_and_spent_hours(total_spent_hours, 'spent')
+                 else
+                   0.0
+                 end
+%>
+
+<tr>
+  <td> <%= link_to project.identifier, project_path(project), target: "_blank" %></td>
+  <td><%= project_managers[project.id]%></td>
+  <td><%= project.respond_to?(:company) ? project.company&.name : "" %></td>
+  <% issue_sequence.each do |issue_name| %>
+  <% issue_count = issues_with_count[issue_name]
+        issue_percentage = issue_count.present? ? (issue_count*100/total_issue_count) : 0
+    %>
+  <td>
+    <%= "#{issue_percentage} %" %>
+  </td>
+  <% end %>
+  <td> <%= "#{paid_hours} %" %> </td>
+  <% if User.current.allowed_to?(:project_spent_hours_reports, nil, global: true)  %>
+  <td> <%= "#{spent_hours.present? ? spent_hours.round(2) : 0.0} %" %></td>
+  <%end%>
+</tr>

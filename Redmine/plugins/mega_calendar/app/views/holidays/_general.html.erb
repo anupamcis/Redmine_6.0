@@ -1,0 +1,41 @@
+<div class="contextual">
+  <% if User.current.admin? %>
+   <a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/sync_hoildays" class = "icon icon-add" ><%= translate 'sync_holiday' %></a>
+  <% end %>
+</div>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= translate 'public_name'%></th>
+        <th><%= translate 'public_event_date' %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @public_holidays.each do |row| %>
+          <tr class="<%= (row.event_date <= Time.now) ? 'strikeout' : '' %>">
+            <td class="firstname" ><%= row.name %></td>
+            <td class="firstname" ><%= format_date(row.event_date) %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<style type="text/css">
+
+  td {
+    position: relative;
+    padding: 5px 10px;
+  }
+
+  tr.strikeout td:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 1px solid #111;
+    width: 100%;
+  }
+</style>

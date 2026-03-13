@@ -1,0 +1,33 @@
+<div class="contextual">
+  <%= link_to l(:label_global_type_of_testing_new), new_global_type_of_testing_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_global_type_of_testing_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_type_of_testing_name) %></th>
+        <th><%= l(:field_testing_method) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for global_type_of_testing in @global_type_of_testings -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="username"><%= global_type_of_testing.type_of_testing_name %></td>
+          <td class="firstname"><%= global_type_of_testing.testing_method.html_safe %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_global_type_of_testing_path(global_type_of_testing), :class=>"icon icon-edit"  %>
+            <%= delete_link global_type_of_testing_path(global_type_of_testing, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_global_type_of_testing_plural)) -%>

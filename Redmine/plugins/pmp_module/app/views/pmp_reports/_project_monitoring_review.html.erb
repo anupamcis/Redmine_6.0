@@ -1,0 +1,9 @@
+<% if User.current.allowed_to?(:view_project_monitoring_reviews, @project, global: true) %>
+  <h2><%= l(:project_monitoring_reviews) %></h2>
+
+  <%= render partial: "project_monitoring_reviews/index" %>
+<%end%>
+
+<% if User.current.allowed_to?(:create_project_monitoring_reviews, @project, global: true)%>
+  <%= link_to l(:add_monitoring_review), new_project_project_monitoring_review_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => l(:add), remote: true %>
+<%end%>

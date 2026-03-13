@@ -1,0 +1,33 @@
+<% if @project.try(:communication_plans).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_stackholder_name) %></th>
+          <th><%= l(:field_communication_need) %></th>
+          <th><%= l(:field_means_of_communication) %></th>
+          <th><%= l(:field_frequency_of_communication) %></th>
+          <th><%= l(:field_responsibility_of_communication) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for communication_plan in @project.communication_plans -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= communication_plan.stackholder_name %></td>
+          <td class="lastname"><%= communication_plan.communication_need %></td>
+          <td class="lastname"><%= communication_plan.means_of_communication %></td>
+          <td class="lastname"><%= communication_plan.frequency_of_communication %></td>
+          <td class="lastname"><%= communication_plan.responsibility_of_communication %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_communication_plan_path(@project,communication_plan, :back_url => request.original_fullpath), class: "icon icon-edit", :title => "Edit", remote: true if User.current.allowed_to?(:update_communication_plans, @project, global: true) %>
+            <%= delete_link project_communication_plan_path(@project,communication_plan, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_communication_plans, @project, global: true)  %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_communication_plan) %></p>
+<% end %>

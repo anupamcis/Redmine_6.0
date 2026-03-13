@@ -1,0 +1,57 @@
+en:
+  label_click_to_enlarge_reduce: "Click to enlarge/reduce"
+  label_estimated_speed: "Estimated speed"
+  label_f_day: "%{value} day"
+  label_f_day_plural: "%{value} days"
+  label_f_week: "%{value} week"
+  label_f_week_plural: "%{value} weeks"
+  label_milestone: "Milestone/Sprint"
+  label_milestone_new: "New milestone/sprint"
+  label_milestone_plural: "Milestones/Sprints"
+  label_milestone: "Milestone/Sprint"
+  label_setting_show_due_time: "Show remaining time instead of due date"
+  label_setting_color_bad: "Bad speed ratio color"
+  label_setting_color_good: "Good speed ratio color"
+  label_setting_color_very_bad: "Very bad speed ratio color"
+  label_setting_ratio_bad: "Bad speed ratio"
+  label_setting_ratio_good: "Good speed ratio"
+  label_setting_ratio_very_bad: "Very bad speed ratio"
+  label_setting_solved_issues_to_estimate: "Solved tasks to estimate"
+  notice_unable_delete_milestone: "Unable to delete milestone/sprint."
+  permission_manage_milestones: "Manage milestones/sprints"
+  permission_view_issue_estimated_hours: "View estimated hours"
+  permission_index_versions: "View Roadmap"
+  field_fixed_milestone: "Milestone/Sprint"
+  label_milestone_tracking: Milestone/Sprint Tracking
+  label_milestone_notification_in_days: Send notification days before of milestone/sprint effective date
+  label_no_data_milestone: "No data to display, For adding milestone/sprint to project create version first."
+  check_milestone_due_date: "can not be grater than version date"
+  label_issues_count: Issue counts
+  label_bug_percent: Bug Percent
+  due_date_grater_than_milestone_date: "can not be small from connected milestones/sprints"
+  assocaited_date_errors: "can not be small then connected issues"
+  field_planed_end_date: Planned end date
+  field_actual_start_date: Actual start date
+  field_actual_end_date: Actual end date
+  milestone_effective_date: Planned start date
+  assocaited_planed_start_date_errors: "Planned start date can not be small then connected issues"
+  check_milestone_planed_date: "Planned start date can not be grater than version date"
+  check_milestone_plan_dates: Planned start date can not be grater than planned end date
+  milestone_comment: Comment
+  field_changed_date: New Date
+  field_previous_date: Previous Date
+  field_changed_on: Date Changed On
+  planed_end_date_log: Planned end date logs for %{for}
+  actual_end_date_log: Actual end date logs for %{for}
+  no_planed_date_logs: There is no planned end date logs for %{for}
+  no_actual_date_logs: There is no actual end date logs for %{for}
+  button_check_logs: Logs
+  field_reopened_date: Reopened date
+  field_closed_date: Closed date
+  bug_priority: Bug Priority
+  bugs: bug(s)
+  workload: Workload
+  employee_workload: Employee's Workload
+  workload_percentage: Workload Percentage
+  estimated_and_spent_hours: Estimated v/s Spent Hours
+  estim_hours: Estimated Hours

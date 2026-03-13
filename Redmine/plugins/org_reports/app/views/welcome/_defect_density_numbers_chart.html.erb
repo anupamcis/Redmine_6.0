@@ -1,0 +1,73 @@
+<% if @numbers_chart_data.present? %>
+  <div id="containerStackedNumber" class="double_chart"></div>
+<% end %>
+
+<script type="text/javascript">
+  var data = <%= @numbers_chart_data.to_json.html_safe %>
+
+  $(function () {
+    var chart;
+    $(document).ready(function() {
+      chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'containerStackedNumber',
+          type: 'column'
+        },
+        legend: {
+          enabled: false
+        },
+        exporting: {
+          enabled: false
+        },
+        credits: {
+          enabled: false
+        },
+        xAxis: {
+          title: {
+            text: "Projects"
+          },
+          categories: <%= @project_numbers_names.inspect.html_safe %>
+        },
+        yAxis: {
+          title: {
+            text: "Percentage of bugs and items"
+          }
+        },
+        tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.2f}%)<br/>',
+          shared: true
+        },
+        plotOptions: {
+          column: {
+            pointWidth: 25,
+            stacking: 'percent',
+            dataLabels: {
+              enabled: true,
+              format: '{point.percentage:.2f}%',
+              style: {
+                fontSize: "9px"
+              }
+            }
+          },
+          series: {
+            dataLabels: {
+              enabled: true
+            },
+            cursor: 'pointer',
+            point: {
+              events: {
+                click: function () {
+                  window.open('/projects/'+this.id +'/issues?utf8=✓&set_filter=1&f[]=status_id&op[status_id]=*');
+                }
+              }
+            }
+          }
+        },
+        title: {
+          text: 'Defect Density Chart(In percentage)'
+        },
+        series: data
+      });
+    });
+  });
+</script>

@@ -1,0 +1,9 @@
+<p>
+  <label><%=h l(:select_tracker_for_code_review_assignment) %></label>
+  <%= select_tag 'settings[assignment_tracker_id]', options_for_select(Tracker.all, @settings['assignment_tracker_id']), :include_blank => true %>
+</p>
+
+<p>
+  <label><%=h l(:select_tracker_for_code_reviews)%></label>
+  <%= select_tag 'settings[tracker_id]', options_for_select(Tracker.all, @settings['tracker_id']), :include_blank => true %>
+</p>

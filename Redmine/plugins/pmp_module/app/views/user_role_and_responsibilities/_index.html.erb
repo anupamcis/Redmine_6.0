@@ -1,0 +1,49 @@
+<% @users = @project.users.joins(:company).where("firstname not like (?) and companies.default_company = ? ", "%cis%", true)%>
+<% if @users.any? %>
+  <div class="autoscroll" id="role_and_responsibilities">
+    <%= render 'user_role_and_responsibilities/role_and_responsibility'%>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    
+    $(document).on('change','select.reporting-person-select',function(){
+      var reporting_person_id = $(this).val();
+      var user_id = $(this).attr('user_id');
+      var project_id = $(this).attr('project_id');
+      $.ajax({
+        url: "/projects/"+project_id+"/set_user_role_and_responsibilities",
+        dataType: 'script',
+        data:{user_role_and_responsibility: {reporting_person_id: reporting_person_id, user_id: user_id }},
+        type: 'GET',
+        success: function(res) {
+        },
+        error: function(res){
+        }
+      });
+    });
+
+    // reset dropdown when click on the reporting person name
+    $(document).on('click','.reporting-pesron-name', function(e){
+      if(e.target.className.includes('reporting-pesron-name') == true){
+        var projectId = "<%=@project.id%>";
+        var userId = $(this).attr('user-id');
+        var reportingPesron = $(this).attr('reporting-pesron');
+        var that = $(this);
+        $.ajax({
+          url: "/projects/"+projectId+"/select_reporting_person/"+userId,
+          dataType: 'script',
+          type: 'GET',
+          success: function(res) {
+            that.find('select').val(reportingPesron);
+          },
+          error: function(res){
+          }
+        });
+      }
+    });
+  });
+</script>

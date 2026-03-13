@@ -1,0 +1,18 @@
+<%= error_messages_for 'global_back_up_detail' %>
+
+<div class="box tabular">
+  <p><%= f.text_field :server_name, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :backup_type, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :data_detail, :required => true, :rows => 5, cols: 5 %>
+    <%#= wikitoolbar_for 'global_back_up_detail_data_detail' %>
+  </p>
+  <p><%= f.text_field :media_label, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :backup_frequency, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :detail_of_media_storage, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :remarks %>
+    <%#= wikitoolbar_for 'global_back_up_detail_remarks' %>
+  </p>
+  <p><%= f.select :role_responsible, options_from_collection_for_select(StaffNeed.new.roles, 'name', 'name', @global_back_up_detail.role_responsible), {required: true, include_blank: "select role...."}, {class: "select small"} %></p>
+  <br>
+</div>
+

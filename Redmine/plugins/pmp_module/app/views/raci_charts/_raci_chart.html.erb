@@ -1,0 +1,11 @@
+<tr class="<%= cycle("odd", "even") %> show_raci_chart", id='<%="raci_chart_#{raci_chart.id}" %>' >
+  <td></td>
+  <td class="firstname"><%= raci_chart.work_type %></td>
+  <td class="buttons">
+    <%= link_to "Edit", edit_raci_chart_path(raci_chart, :back_url => request.original_fullpath), class: "icon icon-edit", remote: true %>
+    <%#=  link_to "Edit", "javascript:void();"%>
+
+    <%= delete_link raci_chart_path(raci_chart, :back_url => request.original_fullpath) %>
+  </td>
+</tr>
+

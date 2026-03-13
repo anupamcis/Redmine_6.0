@@ -1,0 +1,31 @@
+<div class="contextual">
+  <%= link_to l(:label_global_profile_new), new_hardware_and_software_profile_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:global_profile_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_name) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for hardware_and_software_profile in @hardware_and_software_profiles -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="username"><%= hardware_and_software_profile.name %></td>
+          <td class="buttons">
+            <%= link_to "Edit", edit_hardware_and_software_profile_path(hardware_and_software_profile), :class=>"icon icon-edit"  %>
+            <%= delete_link hardware_and_software_profile_path(hardware_and_software_profile, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_pmp_tab_plural)) -%>

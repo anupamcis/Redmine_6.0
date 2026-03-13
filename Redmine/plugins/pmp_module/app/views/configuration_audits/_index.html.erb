@@ -1,0 +1,31 @@
+<% if @project.try(:configuration_audits).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_cm_audit) %></th>
+          <th><%= l(:field_date_or_event) %></th>
+          <th><%= l(:field_focus_of_audit) %></th>
+          <th><%= l(:field_auditor) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for configuration_audit in @project.configuration_audits -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="lastname"><%= configuration_audit.cm_audit %></td>
+          <td class="firstname"><%= configuration_audit.date_or_event %></td>
+          <td class="lastname"><%= configuration_audit.focus_of_audit %></td>
+          <td class="lastname"><%= configuration_audit.auditor %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_configuration_audit_path(@project,configuration_audit, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_configuration_audits, @project, global: true)%>
+            <%= delete_link project_configuration_audit_path(@project,configuration_audit, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_configuration_audits, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

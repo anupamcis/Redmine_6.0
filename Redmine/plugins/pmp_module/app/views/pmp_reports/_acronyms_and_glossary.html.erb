@@ -1,0 +1,8 @@
+<% if User.current.allowed_to?(:view_acronyms_and_glossaries, @project, global: true) %>
+  <h2><%= l(:acronyms_and_glossaries) %></h2>
+  <%= render partial: "acronyms_and_glossaries/index" %>
+<% end %>
+
+<%# if User.current.allowed_to?(:create_acronyms_and_glossaries, @project, global: true)%>
+  <%#= link_to l(:add_acronym), new_project_acronyms_and_glossary_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', remote: true %>
+<%#end%>

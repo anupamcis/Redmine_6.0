@@ -1,0 +1,11 @@
+<%= error_messages_for 'global_data_retention_plan' %>
+
+<div class="box tabular">
+  <p><%= f.text_field :record_name, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :min_retention, :size => 25 %></p>
+  <p><%= f.text_field :type_of_record, :size => 25 %></p>
+  <p><%= f.text_field :storage_path, :size => 25 %></p>
+  <p><%= f.text_field :disposal, :size => 25 %></p>
+  <p><%= f.text_area :remarks, :rows => 5, cols: 5 %></p>
+  <br>
+</div>

@@ -1,0 +1,6 @@
+<%= title [l(:label_global_acronyms_and_glossary_plural), global_pmp_profiles_path(tab: "global_acronyms_and_glossary")], l(:label_global_acronyms_and_glossary_new) %>
+
+<%= labelled_form_for @global_acronyms_and_glossary do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>

@@ -1,0 +1,2 @@
+module DailyStatusRepliesHelper
+end

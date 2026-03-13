@@ -1,0 +1,14 @@
+{
+  "project": {
+    "id": 1,
+    "name": "ProjectA",
+    "description": "Main product",
+    "members": [{"id":2,"name":"Alice","avatar":null},{"id":3,"name":"Bob","avatar":null}],
+    "widgets": [
+      {"id":"w1","type":"kpi","title":"Open issues","value":12},
+      {"id":"w2","type":"kpi","title":"Velocity","value":24}
+    ]
+  }
+}
+
+

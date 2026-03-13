@@ -1,0 +1,136 @@
+<%= render partial: 'service_bar' %>
+
+<div class="contextual">
+  <%#= link_to l(:connect_company_project), services_migrate_project_company_path, class: 'icon icon-add new-issue' %>
+</div>
+<h1><%= l(:services)%></h1>
+<br>
+<% if @companies.present? %>
+  <%= form_tag(services_path, :method => :get) do %>
+    <label for='client_company'><%= l(:company) %>:</label>
+    <%= select_tag 'selected_client_company', options_from_collection_for_select(@companies, 'id', 'name', params[:selected_client_company].to_i), prompt: 'select company...', class: "select2 small" %>&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <% if @supervisors.present? && @supervisors.size > 1 %>
+      <label for='name'><%= l(:label_supervisor) %>:</label>
+      <%= select_tag 'supervisor', options_from_collection_for_select(@supervisors.sort, 'employee_id', 'name', params[:supervisor].to_i), prompt: 'All...', class: "select2 small"  %>
+    <% end %>
+    <br><br>
+
+    <% if @service_details.present? %>
+      <label for='services'><%= l(:services) %>:</label>
+      <%= clear_services_link %><br><br>
+      <%= select_tag 'services[]', grouped_options_for_select(@grouped_service_details, params[:services]), onclick: "this.form.submit(); return false;",  multiple: true %>
+    <% end%>
+    <br><br>
+
+    <% if @projects.present? && params[:services].present? %>
+      <label for='client_project'><%= l(:project) %>:</label>
+      <%= select_tag 'client_project', grouped_options_for_select(Project.group_projects_by_status(@projects.to_a), params[:client_project]), prompt: 'select project...', :onchange => "this.form.submit(); return false;", class: "select2 small" %>
+    <% end %>
+    </br></br>
+
+    <% if @selectd_company.present? %>
+      <div>
+        <% if @project_type == "SUB_AND_EXSITING_AND_NEW" %>
+          <%= link_to 'New Project', new_project_path(:selected_service_ids => params[:services], :selected_client_company => params[:selected_client_company]), :class => 'icon icon-add', remote: true %>&nbsp;&nbsp;
+          <%= link_to l(:label_subproject_new), new_project_path(:parent_id =>  params[:client_project], :selected_service_ids => params[:services], :selected_client_company => params[:selected_client_company]), :class => 'icon icon-add', remote: true %>&nbsp;&nbsp;
+          <%= submit_tag l(:attch_to_project) if @selected_project.present? %>
+        <% elsif @project_type == "SUB_AND_EXSITING" %>
+          <%= link_to l(:label_subproject_new), new_project_path(:parent_id =>  params[:client_project], :selected_service_ids => params[:services], :selected_client_company => params[:selected_client_company]), :class => 'icon icon-add', remote: true if @selected_project.present? %>&nbsp;&nbsp;
+          <%= submit_tag l(:attch_to_project) if @selected_project.present? %>
+        <% elsif @project_type == "NEW" %>
+          <%= link_to 'New Project', new_project_path(:selected_service_ids => params[:services], :selected_client_company => params[:selected_client_company]), :class => 'icon icon-add', remote: true %>
+        <% elsif @project_type == "PROJECT_BASIS"
+          %>
+          <%= link_to 'New Project', new_project_path(:selected_service_ids => params[:services], :selected_client_company => params[:selected_client_company]), :class => 'icon icon-add', remote: true unless @projects.present? %>&nbsp;&nbsp;
+          <%= submit_tag l(:attch_to_project) if @selected_project.present? %>
+        <% end %>
+        <% if @services.present? && @services.map(&:service_detail_type).map(&:downcase).include?("project") && @services.map(&:service).uniq.count > 1 %>
+          <p class="nodata"><%= l(:wrong_service_selection_warning_for_project_basis) %></p>
+        <% end %>
+        <%= link_to 'Clear', services_path, :class => 'icon icon-reload' %>
+      </div>
+    <% end %>
+  <% end %>
+<% else %>
+  <% if User.current.get_service_details_with_hierarchy.present? %>
+     <p class="nodata"><%= l(:companies_not_connected) %></p>
+  <% else %>
+    <p class="nodata"><%= l(:label_no_servcies) %></p>
+  <% end %>
+<% end %>
+<div class="leg">
+  <ul class="legend">
+    <li><span class="shared_service"></span> Shared Service</li>
+    <li><span class="master_service"></span> Master Service</li>
+    <li><span class="project_basis"></span> Project Basis </li>
+  </ul>
+</div>
+
+<% html_title(l(:services)) -%>
+
+<style type="text/css">
+  #services_{
+    width: auto;
+    height: auto;
+  }
+
+  #transferred{
+    background-color:powderblue;
+  }
+
+  #project_basis_transferred{
+    background-color:blue;
+  }
+
+  #project_basis{
+    background-color:grey;
+  }
+
+.legend { list-style: none; }
+.legend li { float: left;  }
+.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+.legend .shared_service { background-color: powderblue; }
+.legend .project_basis { background-color: grey; }
+.legend .project_basis_transferred { background-color: blue; }
+.leg{
+  position: relative;
+  right: 50px;
+}
+
+.btn {
+    background-color: #1D1D1D; /* Green */
+    border: none;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.select2-container--default .select2-results__group {
+  font-size: 17px;
+}
+.select2-results__options {
+  max-height: 100% !important;
+}
+</style>
+
+
+<script type="text/javascript">
+  $("#supervisor").on('change',function(){
+    $("#services_").find(":selected").prop("selected", false)
+    this.form.submit();
+    return false
+  });
+
+  $("#selected_client_company").on('change',function(){
+    $("#services_").find(":selected").prop("selected", false)
+    $("#supervisor").find(":selected").prop("selected", false)
+    $("#client_project").find(":selected").prop("selected", false)
+    this.form.submit();
+    return false
+  });
+
+</script>

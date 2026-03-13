@@ -1,0 +1,24 @@
+<!-- filepath: app/views/users/simple_mail_search.html.erb -->
+<div class="autoscroll" style="max-width: 400px; margin: 40px auto;">
+  <div class="box" style="padding: 2em; box-shadow: 0 2px 8px #eee; border-radius: 8px;">
+    <h2 style="margin-bottom: 1em; text-align: center;">
+  <span style="vertical-align: middle; margin-right: 8px;">
+    <%= sprite_icon('search', '', icon_only: true, css_class: 'icon icon-search') %>
+  </span>
+  Search User by Email
+</h2>
+    <%= form_tag(users_path, method: :get, class: 'form-inline', style: 'display: flex; flex-direction: column; gap: 1em;') do %>
+      <input type="hidden" name="set_filter" value="1" />
+      <input type="hidden" name="f[]" value="mail" />
+      <input type="hidden" name="op[mail]" value="~" />
+      <div style="display: flex; align-items: center; gap: 0.5em;">
+        <label for="mail_search" style="min-width: 90px; margin-bottom: 0;">Email:</label>
+        <input type="text" name="v[mail][]" id="mail_search"
+               value="<%= params.dig(:v, :mail, 0) %>"
+               placeholder="user@example.com"
+               style="flex: 1; padding: 0.5em; border: 1px solid #ccc; border-radius: 4px;" />
+      </div>
+      <input type="submit" value="Search" class="button" style="align-self: flex-end;"/>
+    <% end %>
+  </div>
+</div>

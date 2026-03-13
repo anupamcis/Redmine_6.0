@@ -1,0 +1,2 @@
+$("tbody").html('<%= escape_javascript(render :partial => 'untracked_mail', :collection => @untracked_mails) %>');
+$(".pagination").html("<%= j pagination_links_full @untracked_mails_pages, @untracked_mails_count  %>");

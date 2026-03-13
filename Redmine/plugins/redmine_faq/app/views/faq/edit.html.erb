@@ -1,0 +1,20 @@
+<div class="contextual">
+    <%= link_to(l(:label_back), {:action => 'index'}, :class => 'icon icon-back') %>
+</div>
+<h2><%=l(:label_faq_new)%></h2>
+<%= form_for :faq do |f| %>
+  <div class="box">
+  <%= f.hidden_field :creator, value: User.current.name %>
+	<b><span class="required">*</span> <%=l(:label_faq_new_question)%>:</b>
+
+	<br/>
+	<%= f.text_field :question, :size => 100, :class => 'text'%>
+
+	<br/><br/>
+	<b><span class="required">*</span> <%=  l(:label_faq_new_answer)%>:</b>
+	<br/>
+	<%= f.text_area :answer, :rows => 6, :cols => 99 , :class => 'text'%>
+	
+  </div>
+  <%= submit_tag l(:button_save) %>
+<% end %>

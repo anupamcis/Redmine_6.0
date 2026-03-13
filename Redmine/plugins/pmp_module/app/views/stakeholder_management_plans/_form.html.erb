@@ -1,0 +1,47 @@
+<%= error_messages_for 'stakeholder_management_plan' %>
+<%= hidden_field_tag "back_url", params[:back_url] %>
+<%= hidden_field_tag "project_id", @project.id %>
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_stakeholder_name) %></th>
+        <th><%= l(:field_unaware) %></th>
+        <th><%= l(:field_resistant) %></th>
+        <th><%= l(:field_netural) %></th>
+        <th><%= l(:field_supportive) %></th>
+        <th><%= l(:field_leading) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%-@project.users.where.not("firstname like (?) ", "%CIS%").each_with_index do |user,idx|%>
+        <tr>
+          <td><%=user.name%><%= hidden_field_tag "stakeholder_management_plan[#{idx}][user_id]", user.id %>
+          <%= hidden_field_tag "stakeholder_management_plan[#{idx}][project_id]", @project.id %>
+          </td>
+          <td>C <%=check_box_tag "stakeholder_management_plan[#{idx}][unaware][]","C", is_checked(@project, user.id, 'unaware', "C") %>
+              D <%=check_box_tag "stakeholder_management_plan[#{idx}][unaware][]","D",is_checked(@project, user.id, 'unaware', "D")%></td>
+          <td>C <%=check_box_tag "stakeholder_management_plan[#{idx}][resistant][]","C",is_checked(@project, user.id, 'resistant', "C") %>
+              D <%=check_box_tag "stakeholder_management_plan[#{idx}][resistant][]","D",is_checked(@project, user.id, 'resistant', "D")%></td>
+          <td>C <%=check_box_tag "stakeholder_management_plan[#{idx}][netural][]","C",is_checked(@project, user.id, 'netural', "C") %>
+              D <%=check_box_tag "stakeholder_management_plan[#{idx}][netural][]","D",is_checked(@project, user.id, 'netural', "D")%></td>
+          <td>C <%=check_box_tag "stakeholder_management_plan[#{idx}][supportive][]","C",is_checked(@project, user.id, 'supportive', "C") %>
+              D <%=check_box_tag "stakeholder_management_plan[#{idx}][supportive][]","D",is_checked(@project, user.id, 'supportive', "D")%></td>
+          <td>C <%=check_box_tag "stakeholder_management_plan[#{idx}][leading][]","C",is_checked(@project, user.id, 'leading', "C") %>
+              D <%=check_box_tag "stakeholder_management_plan[#{idx}][leading][]","D",is_checked(@project, user.id, 'leading', "D")%></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  $('.stakeholder_management_plan').on('click',function(e){
+    if($(this).parent().find('table').find('input[type="checkbox"]').is(":checked") == false){
+      var container = $(this).parent().find('.autoscroll');
+      container.find('.customError').remove();
+      container.prepend('<div id="errorExplanation" class="customError"><ul><li>Please select at least one option</li></ul></div>')
+      return false;
+    }
+  })
+</script>

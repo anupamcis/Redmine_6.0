@@ -1,0 +1,14 @@
+Hello <%= @user.firstname %>,
+
+<%= @notification.message %>
+
+<% if @project %>
+Project: <%= @project.name %>
+Project URL: <%= url_for(controller: 'projects', action: 'show', id: @project.identifier, only_path: false) %>
+<% end %>
+
+Please review the project and take necessary action.
+
+Best regards,
+Redmine
+

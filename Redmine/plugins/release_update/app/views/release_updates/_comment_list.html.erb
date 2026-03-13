@@ -1,0 +1,67 @@
+<% @release_update.release_update_comments.each do |release_update_comment| %>
+  <%= release_update_comment.comment %>
+  <br>
+  <br>
+  <% voted = User.current.voted_up_on?(release_update_comment) %>
+  <%= link_to(l(:button_edit), "#", :class => 'icon icon-edit edit_comment', :id =>  "edit_release_update_comment_#{release_update_comment.id}" )%>
+  <%= link_to( 
+    voted ? l(:button_release_update_unvote) : l(:button_release_update_vote), {:controller => 'release_updates', :action => 'comment_vote', :id => @release_update, release_updates_comment_id: release_update_comment},
+    :class => 'icon ' + (voted ? 'icon-vote' : 'icon-unvote')
+  ) %>
+  <div id=<%= "show_edit_release_update_comment_#{release_update_comment.id}"%> style="display:none;">
+    <%= labelled_form_for release_update_comment, url: update_release_update_comment_path(@release_update, release_update_comment) do |f| %>
+      <%= f.hidden_field :user_id, value: User.current.id %>
+      <%= f.text_area :comment, class: "wiki-edit", rows: 5 %>
+      <%= submit_tag l(:button_create) %>
+      <%= link_to l(:button_cancel), "#", :class => "cancel", id: release_update_comment.id%>
+    <% end %>
+  </div>
+  <br>
+  <% release_update_comment.release_update_comments.each do |reply| %>
+    <%= reply.comment %>
+    <br>
+    <br>
+    <% voted = User.current.voted_up_on?(reply) %>
+    <%= link_to(l(:button_edit), "#", :class => 'icon icon-edit edit_comment', :id =>  "edit_reply_#{reply.id}" )%>
+    <%= link_to( 
+      voted ? l(:button_release_update_unvote) : l(:button_release_update_vote), {:controller => 'release_updates', :action => 'comment_vote', :id => @release_update, release_updates_comment_id: reply},
+      :class => 'icon ' + (voted ? 'icon-vote' : 'icon-unvote')
+    ) %>
+    <br>
+    <br>
+  <% end %>
+
+  <%= link_to "Add Reply", "#", id: 'add_reply'%>
+  <div id=<%= "show_edit_reply"%> style="display:none;">
+    <%= labelled_form_for release_update_comment.release_update_comments.new, url: release_update_comment_reply_path(release_update_comment) do |f| %>
+      <%= f.hidden_field :user_id, value: User.current.id %>
+      <%= f.text_area :comment, class: "wiki-edit", rows: 5 %>
+      <%= submit_tag l(:button_create) %>
+      <%#= link_to l(:button_cancel), "#", :class => "cancel", id: release_upda te_comment.id%>
+    <% end %>
+  </div>
+  <br><br>
+<% end %>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    $("#add_reply").click(function(){
+       $("#show_edit_reply").css('display', '');
+       $(this).hide();
+    });
+
+    // $(".edit_comment").click(function(e){
+    //   id = e.target.id
+    //   comment_id = "#show_" + id
+    //   $(comment_id).css('display', '');
+    //   $(this).hide();
+    // });
+
+    // $(".cancel").click(function(e){
+    //   id = e.target.id
+    //   comment_id = "show_edit_release_update_comment_"+id
+    //   alert(comment_id)
+    //   $(comment_id).css('display', 'none');
+    // })
+  });
+</script>

@@ -1,0 +1,31 @@
+<% if @project.try(:configuration_items).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_phase) %></th>
+          <th><%= l(:field_configuration_item) %></th>
+          <th><%= l(:field_configuration) %></th>
+          <th><%= l(:field_storage_location) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for configuration_item in @project.configuration_items -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= configuration_item.phase %></td>
+          <td class="lastname"><%= configuration_item.configuration_item %></td>
+          <td class="lastname"><%= configuration_item.configuration_id %></td>
+          <td class="lastname"><%= configuration_item.storage_location %></td>
+          <td class="buttons">
+            <%= link_to "edit", edit_project_configuration_item_path(@project,configuration_item, :back_url => request.original_fullpath), class: "icon icon-edit", remote: true if User.current.allowed_to?(:update_configuration_items, @project, global: true) %>
+            <%= delete_link project_configuration_item_path(@project,configuration_item, :back_url => request.original_fullpath) if User.current.allowed_to?(:delete_configuration_items, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

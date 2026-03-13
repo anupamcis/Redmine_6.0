@@ -1,0 +1,31 @@
+<%= error_messages_for 'hardware_and_software_profile' %>
+
+<div class="hardware_software_profile">
+    <fieldset class="box tabular">
+      <legend><%=l(:global_profile_plural)%></legend>
+      <p><%= f.text_field :name, :required => true %></p>
+    </fieldset></br>
+  <fieldset class="box tabular">
+    <legend><%=l(:global_profile_data)%></legend>
+    <div id="dyanmic-form">
+      <%= render partial: "profile_data", locals: {field_count: @field_count} %>
+    </div>
+    <p><%= link_to "Add more", '#',onclick: "add_more_fileds();"%></p>
+  </fieldset>
+</div>
+<br>
+
+<script type="text/javascript">
+  function add_more_fileds() {
+    var idx = $('.nested-form').length;
+    var profile_id = "<%= @hardware_and_software_profile.try(:id) %>"
+    $.ajax({
+      url: '<%= render_profile_form_hardware_and_software_profiles_path %>',
+      dataType: "script",
+      data: { field_count: idx, id: profile_id },
+      method: "GET",
+      success:function(){
+      }
+    });
+  }
+</script>

@@ -1,0 +1,21 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    multi_json (1.3.2)
+    rack (1.2.1)
+    rack-test (0.5.6)
+      rack (>= 1.0)
+    rake (0.8.7)
+    rr (1.0.4)
+    shoulda (2.11.3)
+
+PLATFORMS
+  java
+  ruby
+
+DEPENDENCIES
+  multi_json
+  rack-test
+  rake
+  rr
+  shoulda

@@ -1,0 +1,39 @@
+<% if @project.try(:back_up_details).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_server_name) %></th>
+          <th><%= l(:field_backup_type) %></th>
+          <th><%= l(:field_data_detail) %></th>
+          <th><%= l(:field_media_label) %></th>
+          <th><%= l(:field_backup_frequency) %></th>
+          <th><%= l(:field_detail_of_media_storage) %></th>
+          <th><%= l(:field_role_responsible) %></th>
+          <th><%= l(:field_remarks) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for back_up_detail in @project.back_up_details -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="lastname"><%= back_up_detail.server_name %></td>
+          <td class="firstname"><%= back_up_detail.backup_type %></td>
+          <td class="lastname"><%= back_up_detail.data_detail %></td>
+          <td class="lastname"><%= back_up_detail.media_label %></td>
+          <td class="lastname"><%= back_up_detail.backup_frequency %></td>
+          <td class="firstname"><%= back_up_detail.detail_of_media_storage %></td>
+          <td class="lastname"><%= back_up_detail.role_responsible %></td>
+          <td class="lastname"><%= back_up_detail.remarks %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_back_up_detail_path(@project,back_up_detail, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_back_up_details, @project, global: true) %>
+            <%= delete_link project_back_up_detail_path(@project,back_up_detail, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_back_up_details, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

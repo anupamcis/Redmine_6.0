@@ -1,0 +1,11 @@
+<%= error_messages_for 'holiday' %>
+
+<div id="user_form">
+  <fieldset class="box tabular">
+    <legend><%=l(:add_holiday_label_plural)%></legend>
+    <p><%= f.hidden_field :user_id, value: User.current.id %></p>
+    <p><%= f.text_area :reason, :required => true, :size => 25  %></p>
+    <p><%= f.text_field :start, :required => true%></p>
+    <p><%= f.text_field :end_date, :required => true %></p>
+  </fieldset></br> 
+</div>

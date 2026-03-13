@@ -1,0 +1,71 @@
+<%
+  sql = "SELECT ISNULL(users.firstname, 'Other'), CAST((count(*) * 100.0) / (select count(*) from issues where issues.project_id = #{@project.id}) AS FLOAT) FROM issues LEFT JOIN users ON users.id = issues.assigned_to_id WHERE issues.project_id = #{@project.id} group by users.firstname"
+  @workload = ActiveRecord::Base.connection.exec_query(sql).rows
+
+%>
+<% if @workload.present? %>
+  <div class="col-sm-6">
+    <div id="workload"></div>
+  </div>
+
+
+  <script type="text/javascript">
+    var chart;
+    $(document).ready(function() {
+      chart = new Highcharts.Chart({
+          credits: {
+            enabled: false
+          },
+        chart: {
+          renderTo: 'workload',
+          type: 'column'
+        },
+
+        title: {
+          text: '<%= t(:employee_workload)%>'
+        },
+        xAxis: {
+          categories: <%= @workload.map{ |situacao| situacao}.inspect.html_safe %>,
+          labels: {enabled: false}
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: '<%=t :workload_percentage%> ',
+          }
+        },
+        legend: {
+          enabled: true
+        },
+        tooltip: {
+          formatter: function() {
+            return '<b>'+ this.series.name +'</b><br/>'+
+              '<%=t :workload_percentage %> '+ Highcharts.numberFormat(this.y, 2);
+          }
+        },
+            series: [ <% @workload.each do |key, val| %>
+                        {
+                                name: "<%= key %>",
+                                data: [<%= val.to_f %>],
+                                cursor: 'pointer',
+
+                          dataLabels: {
+                                        enabled: true,
+                                        rotation: -90,
+                                        color: '#FFFFFF',
+                                        align: 'right',
+                                        x: -3,
+                                        y: 10,
+                                        formatter: function() {
+                                          return Highcharts.numberFormat(this.y, 2);
+                                        },
+                                        style: {
+                                          font: 'normal 13px Verdana, sans-serif'
+                                        }
+                                      }
+                        },
+                     <%end%> ]
+      });
+    });
+  </script>
+<% end %>

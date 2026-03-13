@@ -1,0 +1,15 @@
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+/home/cis/.rbenv/versions/2.7.8/bin/ruby -I /home/cis/.rbenv/versions/2.7.8/lib/ruby/2.7.0 -r ./siteconf20250925-923196-3kw13h.rb extconf.rb
+creating Makefile
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+make "DESTDIR=" clean
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+make "DESTDIR="
+compiling websocket_mask.c
+linking shared-object websocket_mask.so
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20250925-923196-4jfde1

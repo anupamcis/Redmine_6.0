@@ -1,0 +1,86 @@
+<% if @project.responsibility_assignment_matrices.present? %>
+  <% project_matrix_fields = @project.project_responsibility_assignment_matrix_filter.matrix_filter%>
+  <% work_types = RaciChart.where(id: project_matrix_fields) if project_matrix_fields.present? %>
+  <% @raci_roles_ids = []%>
+  <% @raci_roles_names = []%>
+  <% @resposiblity_array = {} %>
+
+  <% raci_role_ids = @project.responsibility_assignment_matrices.map(&:role_id) if @project.responsibility_assignment_matrices.present? %>
+
+  <% roles1 = RaciRole.where(id: raci_role_ids) if raci_role_ids.present? %>
+
+  <%
+    if roles1.present?
+     roles1.each do |raci_role|
+      resposbility = raci_role.responsibility_assignment_matrices.where(project_id: @project.id).try(:first).try(:responsibility)
+      if resposbility.present?
+        @raci_roles_ids << raci_role.id
+        @raci_roles_names << raci_role.name
+        resposbility.each do |key,value|
+          @resposiblity_array[key] = {} unless @resposiblity_array.keys.include?(key)
+            @resposiblity_array[key].merge!({raci_role.id=>value})
+        end
+      end
+     end
+    end
+  %>
+
+  <% if roles1.present? && @raci_roles_names.present? && work_types.present? && @resposiblity_array.present? %>
+    <table class="list">
+      <tr>
+        <th>RACI Chart</th>
+        <th colspan="<%= @raci_roles_ids.size %>">RESOURCE</th>
+      </tr>
+      <tr>
+        <td>
+          Work
+        </td>
+        <% @raci_roles_names.each do |role_name| %>
+          <td><%=role_name%></td>
+        <% end %>
+      </tr>
+
+      <% work_types.each do |work_type| %>
+        <% if @resposiblity_array.keys.include?(work_type.work_type) %>
+         <tr class="<%= cycle("odd", "even") %>">
+          <td><%=work_type.work_type%></td>
+          <% @raci_roles_ids.each do |role_id| %>
+            <td>
+               <% if @resposiblity_array[work_type.work_type][role_id].present? %>
+                  <% @resposiblity_array[work_type.work_type][role_id].each do |role_work_type| %>
+                    <span title="<%= ResponsibilityAssignmentMatrix.tooltip_title(role_work_type) %>"><%= role_work_type %></span>
+                  <% end %>
+              <% else %>
+                  -
+              <% end %>
+            </td>
+          <%  end %>
+         </tr>
+        <% end %>
+      <% end %>
+    </table>
+    <br>
+    <table border="1" align="left" style="font-weight:bold">
+      <tr>
+        <td>R</td>
+        <td><%= l(:raci_responsible)%></td>
+        <td>A</td>
+        <td><%= l(:raci_accountable)%></td>
+      </tr>
+      <tr>
+        <td>C</td>
+        <td><%= l(:raci_consult)%></td>
+        <td>I</td>
+        <td><%= l(:raci_inform)%></td>
+      </tr>
+    </table>
+  <% end %>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<style type="text/css">
+  .rc_td{
+    text-align: center !important;
+   }
+</style>

@@ -1,0 +1,237 @@
+<%
+# encoding: utf-8
+#
+# Redmine plugin for Document Management System "Features"
+#
+# Copyright (C) 2011-17 Karel Pičman <karel.picman@kontron.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+%>
+
+<% html_title(l(:dmsf)) %>
+
+<h2><%= l(:link_trash_bin) %></h2>
+
+<div class="dmsf-header">
+  <div class="wiki">
+    <%= textilizable(@folder ? @folder.description : @project.dmsf_description) %>
+  </div>
+</div>
+
+<%= error_messages_for('dmsf_workflow') %>
+
+<%= form_tag({:action => :entries_operation, :id => @project, :folder_id => @folder}, :method => :post,
+  :class => 'dmsf_entries', :id => 'entries_form') do %>
+  <%= hidden_field_tag('action') %>
+  <div class="dmsf_controls" style="float: left">
+    <% if @file_manipulation_allowed && @folder_manipulation_allowed %>
+      <%= submit_tag(l(:title_restore), :title => l(:title_restore_checked), :name => 'restore_entries') %>
+      <% if @file_delete_allowed%>
+        <%= submit_tag(l(:button_delete), :title => l(:title_delete_checked), :name => 'destroy_entries') %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="autoscroll">
+  <table class="display list dmsf_list" id="browser">
+    <thead>
+      <tr>
+        <th class="dmsf_checkbox dmsf_th">
+          <input id="check_all_entries" title="<%= l(:title_check_uncheck_all_for_restore_or_delete) %>" type="checkbox" />
+        </th>
+        <% if DmsfFolder.is_column_on?('id') %>
+          <th class="dmsf_th">#</th>
+        <% end %>
+        <% if DmsfFolder.is_column_on?('title') %>
+          <th class="dmsf_th"><%= l(:link_title) %></th>
+        <% end %>
+        <% if DmsfFolder.is_column_on?('extension') %>
+            <th class="dmsf_th"><%= l(:link_extension) %></th>
+        <% end %>
+        <% if DmsfFolder.is_column_on?('size') %>
+          <th class="dmsf_th"><%= l(:link_size) %></th>
+        <% end %>
+        <% if DmsfFolder.is_column_on?('modified') %>
+          <th class="dmsf_th"><%= l(:link_modified) %></th>
+        <% end %>
+        <% if DmsfFolder.is_column_on?('version') %>
+          <th title="<%= l(:label_dmsf_version) %>" class="dmsf_th"><%= l(:link_ver) %></th>
+        <% end %>
+        <% if DmsfFolder.is_column_on?('workflow') %>
+          <th class="dmsf_th"><%= l(:link_workflow) %></th>
+        <% end %>
+        <% if DmsfFolder.is_column_on?('author') %>
+          <th class="dmsf_th"><%= l(:link_author) %></th>
+        <% end %>
+        <% cfs = CustomField.where(:type => 'DmsfFileRevisionCustomField').order(:position) %>
+        <% cfs.each do |c| %>
+            <% if DmsfFolder.is_column_on?(c.name) %>
+                <th class="dmsf_th"><%= h(c.name) %></th>
+            <% end %>
+        <% end %>
+        <th class ="dmsf_th"><%# controls %></th>
+        <th class="dmsf_invisible"><%# position %></th>
+        <th class="dmsf_invisible"><%# size %></th>
+        <th class="dmsf_invisible"><%# updated %></th>
+        <th class="dmsf_invisible"><%# version %></th>
+      </tr>
+    </thead>
+  <tbody>
+  <% @subfolders.each do |subfolder| %>
+    <tr class="dir">
+      <%= render(:partial => 'dir_trash',
+        :locals => {
+          :project => @project,
+          :subfolder => subfolder,
+          :link => nil,
+          :id => subfolder.id,
+          :name => 'subfolders[]',
+          :title => subfolder.title }) %>
+    </tr>
+  <% end %>
+  <% @dir_links.each do |link| %>
+    <tr class="dmsf_gray">
+      <%= render(:partial => 'dir_trash',
+        :locals => {
+          :project => link.target_project,
+          :subfolder => link.target_folder,
+          :link => link,
+          :id => link.id,
+          :name => 'dir_links[]',
+          :title => link.name }) %>
+    </tr>
+  <% end %>
+  <% @files.each do |file| %>
+    <% unless file.last_revision %>
+      <% Rails.logger.error "Error: dmsf_file id #{file.id} has no revision!" %>
+      <% next %>
+    <% end %>
+    <tr class="file">
+      <%= render(:partial => 'file_trash', :locals => {
+          :project => @project,
+          :file => file,
+          :link => nil,
+          :id => file.id,
+          :name => 'files[]',
+          :title => file.title }) %>
+    </tr>
+  <% end %>
+  <% @file_links.each do |link| %>
+    <% unless link.target_file %>
+        <% Rails.logger.error "Error: dmsf_link id #{link.id} has no target file!" %>
+        <% next %>
+    <% end %>
+    <% unless link.target_file.last_revision %>
+      <% Rails.logger.error "Error: dmsf_file id #{link.target_id} has no revision!" %>
+      <% next %>
+    <% end %>
+    <tr class="dmsf_gray">
+      <%= render(:partial => 'file_trash', :locals => {
+          :project => link.target_project,
+          :file => link.target_file,
+          :link => link,
+          :id => link.id,
+          :name => 'file_links[]',
+          :title => link.name }) %>
+    </tr>
+  <% end %>
+  <% @url_links.each do |link| %>
+      <tr class="dmsf_gray">
+          <%= render(:partial => 'url_trash', :locals => {
+                                                     :project => link.target_project,
+                                                     :file => link.target_file,
+                                                     :link => link,
+                                                     :id => link.id,
+                                                     :name => 'url_links[]',
+                                                     :title => link.name }) %>
+      </tr>
+  <% end %>
+  </tbody>
+  </table>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $('#entries_delete_button').click(function() {
+    if(window.confirm("<%= l(:text_are_you_sure) %>")) {
+      $('#entries_form').attr('action', "<%= delete_entries_path(:id => @project, :folder_id => @folder) %>");
+      $('#entries_form').submit();
+    }
+  });
+
+  $('.list_cf').change(function() {
+    $('#entries_form').attr('action', "<%= tag_changed_path(:id => @project, :folder_id => @folder) %>");
+    $('#entries_form').submit();
+  });
+
+  $('#check_all_entries').click(function() {
+    $('input[type=checkbox]', $('#browser > tbody')).prop('checked', this.checked);
+  });
+</script>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'jquery.dataTables/jquery-ui.dataTables.css', :plugin => 'redmine_dmsf' %>
+  <%= javascript_include_tag 'jquery.dataTables/jquery.dataTables.min.js', :plugin => 'redmine_dmsf' %>
+
+  <% title = DmsfFolder.get_column_position('title') %>
+  <% position = DmsfFolder.get_column_position('position') %>
+  <% commands = DmsfFolder.get_column_position('commands') %>
+  <% position = DmsfFolder.get_column_position('position') %>
+  <% version = DmsfFolder.get_column_position('version') %>
+  <% size_calculated = DmsfFolder.get_column_position('size_calculated') %>
+  <% modified_calculated = DmsfFolder.get_column_position('modified_calculated') %>
+  <% version_calculated = DmsfFolder.get_column_position('version_calculated') %>
+  <% size = DmsfFolder.get_column_position('size') %>
+  <% modified = DmsfFolder.get_column_position('modified') %>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#browser').dataTable({
+        'bJQueryUI': true,
+        'oLanguage': {
+                'sUrl': "<%= plugin_asset_path(:redmine_dmsf, 'javascripts', json_url) %>"
+        },
+        'bAutoWidth': false,
+        'bPaginate': false,
+          <% if title %>
+          'aaSorting': [[<%= title %>, 'asc']],
+          <% end %>
+          'aaSortingFixed': [[ <%= position %>, 'asc']],
+          'aoColumnDefs': [
+              { 'bSearchable': false, 'aTargets': [0, <%= commands %>, <%= position %>, <%= size_calculated %>, <%= modified_calculated %>, <%= version_calculated %>] },
+              { 'bSortable': false, 'aTargets': [0, <%= commands %>] }
+              <% if size %>
+              ,{ 'iDataSort': <%= size_calculated %>, 'aTargets': [ <%= size %> ] }
+              <% end %>
+              <% if modified %>
+              ,{ 'iDataSort': <%= modified_calculated %>, 'aTargets': [ <%= modified %> ] }
+              <% end %>
+              <% if version %>
+              ,{ 'iDataSort': <%= version_calculated %>, 'aTargets': [ <%= version %> ] }
+              <% end %>
+          ],
+        'fnInitComplete': function() {
+           $('div.dmsf_controls').prependTo($('#browser_wrapper div.fg-toolbar')[0]);
+        },
+        'fnInfoCallback': function( oSettings, iStart, iEnd, iMax, iTotal, sPre ) {
+           return "<%= l(:label_number_of_folders)%>: <%= @subfolders.count + @dir_links.count %>, <%= l(:label_number_of_documents)%>: <%= @files.count + @file_links.count + @url_links.count %>";
+        }
+      });
+
+      $('#entries_form').submit(function () {
+          $(this).removeAttr('data-submitted');
+      });
+    });
+  </script>
+<% end %>

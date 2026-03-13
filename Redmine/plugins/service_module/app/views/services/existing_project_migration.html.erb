@@ -1,0 +1,108 @@
+<h1><%= l(:migrate_existing_servcie)%></h1>
+<br>
+
+<% if @companies.present? %>
+  <%= form_tag(services_existing_project_migration_path, :method => :get) do %>
+    <label for='company'><%= l(:company) %>:</label>
+    <%= select_tag 'company', options_from_collection_for_select(@companies, 'id', 'name', params[:company].to_i), prompt: 'select company...', :onchange => "this.form.submit(); return false;", class: "select2 small" %>
+
+    <% if @projects.present? && @service_details.present? %>
+      <div class="autoscroll">
+        <table class="list">
+          <thead>
+            <tr>
+              <th>Services</th>
+              <th></th>
+              <th></th>
+              <th>Project</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for project in @projects %>
+              <tr>
+                <td>
+                  <div class="selector-container">
+                    <%= select_tag "services[#{project.id}][]", options_for_select(@service_details.map{ |sd| [sd.service_detail_name, sd.id, { 'id' => "select_option_project_id_#{project.id}_service_id_#{sd.id}",'class'=>"service-#{sd.id}" }] }), multiple: true, class: "migration_servcies", id: "services_left_#{project.id}_" %>
+                  </div>
+                </td>
+                <td>
+                  <div class="container">
+                    <input type="button" class="button" value="<%= t(:add) %> >>"
+                    onclick="moveItem('services_left_<%= project.id %>_', 'services_right_<%= project.id %>_')"/><br/><br>
+                    <input type="button" class="button" value="<%= t(:remove) %> <<"
+                    onclick="moveItem('services_right_<%= project.id %>_', 'services_left_<%= project.id %>_')"/>
+                  </div>
+                </td>
+                <td>
+                  <select id="services_right_<%= project.id %>_" name="final_services[<%= project.id %>][]" class="final_selected_services" multiple="multiple" size="10">
+                  </select>
+                </td>
+                <td>
+                  <b><%= project.name %></b>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        <table>
+      </div>
+      <%= hidden_field_tag 'projects[]', @projects.ids.join(',') %>
+      <br>
+      <%= submit_tag "Assign Services" %>
+      <br><br>
+    <% end %>
+  <% end %>
+<% else %>
+  <% if User.current.get_service_details_with_hierarchy.present? %>
+     <p class="nodata"><%= l(:companies_not_connected) %></p>
+  <% else %>
+    <p class="nodata"><%= l(:label_no_servcies) %></p>
+  <% end %>
+<% end %>
+
+<% html_title(l(:migrate_existing_servcie)) -%>
+
+
+<script type="text/javascript">
+  function moveItem(from, to) {
+    from = $("#" + from);
+    to = "#" + to;
+    var selected = $(to).find("option:selected").first();
+    from.find("option:selected").remove().each(function() {
+    "<% if @projects.present? && @service_details %>"
+      "<% @projects.each do |project| %>"
+        op_id = "select_option_project_id_<%= project.id %>_service_id_"+this.value
+        $("#"+op_id).toggle();
+      "<% end %>"
+    "<% end %>"
+    if (this.value == '-' || this.value == '--' || this.value == '/') return;
+      selected.size() ? selected.before(this) : $(to).append(this);
+    });
+    to.prop("selectedIndex", -1);
+  }
+</script>
+
+<style type="text/css">
+  .final_selected_services {
+    float: left;
+    padding: 1px;
+    width: 250px;
+    height: 200px;
+  }
+
+  div.selector-container .migration_servcies{
+    float: left;
+    width: 250px;
+    height: 200px;
+  }
+
+  .btn {
+    background-color: #1D1D1D; /* Green */
+    border: none;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+}
+</style>

@@ -1,0 +1,50 @@
+# English strings go here for Rails i18n
+en:
+  # my_label: "My label"
+  services: Services
+  project_services: Assigned services
+  scheduler_times: "Scheduler Time"
+  field_service_id: Service Id
+  field_master_service: Is Master
+  field_service_hours: Hours
+  field_service_type: Service Type
+  field_service_status: Status
+  notice_master_service_removal: Master service can not be removed from project.
+  attch_to_project: Assign Services
+  notice_successful_assigned: Services successfully assigned to project
+  label_no_servcies:  Unassigned services not available
+  label_supervisor: Supervisor
+  service_already_assigned: "Service already assigned to other project."
+  presence_of_service: "Project can not be created without services."
+  repush_to_error_message: "There is some issue with details data. please check and repush to PMS2."
+  presence_of_service_id: Service id can not be blank
+  wrong_service_selection_error_message: "Please select services, for selected company"
+  wrong_project_selection_error_message: "Please select projects, for selected company"
+  migrate_existing_servcie: Migrate Existing Projects
+  assigned_service_exsiting: "Services assigned to projects successfully"
+  service_already_assigned_or_not_present: "Service already assigned to other project or not found"
+  companies_not_connected: Unassigned Services Availbale, But client companies not connected with service. Please Contact PMS2 Development Team.
+  selected_client_company: Company
+  selected_service_ids: Selected Services
+  field_service_author: Added By
+  field_master: Change Master
+  connect_company_project: Connect Company With Exsiting Project
+  wrong_service_selection_warning_for_project_basis: It's seems you have selected project basis service from different master services.
+  invalid_type: Invalid api type for timesheet.
+  invalid_params_hash: Invalid timesheet parameters.
+  item_not_found: No items found.
+  connect_company_project: Connect Company With Exsiting Project
+  timesheet_report: Timesheet Report
+  users: User
+  service_id: Service
+  item_id: Item
+  filled_date: Filled Date
+  filled_hours: Filled Hours
+  total_filled_hours: Total Filled Hours
+  company_name: Company
+  connect_company: "Connect company with project"
+  get_company: "Get company and projects"
+  wrong_service_selection_warning_for_project_basis: It's seems you have selected project basis service from different master services.
+  service_synced_successfully: Service synced successfully.
+  field_major_technology: Technology
+  field_application_type: Application Type

@@ -1,0 +1,2 @@
+module ResponsibilityAssignmentMatricesHelper
+end

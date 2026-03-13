@@ -1,0 +1,71 @@
+<%= error_messages_for 'risk' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "risk[project_id]", @project.id %>
+
+  <p><%= f.text_area :risk_description, :required => true, :rows => 5, cols: 5, :class => 'wiki-edit' %>
+    <%#= wikitoolbar_for 'risk_risk_description' %>
+  </p>
+
+  <p><%= f.select :risk_category, options_for_select(RISK_CATEGORY, @risk.risk_category),{required: true, include_blank: "select risk category...."}, {class: "small"} %>
+  </p>
+
+  <p><%= f.select :source, options_for_select(RISK_SOURCE, @risk.source),{required: true, include_blank: "select risk source...."}, {class: "small"} %>
+  </p>
+
+  <p><%= f.select :probability,options_for_select((1..3).to_a, @risk.probability),{required: true, include_blank: "select resource...."}, {class: "small probability-risk"} %>
+  </p>
+
+  <p><%= f.select :impact,options_for_select((1..3).to_a, @risk.impact),{required: true, include_blank: "select impact...."}, {class: "small impact-risk"} %>
+  </p>
+
+  <p><%= f.label :exposure, :class => 'exposure-text', style:'display:none'%>
+  <span class="exposure-label", style='padding: 11px;'></span>
+  <%= f.hidden_field :exposure, :class => 'wiki-edit exposure-val' %>
+  </p>
+  <!-- <p><%#= f.select :exposure,options_for_select((1..6).to_a, @risk.exposure),{required: true, include_blank: "select exposure...."}, {class: "small"} %>
+  </p> -->
+  <% admin_config = PmpAdminConfiguration.first %>
+  <p style="color: red; display: none;" class="mitigation_hint"><%= l(:risk_manadatory_mitigation_hint, config: admin_config.try(:risk_mitigation_difference).to_i) %></p>
+  <p><%= f.text_area :mitigation_plan, :rows => 5, cols: 5, :class => 'wiki-edit' %>
+  </p>
+
+  <p style="color: red; display: none;" class="contingency_hint"><%= l(:risk_manadatory_contingency_hint, config: admin_config.try(:risk_contingency_difference).to_i) %></p>
+  <p><%= f.text_area :contingency_plan, :rows => 5, cols: 5, :class => 'wiki-edit'%>
+  </p>
+
+  <p><%= f.text_area :comment, :rows => 5, cols: 5 %></p>
+
+  <p><%= f.check_box :is_visible_to_client unless User.current.is_client? %></p>
+  <br>
+</div>
+
+<script type="text/javascript">
+  $('.probability-risk, .impact-risk').on('change',function(){
+    var impactVal = $('.probability-risk').val();
+    var probabilityVal = $('.impact-risk').val();
+    var exposureVal = parseInt(impactVal) * parseInt(probabilityVal);
+    if(!isNaN(exposureVal)){
+      $('.exposure-val').val(exposureVal);
+      $('.exposure-label').text(exposureVal);
+      $('.exposure-text, .exposure-label').show();
+      if(exposureVal >= "<%= PmpAdminConfiguration.first.risk_mitigation_difference %>" ){
+        $('.mitigation_hint').show();
+      }else{
+        $('.mitigation_hint').hide();
+      }
+
+      if(exposureVal >= "<%= PmpAdminConfiguration.first.risk_contingency_difference %>" ){
+           $('.contingency_hint').show();
+        }else{
+           $('.contingency_hint').hide();
+        }
+    }else{
+      $('.exposure-text, .exposure-label').hide();
+      $('.exposure-val').val(0);
+      $('.contingency_hint').hide();
+      $('.mitigation_hint').hide();
+    }
+  });
+</script>

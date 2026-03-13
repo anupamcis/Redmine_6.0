@@ -1,0 +1,17 @@
+<% @PluginFolderName = McTools.new.returnPluginFolderName %>
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'thickbox', :plugin => @PluginFolderName, :media => "screen" %>
+    <%= stylesheet_link_tag 'monitoringcontrolling', :plugin => @PluginFolderName, :media => "screen" %>
+    <%= javascript_include_tag 'jquery.min.js', :plugin => @PluginFolderName %>
+    <%= javascript_include_tag 'rails', :plugin => @PluginFolderName %>
+
+    <%= javascript_include_tag 'thickbox', :plugin => @PluginFolderName %>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("a.top_menu_services").append(function(i, html){
+          // $(this).attr('title', "Services");
+          return "<span class='num'>"+ "<%= User.current.logged? && User.current.respond_to?(:get_service_details_with_hierarchy) ? User.current.get_service_details_with_hierarchy.try(:count) : 0 %>" +"</span>";
+        });
+      });
+    </script>
+<% end %>

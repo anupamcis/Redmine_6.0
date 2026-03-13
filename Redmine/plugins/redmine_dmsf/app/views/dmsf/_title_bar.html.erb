@@ -1,0 +1,62 @@
+<% allowed = User.current.allowed_to?({:controller => params[:controller], :action => params[:action]}, @project || @projects, :global => false) %>
+<% allowed_evm = User.current.allowed_to?({:controller => "evms", :action => "index"}, @project || @projects, :global => false) %>
+<% allowed_pmp = User.current.allowed_to?({:controller => "pmp_reports", :action => "index"}, @project || @projects, :global => false) %>
+<style type="text/css">
+ 
+  
+  #menu1 ul {
+    padding: 5px;
+    margin: 0 auto;
+    float: left;
+    width: 100%;
+    background-color: #EDEDED;
+    list-style: none;
+    text-align: left; 
+  }
+  ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+  }
+  #menu1 ul li{
+    padding: 2px 10px;
+    display: inline-block;
+    text-decoration: none;
+  }
+  nav ul li a:hover{
+    background-color: #D6D6D6;
+    border-bottom: 3px solid red; 
+    text-decoration: none;
+  }
+  nav ul li:hover{
+    background-color: #D6D6D6;
+  }
+  #menu1 ul li a.menu_selected {
+    padding: 2px 10px;
+    color: #333;
+    background-color:#D6D6D6;
+    color: #6D6D6D;
+    border-bottom:3px solid #0066FF;
+  }
+
+  
+</style>
+<nav id="menu1">
+    <ul>
+      <% if allowed %>
+        <li><%= link_to "Document",dmsf_folder_path(@project.id),:class => ("dmsf" == params[:controller] ? "menu_selected" : "")%></li>
+      <%end%>
+      <% if  allowed_evm %>
+        <li><%= link_to "EVM", project_evms_path(@project.id),:class => ("evms" == params[:controller] ? "menu_selected" : "")%></li>
+      <%end%>
+      <% if allowed_pmp %>       
+        <li><%= link_to "PMP", project_pmp_reports_path(@project.id),:class => ("pmp_reports" == params[:controller] ? "menu_selected" : "")%></li>
+      <% end -%>
+    
+    </ul>
+</nav>
+

@@ -1,0 +1,79 @@
+<%if JSON.parse(@data_sunburst).select{|a| a.has_key?('value')}.present? %>
+
+  <script>
+    // Splice in transparent for the center circle
+    $(document).ready(function() {
+      sunburstChart = new Highcharts.chart({
+          chart: {
+            renderTo: 'sunburst',
+            height: '100%',
+          },
+          title: {
+            text: 'Open Tasks Of Project'
+          },
+          series: [{
+            type: "sunburst",
+            data: <%=raw(@data_sunburst)%>,
+            allowDrillToNode: true,
+            cursor: 'pointer',
+            dataLabels: {
+              format: '{point.name}',
+              filter: {
+                property: 'innerArcLength',
+                operator: '>',
+                value: 16
+              }
+            },
+            levels: [{
+                level: 1,
+                levelIsConstant: false,
+                dataLabels: {
+                  filter: {
+                    property: 'outerArcLength',
+                    operator: '>',
+                    value: 64
+                  }
+                }
+              }, {
+                level: 2,
+                colorByPoint: true
+              },
+              {
+                level: 3,
+                colorVariation: {
+                  key: 'brightness',
+                  to: -0.5
+                }
+              }, {
+                level: 4,
+                colorVariation: {
+                  key: 'brightness',
+                  to: 0.5
+                }
+              }
+            ]
+          }],
+          tooltip: {
+            headerFormat: "",
+            pointFormat: 'Open issues of <b>{point.name}</b> is <b>{point.value} (click to expand)</b>'
+          }
+      });
+      //sunburstChart.options.colors.splice(0, 0, 'transparent');
+
+    });
+
+  </script>
+    <!--row start-->
+  <div class="graph-col-row ">
+    <!--left start-->
+    <div class="col-sm-6">
+      <div id='sunburst'></div>
+    </div>
+    <!--left start-->
+    <!--right start-->
+    <div class="col-sm-6">
+    </div>
+    <!--right start-->
+  </div>
+  <!--row end-->
+<%end%>

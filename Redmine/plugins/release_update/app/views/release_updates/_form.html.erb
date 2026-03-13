@@ -1,0 +1,15 @@
+<div class="box tabular">
+  <%= f.hidden_field :user_id, value: User.current.id %>
+  <p>
+    <%= f.label :title %>
+    <%= f.text_field :title, size: 60, autocomplete: "off", maxlength: 50%>
+  </p>
+
+  <p>
+    <%= f.label :description %>
+    <span>
+      <%= f.text_area :description, :cols => 60, :rows => 10, :accesskey => "e", :class => 'wiki-edit', :no_label => true, required: true %>
+    </span>
+  </p>
+  <%= wikitoolbar_for 'release_update_description' %>
+</div>

@@ -1,0 +1,239 @@
+<% roles = Role.find_all_givable
+   #members = @project.memberships.active.includes(:member_roles, :roles, :principal).to_a.sort
+   members = (Member.respond_to?(:project_members) ? Member.project_members(@project) : @project.memberships).active.includes(:member_roles, :roles, :principal).to_a.sort
+   # Preload master departments for all members
+   master_department_ids = members.map { |m| m.master_department_id }.compact.reject { |id| id.nil? || id == 0 || id.to_i == 0 }
+   master_departments = {}
+   if master_department_ids.any? && defined?(MasterDepartment)
+     MasterDepartment.where(id: master_department_ids).each do |dept|
+       master_departments[dept.id] = dept.name
+     end
+   end
+   %>
+
+   <% system_roles  = [] %>
+   <% user_permissions_roles  = [] %>
+   <% normal_roles  = [] %>
+   <% check_roles = []%>
+   <%
+   unless User.current.admin?
+    rolesname = User.current.members.collect{|m| m.roles.collect{|role| role}}
+   rolesname.flatten.each do |role|
+      check_roles << (role.respond_to?(:has_user_management_permissions?) ? role.has_user_management_permissions? : false)
+    end
+  end
+  %>
+
+  <% roles.each do |role| %>
+  <% if role.name.include?(SYSTEM_ROLES) %>
+  <% system_roles << [role, (@project.identifier == GLOBAL_PERMISSIONS_MODULE_NAME && (User.current.admin? || (@project.members.pluck("user_id").include?(User.current.id) && !role.has_user_management_permissions? ))) ] %>
+  <% else %>
+  <% if role.respond_to?(:has_user_management_permissions?) && role.has_user_management_permissions? %>
+  <% user_permissions_roles << [role, (@project.identifier == GLOBAL_PERMISSIONS_MODULE_NAME && (User.current.admin? || @project.members.pluck("user_id").include?(User.current.id) && check_roles.include?(true))) ] %>
+  <% else %>
+  <% normal_roles << role %>
+  <% end %>
+  <% end %>
+  <%end%>
+
+  <% roles1 = [] %>
+  <% (system_roles).each do |system_role|%>
+  <% if system_role[1] %>
+  <% roles1 << system_role[0] %>
+  <%end%>
+  <% end %>
+
+  <% user_permissions_roles.each do |user_permissions_role|%>
+  <% if user_permissions_role[1] && user_permissions_role[0].name != DEFAULT_MEMBER_ROLE%>
+  <% roles1 << user_permissions_role[0] %>
+  <%end%>
+  <% end %>
+
+  <% normal_roles.each do |normal_role|%>
+  <% if @project.identifier != GLOBAL_PERMISSIONS_MODULE_NAME %>
+  <% roles1 << normal_role %>
+  <% end %>
+  <% end %>
+
+  <p><%= link_to l(:label_member_new), new_project_membership_path(@project, format: :js), remote: true, class: "icon icon-add", data: { turbolinks: false } %>
+  &nbsp;&nbsp;
+
+  <%= link_to l(:label_client_new), new_user_path(user: {:company_id => @project.try(:company).try(:id)}, :project_id => @project.id), :class => 'icon icon-add' if (@project.respond_to?(:company) && @project.company.present? && !@project.company.default_company) %></p>
+
+  <% if members.any? %>
+  <table class="list members">
+    <thead>
+      <tr>
+        <% if User.current.allowed_to?(:change_project_manager, @project, global: true) %>
+          <th><%= l(:label_change_manager) %></th>
+        <% end %>
+        <th><%= l(:label_user) %> / <%= l(:label_group) %></th>
+        <th><%= l(:label_role_plural) %></th>
+        <th><%= l(:label_department_name) %></th>
+        <th><%= "Client POC"  %></th>
+        <th style="width:15%"></th>
+        <%= call_hook(:view_projects_settings_members_table_header, :project => @project) %>
+      </tr>
+    </thead>
+    <tbody>
+      <% members.each do |member| %>
+        <% unless member.roles.map(&:id).include?(9) %>
+          <% roles1.delete(Role.find(9)) %>
+        <% else %>
+          <% roles1 << Role.find(9) %>
+        <% end %>
+      <% if !member.roles.map(&:name).include?(DEFAULT_MEMBER_ROLE)%>
+      <% next if member.new_record? %>
+      <tr id="member-<%= member.id %>" class="<%= cycle 'odd', 'even' %> member">
+        <% if User.current.allowed_to?(:change_project_manager, @project, global: true) %>
+          <td><%= radio_button_tag("new_manager", member.id, member.roles.map(&:id).include?(9), options = {data: { remote: true, method: :get, confirm: "Are you sure, do you want to update project manager?", url: url_for(controller: 'members', action: 'change_manager', project_id: @project.id)}}) if (member.user.respond_to?(:company) && member.user.company.present? && member.user.company.default_company) %></td>
+        <% end %>
+        <td class="name <%= member.principal.class.name.downcase %>"><%= link_to_user member.principal %></td>
+        <td id="member-<%= member.id %>-role">
+          <span><%= member.roles.where.not(name: MANAGEMENT_ROLE).sort.collect(&:to_s).join(', ') %></span>
+        </td>
+        <td id="member-<%= member.id %>-dep">
+          <% 
+            member_suffix_name = "-"
+            dept_id = member.master_department_id
+            # Try to get from preloaded hash first
+            if dept_id.present? && dept_id.to_i > 0 && master_departments[dept_id.to_i].present?
+              member_suffix_name = master_departments[dept_id.to_i]
+            # Fallback: try to load directly if not in hash
+            elsif dept_id.present? && dept_id.to_i > 0 && defined?(MasterDepartment)
+              dept = MasterDepartment.find_by(id: dept_id.to_i)
+              member_suffix_name = dept.name if dept.present?
+            # Last resort: try association if available
+            elsif member.respond_to?(:master_department) && member.master_department.present?
+              member_suffix_name = member.master_department.name
+            end
+          %>
+          <%= member_suffix_name %>
+        </td>
+        <td class="roles" id="member-<%= member.id %>-roles-form-role">
+          <%= form_for(member,
+          {:as => :membership,
+            :url => membership_path(member),
+            :method => :put,
+            :remote => true
+          }
+          ) do |f| %>
+          <div class="member-left">
+            <p>
+              <% roles1.uniq.sort_by(&:id).each do |role| %>
+              <% if member.principal.kind_of?(User)%>
+              <% if !member.principal.respond_to?(:company) || member.principal.company.nil? || member.principal.company.try(:default_company) %>
+              <div style="display: <%= (!member.principal.respond_to?(:company) || member.principal.company.nil? || member.principal.company.default_company) && role.name.include?(CLIENT_USERS_ROLE) ? 'none' : '' %>">
+                <label>
+                  <%= check_box_tag('membership[role_ids][]',
+                    role.id, member.roles.include?(role),
+                    :id => nil,
+                    :disabled => !member.role_editable?(role) || role.name == "Project Manager")%> <%= role %>
+                    <%= hidden_field_tag "membership[role_ids][]", role.id if role.name == "Project Manager"%>
+                  </label><br />
+                </div>
+                <% else %>
+                <div style="display: <%=(member.principal.respond_to?(:company) && !member.principal.company.nil? && !member.principal.company.default_company) && !role.name.include?(CLIENT_USERS_ROLE) ? 'none' : '' %>">
+                  <label>
+                    <%= check_box_tag('membership[role_ids][]',
+                      role.id, member.roles.include?(role),
+                      :id => nil,
+                      :disabled => !member.role_editable?(role) || role.name == "Project Manager")%> <%= role %>
+                      <%= hidden_field_tag "membership[role_ids][]", role.id if role.name == "Project Manager"%>
+                    </label><br />
+                  </div>
+                  <% end %>
+                  <% end %>
+                  <% end %>
+                </p>
+                <%= hidden_field_tag 'membership[role_ids][]', '', :id => nil %>
+                <p>
+                <%= f.submit l(:button_save), :class => "small abc" %>
+                <%= link_to_function(l(:button_cancel),
+                  "$('#member-#{member.id}-role').show(); $('#member-#{member.id}-dep').show();  $('#member-#{member.id}-roles-form-role').hide(); $('#member-#{member.id}-roles-form-dep').hide(); return false;") %>
+                </p>
+              </div>
+              <div class="member-right">
+                <%= select_tag 'membership[master_department_id]', options_from_collection_for_select(MasterDepartment.all, 'id', 'name', (member.master_department_id.present? && member.master_department_id > 0 ? member.master_department_id : nil)), { prompt: 'select member tag...', :class => "small", include_blank: true }  %>
+              </div>
+              <% end %>
+            </td>
+            <td class="roles" id="member-<%= member.id %>-roles-form-dep">
+            </td>
+            <td><%= radio_button_tag("client_poc", member.id, member.is_poc, options = {class: "poc_select", data: { remote: true, method: :put, url: url_for(controller: 'members', action: 'change_client_poc', project_id: @project.id)}}) if (member.user.respond_to?(:company) && member.user.company.present? && !member.user.company.default_company) %>
+            </td>
+            <td class="buttons">
+              <%= link_to_function l(:button_edit),
+              "$('#member-#{member.id}-role').hide(); $('#member-#{member.id}-dep').hide(); $('#member-#{member.id}-roles-form-role').show(); $('#member-#{member.id}-roles-form-dep').show(); return false;",
+              :class => 'icon icon-edit member-edit' %>
+              <%= delete_link membership_path(member),
+              :remote => true,
+              :data => ({:confirm => "Are you sure?"} ) if member.deletable? %>
+            </td>
+            <%= call_hook(:view_projects_settings_members_table_row, { :project => @project, :member => member}) %>
+          </tr>
+          <% end %>
+          <% end; reset_cycle %>
+        </tbody>
+      </table>
+      <% else %>
+      <p class="nodata"><%= l(:label_no_data) %></p>
+      <% end %>
+
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $('.roles').hide();
+        });
+
+        $(".poc_select").on("click", function(){
+          var poc_alert=confirm("Are you sure, do you want to update client poc?");
+          if (poc_alert== true)
+          {}
+          else
+          {
+            return false;
+          }
+        });
+
+        $(".project_manager_change_radio").on("click", function(){
+          var manager_alert=confirm("Are you sure, do you want to update project manager?");
+          if (manager_alert== true)
+          {}
+          else
+          {
+            return false;
+          }
+        });
+      </script>
+
+      <style type="text/css">
+        .member-left {
+          float: left;
+          margin: 0;
+          width: 75%;
+        }
+        .member-left > div {
+          display: inline-block;
+          vertical-align: middle;
+          width: 40%;
+          padding-right: 10px;
+        }
+        td.name.user {
+          width: 15%;
+        }
+        table.members td.roles, table.memberships td.roles {
+          width: 70%;
+        }
+        .member-right {
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+
+
+        .edit_membership {
+          position: relative;
+          width: 100%;
+          float: left;
+        }
+      </style>

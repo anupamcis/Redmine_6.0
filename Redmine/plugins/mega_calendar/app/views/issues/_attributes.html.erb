@@ -1,0 +1,299 @@
+<%# Mega Calendar plugin - Attributes form for Redmine 6.0 %>
+<%# This file overrides the default _attributes.html.erb to add time fields %>
+
+<%= labelled_fields_for :issue, @issue do |f| %>
+
+<div class="splitcontent">
+<div class="splitcontentleft">
+<% if @issue.safe_attribute?('status_id') && @allowed_statuses.present? %>
+<p>
+  <%= f.select :status_id, (@allowed_statuses.collect {|p| [p.name, p.id]}), {:required => true},
+    :onchange => "updateIssueFrom('#{escape_javascript(update_issue_form_path(@project, @issue))}', this)",
+    :title => @issue.status.description %>
+  <%= content_tag 'a', sprite_icon('help', l(:label_open_issue_statuses_description)), :class => 'icon-only icon-help', :title => l(:label_open_issue_statuses_description), :onclick => "showModal('issue_statuses_description', '500px'); return false;", :href => '#' if @allowed_statuses.any? {|s| s.description.present? } %>
+  <% if @issue.transition_warning %>
+    <span class="icon-only icon-warning" title="<%= @issue.transition_warning %>"><%= sprite_icon('warning', l(:notice_issue_not_closable_by_open_tasks)) %></span>
+  <% end %>
+</p>
+<%= render partial: 'issues/issue_status_description', locals: { issue_statuses: @allowed_statuses } %>
+<%= hidden_field_tag 'was_default_status', @issue.status_id, :id => nil if @issue.status == @issue.default_status %>
+<% else %>
+<p><label><%= l(:field_status) %></label> <%= @issue.status %></p>
+<% end %>
+
+<% if @issue.safe_attribute? 'priority_id' %>
+<p><%= f.select :priority_id, (@priorities.collect {|p| [p.name, p.id]}), {:required => true} %></p>
+<% end %>
+
+<% if @issue.safe_attribute? 'assigned_to_id' %>
+<p>
+  <%= f.select :assigned_to_id, principals_options_for_select(@issue.assignable_users, @issue.assigned_to),
+                  :include_blank => true, :required => @issue.required_attribute?('assigned_to_id') %>
+  <% if @issue.assignable_users.include?(User.current) %>
+    <a class="assign-to-me-link<%= ' hidden' if @issue.assigned_to_id == User.current.id %>" href="#" data-id="<%= User.current.id %>"><%= l(:label_assign_to_me) %></a>
+  <% end %>
+</p>
+<% end %>
+
+<% if @issue.safe_attribute?('category_id') && (category_options = @issue.project.issue_categories.pluck(:name, :id)).present? %>
+<p><%= f.select :category_id, category_options,
+                {:include_blank => true, :required => @issue.required_attribute?('category_id')},
+                 :onchange => ("updateIssueFrom('#{escape_javascript(update_issue_form_path(@project, @issue))}', this)" if @issue.new_record?) %>
+<%= link_to(sprite_icon('add', l(:label_issue_category_new)),
+            new_project_issue_category_path(@issue.project),
+            :remote => true,
+            :method => 'get',
+            :title => l(:label_issue_category_new),
+            :tabindex => 200,
+            :class => 'icon-only icon-add'
+           ) if User.current.allowed_to?(:manage_categories, @issue.project) %></p>
+<% end %>
+
+<%# Version field - filter by current project only (not shared versions) %>
+<% if @issue.safe_attribute?('fixed_version_id') && @issue.project.present? %>
+  <% begin %>
+    <%# Get only versions from current project, not shared versions %>
+    <% project_versions = @issue.project.versions.open.to_a rescue [] %>
+    <% if project_versions.any? %>
+      <p>
+        <%= f.select :fixed_version_id, 
+                      version_options_for_select(project_versions, @issue.fixed_version), 
+                      {:include_blank => true, :required => @issue.required_attribute?('fixed_version_id')},
+                      {:id => 'issue_fixed_version_id', :onchange => 'filterMilestonesByVersion(this.value);'} %>
+        <%= link_to(sprite_icon('add', l(:label_version_new)),
+                    new_project_version_path(@issue.project),
+                    :remote => true,
+                    :method => 'get',
+                    :title => l(:label_version_new),
+                    :tabindex => 200,
+                    :class => 'icon-only icon-add'
+                   ) if User.current.allowed_to?(:manage_versions, @issue.project) %>
+      </p>
+    <% end %>
+  <% rescue %>
+    <%# Fallback to assignable_versions if project.versions fails %>
+    <% if @issue.assignable_versions.any? %>
+      <p>
+        <%= f.select :fixed_version_id, 
+                      version_options_for_select(@issue.assignable_versions, @issue.fixed_version), 
+                      {:include_blank => true, :required => @issue.required_attribute?('fixed_version_id')},
+                      {:id => 'issue_fixed_version_id', :onchange => 'filterMilestonesByVersion(this.value);'} %>
+        <%= link_to(sprite_icon('add', l(:label_version_new)),
+                    new_project_version_path(@issue.project),
+                    :remote => true,
+                    :method => 'get',
+                    :title => l(:label_version_new),
+                    :tabindex => 200,
+                    :class => 'icon-only icon-add'
+                   ) if User.current.allowed_to?(:manage_versions, @issue.project) %>
+      </p>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%# Milestone field - filter by current project and selected version %>
+<% if @issue.project.present? %>
+  <% begin %>
+    <% project_id = @issue.project.id %>
+    <% if project_id.present? %>
+      <% begin %>
+        <%# Filter milestones by project and optionally by version if one is selected %>
+        <% milestone_conditions = {project_id: project_id} %>
+        <% if @issue.fixed_version_id.present? %>
+          <% milestone_conditions[:version_id] = @issue.fixed_version_id %>
+        <% end %>
+        <%# Filter to only show open milestones (not closed) %>
+        <%# A milestone is closed if it has actual_end_date set OR planed_end_date has passed %>
+        <% today = Date.today %>
+        <% project_milestones = Milestone.where(milestone_conditions)
+                                         .where("(actual_end_date IS NULL OR actual_end_date > ?) AND (planed_end_date IS NULL OR planed_end_date >= ?)", today, today)
+                                         .order(:name).to_a %>
+        <%# Store all open project milestones for JavaScript filtering %>
+        <% all_project_milestones = Milestone.where(project_id: project_id)
+                                              .where("(actual_end_date IS NULL OR actual_end_date > ?) AND (planed_end_date IS NULL OR planed_end_date >= ?)", today, today)
+                                              .order(:name).to_a %>
+      <% rescue %>
+        <% project_milestones = [] %>
+        <% all_project_milestones = [] %>
+      <% end %>
+      <p>
+        <% begin %>
+          <% milestone_label = l(:field_milestone) %>
+        <% rescue %>
+          <% milestone_label = 'Milestone' %>
+        <% end %>
+        <label for="issue_fixed_milestone_id"><%= milestone_label %></label>
+        <%= f.select :fixed_milestone_id, 
+                      options_from_collection_for_select(project_milestones, :id, :name, @issue.fixed_milestone_id),
+                      {:include_blank => true},
+                      {:id => 'issue_fixed_milestone_id'} %>
+        <% begin %>
+          <% can_manage_milestones = User.current.allowed_to?(:manage_milestones, @issue.project) %>
+        <% rescue %>
+          <% can_manage_milestones = false %>
+        <% end %>
+        <% if can_manage_milestones %>
+          <% begin %>
+            <% milestone_new_label = l(:label_milestone_new) %>
+          <% rescue %>
+            <% milestone_new_label = 'New milestone' %>
+          <% end %>
+          <%= link_to(sprite_icon('add', milestone_new_label),
+                      new_project_milestone_path(@issue.project),
+                      :remote => true,
+                      :method => 'get',
+                      :title => milestone_new_label,
+                      :tabindex => 200,
+                      :class => 'icon-only icon-add') %>
+        <% end %>
+      </p>
+      <%# Store milestones data for JavaScript %>
+      <script type="text/javascript">
+        (function() {
+          var allMilestones = <%= all_project_milestones.map { |m| {id: m.id, name: m.name, version_id: m.version_id} }.to_json.html_safe %>;
+          window.filterMilestonesByVersion = function(versionId) {
+            var milestoneSelect = document.getElementById('issue_fixed_milestone_id');
+            if (!milestoneSelect) return;
+            
+            var currentValue = milestoneSelect.value;
+            milestoneSelect.innerHTML = '<option value=""></option>';
+            
+            if (!versionId || versionId === '') {
+              // Show all milestones if no version selected
+              allMilestones.forEach(function(milestone) {
+                var option = document.createElement('option');
+                option.value = milestone.id;
+                option.textContent = milestone.name;
+                if (milestone.id.toString() === currentValue) {
+                  option.selected = true;
+                }
+                milestoneSelect.appendChild(option);
+              });
+            } else {
+              // Filter milestones by version_id
+              allMilestones.forEach(function(milestone) {
+                if (milestone.version_id && milestone.version_id.toString() === versionId.toString()) {
+                  var option = document.createElement('option');
+                  option.value = milestone.id;
+                  option.textContent = milestone.name;
+                  if (milestone.id.toString() === currentValue) {
+                    option.selected = true;
+                  }
+                  milestoneSelect.appendChild(option);
+                }
+              });
+            }
+          };
+          
+          // Initialize on page load if version is already selected
+          document.addEventListener('DOMContentLoaded', function() {
+            var versionSelect = document.getElementById('issue_fixed_version_id');
+            if (versionSelect && versionSelect.value) {
+              filterMilestonesByVersion(versionSelect.value);
+            }
+          });
+        })();
+      </script>
+    <% end %>
+  <% rescue %>
+    <%# Silently fail if milestone loading causes issues %>
+  <% end %>
+<% end %>
+</div>
+
+<div class="splitcontentright">
+<% if @issue.safe_attribute? 'parent_issue_id' %>
+<p id="parent_issue"><%= f.text_field :parent_issue_id, :size => 10,
+                                      :required => @issue.required_attribute?('parent_issue_id'),
+                                      :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
+<%= javascript_tag "observeAutocompleteField('issue_parent_issue_id', '#{escape_javascript(auto_complete_issues_path(:project_id => @issue.project, :scope => Setting.cross_project_subtasks, :status => @issue.closed? ? 'c' : 'o', :issue_id => @issue.id))}')" %>
+<% end %>
+
+<% if @issue.safe_attribute? 'start_date' %>
+<p id="start_date_area">
+  <%= f.date_field(:start_date, :size => 10, :required => @issue.required_attribute?('start_date')) %>
+  <%= calendar_for('issue_start_date') %>
+  <%# Time field for mega_calendar plugin %>
+  <input type="text" id="time_begin" name="issue[time_begin]" value="<%= (!params[:issue].blank? && !params[:issue][:time_begin].blank? ? params[:issue][:time_begin].to_s : (@issue.respond_to?(:time_begin) && !@issue.time_begin.blank? ? @issue.time_begin.to_s : '')) %>" style="margin-left: 10px; width: 80px;" />
+</p>
+<% end %>
+
+<% if @issue.safe_attribute? 'due_date' %>
+<p id="due_date_area">
+  <%= f.date_field(:due_date, :size => 10, :required => @issue.required_attribute?('due_date')) %>
+  <%= calendar_for('issue_due_date') %>
+  <%# Time field for mega_calendar plugin %>
+  <input type="text" id="time_end" name="issue[time_end]" value="<%= (!params[:issue].blank? && !params[:issue][:time_end].blank? ? params[:issue][:time_end].to_s : (@issue.respond_to?(:time_end) && !@issue.time_end.blank? ? @issue.time_end.to_s : '')) %>" style="margin-left: 10px; width: 80px;" />
+</p>
+<% end %>
+
+<% if @issue.safe_attribute? 'estimated_hours' %>
+<p><%= f.hours_field :estimated_hours, :size => 6, :required => @issue.required_attribute?('estimated_hours') %> <%= l(:field_hours) %></p>
+<% end %>
+
+<% if @issue.safe_attribute?('done_ratio') && Issue.use_field_for_done_ratio? %>
+<p><%= f.select :done_ratio, ((0..100).step(Setting.issue_done_ratio_interval.to_i).to_a.collect {|r| ["#{r} %", r]}), :required => @issue.required_attribute?('done_ratio') %></p>
+<% end %>
+</div>
+</div>
+
+<% if @issue.safe_attribute? 'custom_field_values' %>
+<%= render :partial => 'issues/form_custom_fields' %>
+<% end %>
+
+<% end %>
+
+<% include_calendar_headers_tags %>
+
+<%# Mega Calendar time picker initialization %>
+<%
+  js_locale = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first rescue nil
+  if js_locale.blank? || (js_locale != 'en' && js_locale != 'de' && js_locale != 'fr')
+    js_locale = 'en'
+  end
+  js_format = 'H:i'
+  js_val_start = ''
+  js_val_end = ''
+  if defined?(TicketTime)
+    ticket_time = TicketTime.find_by_issue_id(@issue.id) rescue nil
+    if !@issue.new_record? && ticket_time.present? && ticket_time.respond_to?(:time_begin) && ticket_time.respond_to?(:time_end)
+      js_val_start = ticket_time.time_begin.to_time.strftime("%H:%M").to_s rescue '' if ticket_time.time_begin.present?
+      js_val_end = ticket_time.time_end.to_time.strftime("%H:%M").to_s rescue '' if ticket_time.time_end.present?
+    end
+  end
+%>
+<script type="text/javascript">
+$(document).ready(function() {
+  $.datetimepicker.setLocale('<%= js_locale %>');
+  var options_start = {
+    i18n: {
+      de: {
+        months: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+        dayOfWeek: ["So.", "Mo", "Di", "Mi","Do", "Fr", "Sa."]
+      }
+    },
+    timepicker: true,
+    datepicker: false,
+    format: '<%= js_format %>'
+  };
+  var options_end = {
+    i18n: {
+      de: {
+        months: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+        dayOfWeek: ["So.", "Mo", "Di", "Mi","Do", "Fr", "Sa."]
+      }
+    },
+    timepicker: true,
+    datepicker: false,
+    format: '<%= js_format %>'
+  };
+  <% if js_val_start.present? %>
+  options_start['value'] = '<%= js_val_start %>';
+  <% end %>
+  <% if js_val_end.present? %>
+  options_end['value'] = '<%= js_val_end %>';
+  <% end %>
+  $("#time_begin").datetimepicker(options_start);
+  $("#time_end").datetimepicker(options_end);
+});
+</script>

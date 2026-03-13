@@ -1,0 +1,35 @@
+<% if @project.try(:knowledge_and_skill_requirements).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_resource_name) %></th>
+          <th><%= l(:field_skill_required) %></th>
+          <th><%= l(:field_competency_scale_required) %></th>
+          <th><%= l(:field_competency_available) %></th>
+          <th><%= l(:field_gap) %></th>
+          <th><%= l(:field_means_of_acquiring_skills) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for knowledge_and_skill_requirement in @project.knowledge_and_skill_requirements -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= knowledge_and_skill_requirement.resource_name %></td>
+          <td class="firstname"><%= knowledge_and_skill_requirement.skill_required %></td>
+          <td class="lastname"><%= knowledge_and_skill_requirement.competency_scale_required %></td>
+          <td class="lastname"><%= knowledge_and_skill_requirement.competency_available %></td>
+          <td class="lastname"><%= knowledge_and_skill_requirement.gap %></td>
+          <td class="lastname"><%= knowledge_and_skill_requirement.means_of_acquiring_skills %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_knowledge_and_skill_requirement_path(@project,knowledge_and_skill_requirement, :back_url => request.original_fullpath), class: "icon icon-edit", :title => "Edit", remote: true if User.current.allowed_to?(:update_knowledge_and_skill_requirements, @project, global: true) %>
+            <%= delete_link project_knowledge_and_skill_requirement_path(@project,knowledge_and_skill_requirement, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_knowledge_and_skill_requirements, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

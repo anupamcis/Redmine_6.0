@@ -1,0 +1,62 @@
+<% if @project.hardware_and_software_profiles.any? %>
+  <% profile = @project.hardware_and_software_profiles.first %>
+  <% hardware_software_plans = User.current.is_client? ? profile.hardware_software_plans.where(is_visible_to_client: true, environment: "Production") : profile.hardware_software_plans %>
+  <% unless User.current.is_client? %>
+    <b><%= "Project Profile: #{profile.name}" %></b>
+    <br>
+  <% end%>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_profile_type) %></th>
+          <th><%= l(:field_environment) %></th>
+          <th><%= l(:field_resource_name) %></th>
+          <th><%= l(:field_configuration) %></th>
+          <th><%= l(:field_quantity) %></th>
+          <th><%= l(:field_item_version) %></th>
+          <th><%= l(:field_action_type) %></th>
+          <th><%= l(:field_responsible_person) %></th>
+          <th><%= l(:field_critical_resource) %></th>
+          <th><%= l(:field_remarks) %></th>
+          <th><%= l(:field_start_date) %></th>
+          <th><%= l(:field_end_date) %></th>
+          <% unless User.current.is_client?%>
+          <th><%= l(:field_is_visible_to_client) %></th>
+          <% end %>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for hardware_software_plan in hardware_software_plans -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%= hardware_software_plan.profile_type%></td>
+          <td><%= hardware_software_plan.environment%></td>
+          <td><%= hardware_software_plan.resource %></td>
+          <td><%= hardware_software_plan.configuration%></td>
+          <td><%= hardware_software_plan.quantity %></td>
+          <td><%= hardware_software_plan.version%></td>
+          <td><%= hardware_software_plan.action %></td>
+          <td><%= hardware_software_plan.responsible_person.name %></td>
+          <td><%= hardware_software_plan.critical_resource ? "Yes" : "No" %></td>
+          <td><%= hardware_software_plan.remarks %></td>
+          <td><%= format_date(hardware_software_plan.start_date) %></td>
+          <td><%= format_date(hardware_software_plan.end_date) %></td>
+          <% unless User.current.is_client? %>
+          <td><%= hardware_software_plan.is_visible_to_client ? "Yes" : "No" %></td>
+          <% end %>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_hardware_software_plan_path(@project,hardware_software_plan, :back_url => request.original_fullpath), class: "icon icon-edit", title: "Edit",  remote: true if User.current.allowed_to?(:update_hardware_software_plans, @project, global: true) %>
+            <%= delete_link project_hardware_software_plan_path(@project,hardware_software_plan, :back_url => request.original_fullpath), title: "Delete" if User.current.allowed_to?(:delete_hardware_software_plans, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <% if User.current.allowed_to?(:create_hardware_software_plans, @project, global: true)%>
+    <%= link_to "Add more", add_more_new_project_hardware_software_plans_path(@project, :back_url => request.original_fullpath, profile_id: profile.id ), class: "pull-left", remote: true %>&nbsp;
+  <% end %>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

@@ -1,0 +1,7 @@
+<%= title [l(:label_bug_category_tab_plural), edit_bug_category_path], @bug_category.name %>
+
+<%= labelled_form_for @bug_category do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <p><%= submit_tag l(:button_save) %></p>
+<% end %>
+

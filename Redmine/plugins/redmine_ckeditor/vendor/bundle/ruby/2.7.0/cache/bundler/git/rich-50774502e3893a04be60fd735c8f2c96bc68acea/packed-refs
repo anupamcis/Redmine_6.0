@@ -1,0 +1,13 @@
+# pack-refs with: peeled fully-peeled sorted 
+a50106142eb5a53b1a55d46ea7ba060b083e9fb8 refs/heads/0-0-8-stable
+914ea7571aabd9b03e3057ff3589ad01e970e5df refs/heads/ie9_rails_admin_js_trial_fix
+f5b5b07f10af3e5a8947f87a94ddc350dffb38bd refs/heads/master
+09f7917d5d5ced1f3512155ff392c48bdd391ea0 refs/tags/0.0.7
+^23c7e8a4fcf8dbd07f170ba7fd97731c80013b63
+4db72c004a5a2b82bb50c132a971fcd55f99bfcd refs/tags/0.0.8
+eadafdd0f1f4f72eec8f8295f8f5bbcecdc81a97 refs/tags/1.4.7
+5d670e90e5fab1579a8238e109c6df5a16cd3875 refs/tags/1.4.8
+^53dba32858cb5ef9ff9143bc58989143cb098c05
+669a48c5bca843d2ff998f76abecaf280de50bea refs/tags/1.5.0
+15f6353d2c3dbec1f07f6c047ee00007694f64cc refs/tags/1.5.1
+f5b5b07f10af3e5a8947f87a94ddc350dffb38bd refs/tags/1.5.2

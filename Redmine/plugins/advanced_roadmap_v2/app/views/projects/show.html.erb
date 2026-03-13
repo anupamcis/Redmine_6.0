@@ -1,0 +1,113 @@
+<style>
+  .mb-50{ margin-bottom: 50px; }
+  .members.box{ max-height: 300px;  overflow: auto;}
+  .progress.box{ overflow: auto; max-height: 230px;}
+  .overview-content{  overflow: auto; max-height: 545px; }
+</style>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/sunburst.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<% if params[:id] != GLOBAL_PERMISSIONS_MODULE_NAME %>
+  <div class="contextual">
+    <% if User.current.allowed_to?(:add_subprojects, @project) %>
+      <%= link_to l(:label_subproject_new), new_project_path(:parent_id => @project), :class => 'icon icon-add' %>
+    <% end %>
+    <% if (User.current.allowed_to?(:close_project, @project, global: true) && (!@project.respond_to?(:services) || !@project.services.present?)) || User.current.admin? %>
+    <%# if User.current.admin? %>
+      <%# if @project.active? %>
+        <%#= link_to l(:button_close), close_project_path(@project), :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-lock' %>
+      <%# else %>
+        <%#= link_to l(:button_reopen), reopen_project_path(@project), :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-unlock' %>
+      <%# end %>
+      <%= form_tag(close_project_path(@project), :method => :post) do %>
+          <%= select_tag 'project_status', project_status_drop_down_values(@project.status), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+      <% end %>
+    <% end %>
+  </div>
+<%end%>
+<h2><%=l(:label_overview)%></h2>
+
+<% unless @project.active? %>
+  <p class="<%= @project.project_status(@project.status).parameterize.underscore %> warning"><span class="icon icon-lock"><%= l(:text_project_status, :curent_status => @project.project_status(@project.status)) %></span></p>
+<% end %>
+
+<div class="clear mb-50">
+  <div class="splitcontentleft">
+    <% if @project.description.present? %>
+    <div class="wiki overview-content">
+      <%= textilizable @project.description %>
+    </div>
+    <% end %>
+    <% if @project.homepage.present? || @project.visible_custom_field_values.any?(&:present?) %>
+    <ul>
+    <% unless @project.homepage.blank? %>
+      <li><span class="label"><%=l(:field_homepage)%>:</span> <%= link_to_if uri_with_safe_scheme?(@project.homepage), @project.homepage, "http://"+@project.homepage.to_s, target: "_blank"%></li>
+    <% end %>
+    <% render_custom_field_values(@project) do |custom_field, formatted| %>
+      <li><span class="label"><%= custom_field.name %>:</span> <%= formatted %></li>
+    <% end %>
+    </ul>
+    <% end %>
+  </div>
+
+  <div class="splitcontentright">
+
+    <%= render :partial => 'members_box' %>
+
+    <% if @news.any? && authorize_for('news', 'index') %>
+    <div class="news box">
+      <h3><%=l(:label_news_latest)%></h3>
+      <%= render :partial => 'news/news', :collection => @news %>
+      <p><%= link_to l(:label_news_view_all), project_news_index_path(@project) %></p>
+    </div>
+    <% end %>
+
+    <% if @subprojects.any? %>
+    <div class="projects box">
+      <h3><%=l(:label_subproject_plural)%></h3>
+      <%= @subprojects.collect{|p| link_to p, project_path(p), :class => p.css_classes}.join(", ").html_safe %>
+    </div>
+    <% end %>
+    <%= call_hook(:view_projects_show_right, :project => @project) %>
+  </div>
+</div>
+
+<%unless params[:id] == GLOBAL_PERMISSIONS_MODULE_NAME %>
+<div class="graph-col-row ">
+  <%= render :partial => 'upcoming_deadlines' %>
+  <%= render :partial => 'overdue_issues' %>
+</div>
+<%= render :partial => 'issue_percent_report' %>
+
+<%= render :partial => 'issue_and_milestone_report' %>
+
+
+<%= call_hook(:view_projects_show_left, :project => @project) %>
+
+<% if  User.current.allowed_to?(:view_issues, @project)  %>
+  <div class="project_statistics">
+    <%= render :partial =>  "issue_report" %>
+  </div>
+<% end %>
+
+<div class="graph-col-row ">
+  <%#= render :partial => 'bug_priority_report' %>
+  <%#= render :partial => 'workload' %>
+  <%= render :partial => 'estimated_and_spent_hours' %>
+  <%= render :partial => 'estimated_and_spent_burn_up_chart' %>
+</div>
+
+<%#= render :partial => 'issue_sunburst' %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'projects/sidebar' %>
+<% end %>
+
+<% end %>
+<% content_for :header_tags do %>
+  <%= auto_discovery_link_tag(:atom, {:controller => 'activities', :action => 'index', :id => @project, :format => 'atom', :key => (User.current.respond_to?(:rss_key) ? User.current.rss_key : nil)}) %>
+<% end %>
+
+<% html_title(l(:label_overview)) -%>

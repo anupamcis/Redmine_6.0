@@ -1,0 +1,32 @@
+<div class="contextual">
+  <%= link_to l(:label_bug_category_tab_new), new_bug_category_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_bug_category_tab_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_name) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for bug_category in @bug_categories -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="username"><%= bug_category.name %></td>
+
+          <td class="buttons">
+            <%= link_to "Edit", edit_bug_category_path(bug_category), :class => "icon icon-edit"  %>
+            <%= delete_link bug_category_path(bug_category, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_pmp_tab_plural)) -%>

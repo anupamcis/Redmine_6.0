@@ -1,0 +1,28 @@
+<table class="list">
+  <thead>
+    <tr>
+      <th><%= l(:field_name_of_person) %></th>
+      <th><%= l(:field_role_and_responsibility) %></th>
+      <th><%= l(:field_reporting_person) %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for user in @project.users.joins(:company).where("firstname not like (?) and companies.default_company = ? ", "%cis%", true) -%>
+      <% user_roles = @project.members.find_by(user_id: user.id).roles.where("name not like (?) ", "%CIS%").map(&:name) %>
+      <% reporting_pesron = user.project_role_and_responsibility(@project.id).try(:reporting_person) %>
+      <% if user_roles.present? %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= user.name %></td>
+          <td class="firstname"><%= user_roles.join(", ")%></td>
+          <td class="lastname">
+          <% if reporting_pesron.present? %>
+            <span title="click to change reporting pesron" class="reporting-pesron-name reporting-pesron-<%=user.id%>" user-id="<%=user.id%>" reporting-pesron="<%=reporting_pesron.id%>" project-id="<%=@project.id%>" ><%= reporting_pesron.try(:name) %></span></td>
+          <% else %>
+           <%= select_tag "reporting_person_id", options_for_select((@project.users.joins(:company).where("companies.default_company = ? ", true) - [user]).collect {|u| [u.name, u.id]}), {class: "select small reporting-person-select", user_id: "#{user.id}", project_id: "#{@project.id}", prompt: "Select reporting person"} %>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

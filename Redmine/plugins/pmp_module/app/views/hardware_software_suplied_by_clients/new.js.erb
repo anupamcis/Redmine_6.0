@@ -1,0 +1,8 @@
+$('#ajax-modal').html('<%= escape_javascript(render :partial => 'new') %>');
+showModal('ajax-modal', '50%');
+$(document).on('submit','form.pmp_module_form1',function(e){
+  e.preventDefault();
+  $(this).find('input[type="submit"]').attr('disabled', true);
+  $(this).find('input[type="submit"]').val('Please wait...');
+  return true;
+})

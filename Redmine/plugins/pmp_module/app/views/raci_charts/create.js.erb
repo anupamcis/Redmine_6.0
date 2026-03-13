@@ -1,0 +1,7 @@
+<% if @raci_chart.errors.present? %>
+  $("#div_raci_chart").html("<%= escape_javascript(render partial: 'new', locals: {raci_chart: @raci_chart}) %>");
+<% else %>
+  $("#raci_chart_work_type").val('')
+  $('#div_raci_chart').css('display', 'none')
+  $("table#raci_charts tbody").append("<%= escape_javascript(render partial: 'raci_chart', locals: {raci_chart: @raci_chart}) %>");
+<% end %>

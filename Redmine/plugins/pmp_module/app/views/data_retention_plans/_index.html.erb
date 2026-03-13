@@ -1,0 +1,35 @@
+<% if @project.try(:data_retention_plans).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_record_name) %></th>
+          <th><%= l(:field_min_retention) %></th>
+          <th><%= l(:field_type_of_record) %></th>
+          <th><%= l(:field_storage_path) %></th>
+          <th><%= l(:field_disposal) %></th>
+          <th><%= l(:field_remarks) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for data_retention_plan in @project.data_retention_plans -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="lastname"><%= data_retention_plan.record_name %></td>
+          <td class="firstname"><%= data_retention_plan.min_retention %></td>
+          <td class="lastname"><%= data_retention_plan.type_of_record %></td>
+          <td class="lastname"><%= data_retention_plan.storage_path %></td>
+          <td class="lastname"><%= data_retention_plan.disposal %></td>
+          <td class="lastname"><%= data_retention_plan.remarks %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_data_retention_plan_path(@project,data_retention_plan, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_data_retention_plans, @project, global: true) %>
+            <%= delete_link project_data_retention_plan_path(@project,data_retention_plan, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_data_retention_plans, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

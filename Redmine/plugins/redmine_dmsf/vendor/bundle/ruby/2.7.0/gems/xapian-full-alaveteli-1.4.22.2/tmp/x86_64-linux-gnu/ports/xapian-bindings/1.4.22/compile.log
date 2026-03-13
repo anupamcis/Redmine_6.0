@@ -1,0 +1,41 @@
+make  all-recursive
+make[1]: Entering directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22'
+Making all in .
+make[2]: Entering directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22'
+make[2]: Leaving directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22'
+Making all in ruby
+make[2]: Entering directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22/ruby'
+rm -rf docs/rdocs
+/usr/bin/mkdir -p docs
+cd docs && /home/cis/.rbenv/versions/2.7.8/bin/rdoc --op rdocs `test -f xapian.rb||echo '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22/ruby/docs/'`xapian.rb
+Parsing sources...
+100% [ 1/ 1]  xapian.rb
+
+Generating Darkfish format into /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22/ruby/docs/rdocs...
+
+
+  Files:       1
+
+  Classes:    16 ( 3 undocumented)
+  Modules:     2 ( 1 undocumented)
+  Constants:   0 ( 0 undocumented)
+  Attributes: 17 (17 undocumented)
+  Methods:    32 (16 undocumented)
+
+  Total:      67 (37 undocumented)
+   44.78% documented
+
+  Elapsed: 0.1s
+
+make  all-am
+make[3]: Entering directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22/ruby'
+depbase=`echo xapian_wrap.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
+/bin/bash ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I. -I..  -I/home/cis/.rbenv/versions/2.7.8/include/ruby-2.7.0 -I/home/cis/.rbenv/versions/2.7.8/include/ruby-2.7.0/x86_64-linux  -fno-strict-aliasing -Wall -Wno-unused -Wno-uninitialized -fvisibility=hidden -fvisibility-inlines-hidden -I/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/include -g -O2 -MT xapian_wrap.lo -MD -MP -MF $depbase.Tpo -c -o xapian_wrap.lo xapian_wrap.cc &&\
+mv -f $depbase.Tpo $depbase.Plo
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I.. -I/home/cis/.rbenv/versions/2.7.8/include/ruby-2.7.0 -I/home/cis/.rbenv/versions/2.7.8/include/ruby-2.7.0/x86_64-linux -fno-strict-aliasing -Wall -Wno-unused -Wno-uninitialized -fvisibility=hidden -fvisibility-inlines-hidden -I/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/include -g -O2 -MT xapian_wrap.lo -MD -MP -MF .deps/xapian_wrap.Tpo -c xapian_wrap.cc  -fPIC -DPIC -o .libs/xapian_wrap.o
+/bin/bash ../libtool  --tag=CXX   --mode=link g++ -fno-strict-aliasing -Wall -Wno-unused -Wno-uninitialized -fvisibility=hidden -fvisibility-inlines-hidden -I/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/include -g -O2 -avoid-version -module -shrext ".so"   -o _xapian.la -rpath /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/lib xapian_wrap.lo -L/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/lib -lxapian -lstdc++  -Wl,-rpath,/home/cis/.rbenv/versions/2.7.8/lib -L/home/cis/.rbenv/versions/2.7.8/lib -lruby
+libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o  .libs/xapian_wrap.o   -Wl,-rpath -Wl,/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/lib -Wl,-rpath -Wl,/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/lib -L/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/lib /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/lib/libxapian.so -luuid -lz -L/home/cis/.rbenv/versions/2.7.8/lib -lruby -L/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L. -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o  -g -O2 -Wl,-rpath -Wl,/home/cis/.rbenv/versions/2.7.8/lib   -Wl,-soname -Wl,_xapian.so -o .libs/_xapian.so
+libtool: link: ( cd ".libs" && rm -f "_xapian.la" && ln -s "../_xapian.la" "_xapian.la" )
+make[3]: Leaving directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22/ruby'
+make[2]: Leaving directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22/ruby'
+make[1]: Leaving directory '/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22/xapian-bindings-1.4.22'

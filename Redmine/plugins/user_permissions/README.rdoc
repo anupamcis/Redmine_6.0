@@ -1,0 +1,12 @@
+= user_permissions
+
+Description goes here
+
+Steps for user permissions for role
+1. Administration -> Roles and permissions -> select role then in Permissions section find user management and select permissions for that roles (like  View User, Add User , Manage Users etc.) and then save the role.
+
+2. Go to projects and create one Global project(i.e only for adding user management permissions) -> Go to this default project settings -> then under settings select members tabs
+
+3. Then select 'New Member' button one popup will open in that popup select user from list of users and also select role in which we have given user management permissions and press select.
+
+4. Now Login from user with role which have user management permissions. Now user with that role will see the 'Manage Users' link in top menu.

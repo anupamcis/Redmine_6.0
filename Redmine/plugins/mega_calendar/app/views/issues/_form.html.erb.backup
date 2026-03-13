@@ -1,0 +1,332 @@
+
+<link rel='stylesheet' href='<%= Setting.plugin_mega_calendar['sub_path'] %>plugin_assets/mega_calendar/javascripts/datetimepicker/jquery.datetimepicker.css' />
+<script src='<%= Setting.plugin_mega_calendar['sub_path'] %>plugin_assets/mega_calendar/javascripts/datetimepicker/build/jquery.datetimepicker.full.min.js'></script>
+
+<style type="text/css">
+
+  #issue_subject{
+    width: 62%;
+  }
+  input#time_begin {
+    width: 46%;
+  }
+
+  #issue-form input#time_begin {
+    width: 37%;
+  }
+
+  label.private-check {
+      font-weight: 600;
+      vertical-align: middle;
+  }
+  label.private-check span {
+      display: inline-block;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      position: relative;
+      border-radius: 2px;
+  }
+  label.private-check span:after {
+      display: block;
+      width: 4px;
+      height: 10px;
+      border-right: 2px solid #d64a38;
+      border-bottom: 2px solid #d64a38;
+      content: '';
+      transform: rotate(45deg);
+      position: absolute;
+      top: 3px;
+      left: 7px;
+      opacity: 0;
+  }
+
+  label.private-check input[type="checkbox"]{
+    opacity: 0;
+  }
+  label.private-check input[type="checkbox"]:checked  + span:after{
+    opacity: 1;
+  }
+  label.private-check label {
+      width: 135px !important;
+      margin-left: -170px !important;
+      text-align: right !important;
+      margin-bottom: 10px;
+  }
+  div#cke_1_contents {
+      height: 290px !important;
+  }
+
+  .task-row *{ box-sizing: border-box;  }
+  .col-sm-3,.col-sm-6, .col-sm-8,.col-sm-12{ padding-right: 15px; padding-left: 15px; float: left; }
+  .col-sm-3{  width: 25%;}
+  .col-sm-6{ width: 50%; }
+  .col-sm-8{ width:66.66666667%;   }
+
+
+  .tabular .task-row p{ padding-left: 0; margin: 0; }
+  .tabular .task-row label{ display: block; margin-left: 0; display: block; width: 100%; text-align: left;  }
+  .tabular .task-row label.inline{ display: inline-block; width: auto; }
+  .tabular .task-row label[for="issue_description"]{ float: none; }
+  .form-group{ margin-bottom: 15px; }
+  .form-group p{ margin:0;}
+
+  input.form-control, select.form-control, .form-group select{
+      display: block;
+      width: 100% !important;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+      -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+      -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  }
+  select#issue_sprint_id {
+    width: 68% !important;
+  }
+
+  #issue-form .tabular .tabular p, #issue-form .tabular p#attachments_form{ padding-left:90px;}
+  label.private-check span{ margin-left: 5px; }
+</style>
+
+
+
+<style type="text/css">
+  .column {
+    float: left;
+    width: 30%;
+    padding: 5px;
+  }
+
+  /* Clear floats after image containers */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  @media only screen and (max-width:1199px){
+    .column {
+      width: 48%;
+    }
+  }
+
+  @media only screen and (max-width:767px){
+    .column {
+      float: left;
+      width: 100%;
+      padding: 5px;
+  }
+  label.private-check label {
+      width: auto !important;
+      text-align: left !important;
+      padding-left: 0px !important;
+  }
+
+  }
+</style>
+
+<div class = "task_main_details">
+  <%= labelled_fields_for :issue, @issue do |f| %>
+    <div class = "task_left_details">
+      <% if @issue.safe_attribute? 'subject' %>
+        <div class="row task-row">
+          <div class="col-sm-8 form-group">
+            <p>
+              <%= f.text_field :subject, :size => 80, :maxlength => 255, :required => true, :class => 'form-control' %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @issue.safe_attribute? 'description' %>
+        <div class="row task-row">
+          <div class="col-sm-8 form-group">
+            <p>
+              <%= f.label_for_field :description, :required => @issue.required_attribute?('description') %>
+              <%= link_to_function image_tag('edit.png'), '$(this).hide(); $("#issue_description_and_toolbar").show()' unless @issue.new_record? %>
+              <%= content_tag 'span', :id => "issue_description_and_toolbar", :style => (@issue.new_record? ? nil : 'display:none') do %>
+                <%= f.text_area :description,
+                              :cols => 40,
+                              :rows => (@issue.description.blank? ? 10 : [[10, @issue.description.length / 40].max, 100].min),
+                              :accesskey => accesskey(:edit),
+                              :class => 'wiki-edit',
+                              :no_label => true %>
+              <% end %>
+            </p>
+            <%= wikitoolbar_for 'issue_description' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%= call_hook(:view_issues_form_details_top, { :issue => @issue, :form => f }) %>
+    <div class = "task_right_details">
+      <div class="row task-row">
+        <% if @issue.safe_attribute? 'is_private' %>
+          <div class="col-sm-3 form-group">
+            <label><%= l(:field_is_private) %></label>
+            <label title="Visible to you only" class="private-check">
+              <label class="inline" for="issue_is_private" id="issue_is_private_label "></label><%= f.check_box :is_private, :no_label => true %><span></span>
+            </label>
+          </div>
+        <% end %>
+
+        <% if @issue.safe_attribute? 'tracker_id' %>
+          <% if params.has_key?("code")%>
+            <div class="col-sm-3 form-group">
+              <p><%= f.select :tracker_id, @issue.allowed_target_trackers().where(name: Setting.plugin_redmine_code_review['assignment_tracker_id'].to_s).collect {|t| [t.name, t.id]}, {:required => true}, :class => 'form-control',
+                              :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}')" %></p>
+            </div>
+          <% else %>
+            <div class="col-sm-3 form-group">
+              <p><%= f.select :tracker_id, @issue.allowed_target_trackers().collect {|t| [t.name, t.id]}, {:required => true}, :class => 'form-control',
+                            :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}')" %></p>
+            </div>
+          <% end %>
+        <% end %>
+        <% if @issue.safe_attribute? 'priority_id' %>
+          <div class="col-sm-3 form-group">
+            <p><%= f.select :priority_id, (@priorities.collect {|p| [p.name, p.id]}), {:required => true}, :class => 'form-control' %></p>
+          </div>
+        <% end %>
+        <% if @issue.safe_attribute?('status_id') && @allowed_statuses.present? %>
+          <div class="col-sm-3 form-group">
+              <p><%= f.select :status_id, (@allowed_statuses.collect {|p| [p.name, p.id]}), {:required => true}, :class => 'form-control',
+                                :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)"%></p>
+              <%= hidden_field_tag 'was_default_status', @issue.status_id, :id => nil if @issue.status == @issue.default_status %>
+          </div>
+        <% else %>
+          <div class="col-sm-3 form-group">
+            <p><label class="form-control"><%= l(:field_status) %></label> <%= @issue.status %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="row task-row">
+        <div class="col-sm-3 form-group">
+          <% if @issue.safe_attribute? 'start_date' %>
+
+            <% if ((User.current.allowed_to?(:hide_dates, nil, global: true) || User.current.admin?) || (params[:action] == 'new' || params[:action] == "create"))%>
+              <p id="start_date_area">
+                <%= f.text_field(:start_date, :size => 10, :required => true) %>
+                <%= calendar_for('issue_start_date') %>
+                <span class="required">*</span>
+                <input type="text" id="time_begin" name="issue[time_begin]" value="<%= (!params[:issue].blank? && !params[:issue][:time_begin].blank? ? params[:issue][:time_begin].to_s : '') %>" required />
+              </p>
+            <% else %>
+              <p id="start_date_area">
+                <%= f.label_for_field :start_date, {:required => true} %>
+                <%= @issue.start_date ? format_date(@issue.start_date) : "-" %> (<%= l(:date_permissions, :date => "start date") %>)
+              </p>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="col-sm-3 form-group">
+          <% if @issue.safe_attribute? 'estimated_hours' %>
+            <% if ((User.current.allowed_to?(:hide_dates, nil, global: true) || User.current.admin?) || params[:action] == 'new'|| params[:action] == 'create') %>
+              <p><%= f.text_field :estimated_hours, :size => 3, :required => true, :class => 'form-control' %> </p>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="col-sm-3 form-group">
+          <% if @issue.safe_attribute? 'assigned_to_id' %>
+            <p><%= f.select :assigned_to_id, principals_options_for_select(@issue.assignable_users, @issue.assigned_to), :required => @issue.required_attribute?('assigned_to_id'), :class => 'form-control' %></p>
+          <% end %>
+        </div>
+
+        <% if @issue.safe_attribute?('done_ratio') && Issue.use_field_for_done_ratio? %>
+          <div class="col-sm-3 form-group">
+            <% if ((User.current.allowed_to?(:hide_percentage_done, nil, global: true) || User.current.admin?) || params[:action] == 'new')%>
+              <%= f.select :done_ratio,(0..10).map { |r| ["#{r*10} %", r*10] }, { :class => 'form-control', :required => @issue.required_attribute?('done_ratio') }, { :style => 'text-align: left;' } %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="row task-row">
+        <% if @issue.safe_attribute? 'parent_issue_id' %>
+          <div class="col-sm-3 form-group">
+            <p id="parent_issue"><%= f.text_field :parent_issue_id, :size => 10, :required => @issue.required_attribute?('parent_issue_id'), :class => 'form-control' %></p>
+            <%= javascript_tag "observeAutocompleteField('issue_parent_issue_id', '#{escape_javascript auto_complete_issues_path(:project_id => @issue.project, :scope => Setting.cross_project_subtasks)}')" %>
+          </div>
+        <% end %>
+
+        <% if @issue.safe_attribute?('fixed_milestone_id') %>
+          <div class="col-sm-3 form-group">
+              <p>
+                <%= f.select :fixed_milestone_id, @issue.project.milestones.joins(:version).where.not("versions.status = ?", "closed").collect{ |m| [m.name, m.id,  {'title'=>"#{m.try(:effective_date).try(:strftime, '%d %b %y')} - #{m.try(:planed_end_date).try(:strftime, '%d %b %y')}"}] }, :include_blank => 'Select Milestone', :required => @issue.required_attribute?('fixed_milestone_id'), :class => 'form-control' %>
+                <%= link_to(l(:label_milestone_new),
+                        new_project_milestone_path(@issue.project),
+                        :remote => true,
+                        :method => 'get',
+                        :title => l(:label_milestone_new),
+                        :tabindex => 200,
+                        :class => 'icon-only icon-add'
+                      ) if User.current.allowed_to?(:manage_milestones, @issue.project) %>
+              </p>
+          </div>
+        <% end %>
+
+        <% if @issue.safe_attribute?('category_id') && @issue.project.issue_categories.any? %>
+          <div class="col-sm-3 form-group">
+            <p>
+              <%= f.select :category_id, (@issue.project.issue_categories.collect {|c| [c.name, c.id]}), prompt: 'Select Category', :required => @issue.required_attribute?('category_id') %>
+              <%= link_to(l(:label_issue_category_new),
+                        new_project_issue_category_path(@issue.project),
+                        :remote => true,
+                        :method => 'get',
+                        :title => l(:label_issue_category_new),
+                        :tabindex => 200,
+                        :class => 'icon-only icon-add'
+                      ) if User.current.allowed_to?(:manage_categories, @issue.project) %>
+            </p>
+          </div>
+        <% end %>
+        <% if @issue.safe_attribute?('bug_category_id') && BugCategory.all.present? %>
+          <div class="col-sm-3 form-group">
+            <p><%= f.select :bug_category_id, (BugCategory.all.collect {|c| [c.name, c.id]}), prompt: 'Select Bug Category', :required => true, :class => 'form-control' %>
+            </p>                  
+          </div>
+        <% end %>
+        <div class ="col-sm-3 form-group">
+          <%= call_hook(:view_issues_form_details_bottom, { :issue => @issue, :form => f }) %>
+        </div>
+      </div>
+
+        <p>
+          <label><%= l(:label_attachment_plural) %></label>
+          <%= render :partial => 'attachments/form', :locals => {:container => @issue} %>
+        </p>
+
+      <div id="attributes" class="attributes">
+        <%= render :partial => 'issues/attributes' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% heads_for_wiki_formatter %>
+
+<%= javascript_tag do %>
+$(document).ready(function(){
+  $("#issue_tracker_id, #issue_status_id").each(function(){
+    $(this).val($(this).find("option[selected=selected]").val());
+  });
+});
+<% end %>

@@ -1,0 +1,7 @@
+<%= "#{@release_update.get_likes.size} Likes"%>
+<% voted = User.current.voted_up_on?(@release_update) %>
+<%= link_to(
+  voted ? l(:button_release_update_unvote) : l(:button_release_update_vote),
+      {:controller => 'release_updates', :action => 'vote', :id => @release_update},
+      :class => 'icon ' + (voted ? 'icon-vote' : 'icon-unvote'), remote: true
+    ) %>

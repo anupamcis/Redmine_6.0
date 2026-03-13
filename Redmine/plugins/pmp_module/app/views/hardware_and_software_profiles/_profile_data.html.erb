@@ -1,0 +1,10 @@
+<%= hidden_field_tag "field_count", @field_count %>
+<% @field_count = @field_count.to_s %>
+  <% if @hardware_and_software_profile.present? && @hardware_and_software_profile.errors.present? || (params[:action] == "edit" || params[:action] == "update") %>
+    <% @field_range = (params[:action] == "edit" || params[:action] == "update") ? (0... @field_count.to_i) : (0.. @field_count.to_i) %>
+    <% for i in @field_range %>
+      <%= render "render_profile_data", i: i %>
+    <% end %>
+  <% else %>
+    <%= render "render_profile_data", i: @field_count %>
+  <% end %>

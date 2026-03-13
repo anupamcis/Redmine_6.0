@@ -1,0 +1,13 @@
+Redmine::Plugin.register :redmine_documents_short do
+  name 'Documents Short plugin'
+  author 'Stephane Moreau'
+  description 'A plugin which displays the documents page in a shorter way.'
+  version '0.4.0'
+  url 'https://github.com/smoreau/redmine_documents_short'
+  author_url 'http://www.logikdev.com'
+end
+
+Rails.application.config.to_prepare do
+  Document.send(:include, RedmineDocumentsShort::DocumentPatch)
+  Version.send(:include, RedmineDocumentsShort::VersionPatch)
+end

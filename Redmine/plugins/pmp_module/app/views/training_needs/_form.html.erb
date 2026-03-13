@@ -1,0 +1,35 @@
+<%= error_messages_for 'training_need' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "training_need[project_id]", @project.id %>
+  <p><%= f.text_field :training_type, :required => true, :size => 25 %></p>
+  <p><%= f.select :attendees, options_from_collection_for_select(@project.users.joins(:company).where("firstname not like (?) and companies.default_company = ? ", "%cis%", true), 'id', 'name', @training_need.attendees.ids), {:required => true}, {multiple: true, class: "select small"}   %></p>
+  <p><%= f.text_field :name_of_training, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :duration, :size => 25 %>&nbsp; (In Hours)</p>
+  <p><%= f.select :training_method, options_for_select(["Self-study", "In-house", "On-the-job",
+  "Seminar", "External"], @training_need.training_method),{}, { class: "small"} %>
+  <p>
+    <%= f.text_field :expected_date, :size => 25, value: !@training_need.new_record? ? format_date(@training_need.expected_date) : '' %>
+    <%= calendar_for('training_need_expected_date') %>
+  </p>
+  <% if params[:action].eql?('edit') || params[:action].eql?('update')%>
+  <p>
+    <%= f.text_field :actual_date, :size => 25, value: !@training_need.new_record? ? format_date(@training_need.actual_date) : '' %>
+    <%= calendar_for('training_need_actual_date') %>
+  </p>
+    <p><%= f.select :status, options_for_select(["Proposed", "Approved", "Rejected", "Pending", "Conducted"], @training_need.status),{}, { class: "small"} %>
+    </p>
+  <% end %>
+  <p><%= f.text_field :comment, :size => 25 %></p>
+  <br>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".select2").select2({width: '20%'});
+    $.ui.dialog.prototype._allowInteraction = function (e) {
+      return true;
+    };
+  });
+</script>

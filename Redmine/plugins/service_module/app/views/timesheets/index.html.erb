@@ -1,0 +1,25 @@
+<% if @timesheets.any? %>
+  <h1>Timesheet Report for <%= @project.name %></h1>
+  <div class="autoscroll">
+    <%= form_tag(timesheet_report_path, :method => :get) do %>
+      <fieldset><legend><%= l(:label_filter_plural) %></legend>
+        <%= select_tag 'item', options_from_collection_for_select(@items, 'id', 'item_name', params[:item].to_i), prompt: 'Select item', :class => "small select2", :onchange => "this.form.submit(); return false;"  %>
+        <%= link_to l(:button_clear), timesheet_report_path(@project), :class => 'icon icon-reload' %>
+    <% end %>
+    <table class="list">
+      <thead>
+        <tr>
+          <th> <%= l(:item_id) %> </th>
+          <th> <%= l(:services) %></th>
+          <th> <%= l(:total_filled_hours) %> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render :partial => 'timesheet', :collection => @timesheets %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+   <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+<% html_title(l(:timesheet_report)) -%>

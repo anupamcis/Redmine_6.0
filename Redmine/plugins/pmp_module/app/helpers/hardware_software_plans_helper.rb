@@ -1,0 +1,2 @@
+module HardwareSoftwarePlansHelper
+end

@@ -1,0 +1,30 @@
+<%= labelled_form_for @project, :html => {:id => 'project_modules_form'} do |f| %>
+  <%= hidden_field_tag 'tab', 'modules' %>
+
+  <% if @project.safe_attribute?('enabled_module_names') %>
+  <fieldset class="box tabular" id="project_modules">
+    <legend><%= toggle_checkboxes_link('#project_modules input[type="checkbox"]') %><%= l(:label_module_plural) %></legend>
+    <% Redmine::AccessControl.available_project_modules.each do |m| %>
+      <% if m != :user_management  && m!= :user_company%>
+        <label class="floating"><%= check_box_tag 'project[enabled_module_names][]', m, @project.module_enabled?(m), :id => nil, disabled: !User.current.admin? -%>
+        <%= l_or_humanize(m, :prefix => "project_module_") %></label>
+        <% if !User.current.admin? %>
+          <%= hidden_field_tag 'project[enabled_module_names][]', @project.module_enabled?(m) ? m : '' %>
+        <% end %>
+      <% elsif (m == :user_management  || m == :user_company) && @project.identifier == GLOBAL_PERMISSIONS_MODULE_NAME %>
+        <label class="floating"><%= check_box_tag 'project[enabled_module_names][]', m, @project.module_enabled?(m), :id => nil, disabled: !User.current.admin? -%>
+        <%= l_or_humanize(m, :prefix => "project_module_") %></label>
+        <% if !User.current.admin? %>
+          <%= hidden_field_tag 'project[enabled_module_names][]', @project.module_enabled?(m) ? m : '' %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%= hidden_field_tag 'project[enabled_module_names][]', '' %>
+  </fieldset>
+  <% else %>
+    <p class="nodata"><%= l(:label_no_data) %></p>
+  <% end %>
+
+  <p><%= submit_tag l(:button_save), :class => 'button-positive' %></p>
+<% end %>
+

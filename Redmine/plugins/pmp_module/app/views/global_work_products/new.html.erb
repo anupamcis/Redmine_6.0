@@ -1,0 +1,6 @@
+<%= title [l(:label_global_work_product_plural), global_pmp_profiles_path(tab: "global_work_product")], l(:label_global_work_product_new) %>
+
+<%= labelled_form_for @global_work_product do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>

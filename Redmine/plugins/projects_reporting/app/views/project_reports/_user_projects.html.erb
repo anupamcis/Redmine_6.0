@@ -1,0 +1,91 @@
+<%if @user.present? %>
+  <h2><%= @user.name %><%= l(:user_projects_list) %></h2>
+<% end %>
+
+<%= form_tag(project_reports_path, :method => :get) do %>
+	<fieldset>
+		<legend><%= l(:label_filter_plural) %></legend>
+    <%= hidden_field_tag('tab', "user_projects")  %>
+    <label for='name'><%= l(:user) %>:</label>
+    <% users_collection = if User.current.respond_to?(:self_and_descendents)
+         User.current.self_and_descendents.sort
+       else
+         [User.current]
+       end %>
+    <% user_options = options_for_select(users_collection.map { |u| [ (u.respond_to?(:display_name_with_count) ? u.display_name_with_count : u.name), u.id ] }, params[:user].to_i) %>
+		<%= select_tag 'user', user_options, prompt: 'select user...', :class => "small select2", :onchange => "this.form.submit(); return false;"  %>
+    <label for='status'><%= l(:field_status) %> :</label>
+    <%= select_tag 'user_project_status', project_status_options_for_select(@user_project_status), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+	</fieldset>
+<% end %>
+
+<% if @user_projects.present? %>
+	<div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th> <%= l(:field_name)%> </th>
+          <th> <%= l(:field_roles)%> </th>
+          <th> <%= l(:field_project_manager)%> </th>
+          <th> <%= l(:field_project_lead)%> </th>
+          <th> <%= l(:field_percetage)%> </th>
+        </tr>
+      </thead>
+      <tbody>
+      	<% @user_projects.each do |project|%>
+          <% project_progress =  project.calculate_project_percent %>
+          <%# total_issues, open_issues, close_issues = project.issues.size, project.issues.open.size, (project.issues.size - project.issues.open.size) %>
+  		      <tr>
+              <td><%= link_to_project project %></td>
+              <td><%= user_roles(project, params[:user].to_i) %></td>
+              <td><%= project.project_manager %></td>
+              <td><%= project.project_leader %></td>
+              <td>
+                <div class="w3-progress-container" title="<%= project_progress %>%">
+                  <div class="w3-progressbar w3-green" style="width:<%= project_progress %>%;">
+                  </div>
+                </div>
+                <div class="progres_value">
+                  <%= project_progress %>%
+                </div>
+              </td>
+  				</tr>
+  			<% end %>
+      </tbody>
+    </table>
+  </div>
+<span class="pagination" style="display: inline-block;">
+  <%= pagination_links_full @project_pages, @project_count, :params => { :tab => 'user_projects' } if defined?(@project_pages) && defined?(@project_count) %>
+</span>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+
+<style type="text/css">
+.w3-progress-container{width:100%;height:1.5em;position:relative;background-color:#f1f1f1}
+.w3-progressbar{background-color:#757575;height:100%;position:absolute;line-height:inherit}
+.w3-progress-container {
+  float: left;
+  width: 125px;
+  text-align: right;
+  margin: 2px 10px;
+  display: inline;
+}
+
+.progres_value {
+  float: left;
+  text-align: left;
+  margin: 2px 10px;
+  display: inline;
+}
+
+
+.w3-green {background-color:#4CAF50!important}
+.pagination { padding: 3px; margin: 3px; } 
+.pagination a { padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #aaaadd; text-decoration: none; color: #000099; } 
+.pagination a:hover, 
+.pagination a:active { border: 1px solid #000099; color: #000; } 
+.pagination span.current { padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #000099; font-weight: bold; background-color: #000099; color: #FFF; } 
+.pagination span.disabled { padding: 2px 5px 2px 5px; margin: 2px; border: 1px solid #eee; color: #ddd; }
+</style>

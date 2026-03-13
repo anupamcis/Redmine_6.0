@@ -1,0 +1,1 @@
+$('.reporting-pesron-'+"<%=@user.id%>").html("<%= j render(:partial => 'user_role_and_responsibilities/select_reporting_person', :locals => { :user =>  @user }) %>");

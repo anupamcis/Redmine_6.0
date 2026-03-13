@@ -1,0 +1,11 @@
+<% if @project.responsibility_assignment_matrices.present?%>
+  <% @responsibility_assignment_matrix = @project.responsibility_assignment_matrices.first%>
+
+  <%= link_to l(:edit_responsibility_assignment_matrix), edit_project_responsibility_assignment_matrix_path(@project,@responsibility_assignment_matrix, :back_url => request.original_fullpath, :filter_type => filter_type), :class => 'icon icon-edit', :title => "Edit", remote: true if User.current.allowed_to?(:update_raci_chart, @project, global: true) %>
+  &nbsp;&nbsp;
+
+  <%= delete_link project_responsibility_assignment_matrix_path(@project,@responsibility_assignment_matrix, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_raci_chart, @project, global: true) %>
+
+<% else %>
+  <%= link_to l(:add_responsibility_assignment_matrix), new_project_responsibility_assignment_matrix_path(@project, :back_url => request.original_fullpath, :filter_type => filter_type), :class => 'icon icon-add', :title => "Add", remote: true if User.current.allowed_to?(:create_raci_chart, @project, global: true) %>
+<% end %>

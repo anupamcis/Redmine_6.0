@@ -1,0 +1,29 @@
+<h3 class="title"><%= l(:add_type_of_testing)%> </h3>
+
+<%= labelled_form_for [@project, @type_of_testing], :remote => true do |f| %>
+  <%= render :partial => 'new_form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create), class: 'add_type_of_testing', disabled: true %>  
+<% end %>
+
+<style type="text/css">
+  .ui-dialog-content .box {
+    background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+    border: solid;
+    box-shadow: none;
+    padding: 15px 31px 0 0;
+  }
+</style>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    // disable submit button if any checkbox not checked
+    $(document).on('change','.global_testing_name', function(){
+      if($('.global_testing_name').is(":checked") == true){
+        $('.add_type_of_testing').removeAttr('disabled');
+      }else{
+        $('.add_type_of_testing').attr('disabled', true);
+      }
+    });
+  });
+</script>

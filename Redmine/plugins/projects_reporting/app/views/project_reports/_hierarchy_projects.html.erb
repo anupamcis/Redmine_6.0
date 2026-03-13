@@ -1,0 +1,13 @@
+<% if @hierarchy_projects.present? %>
+  <div class="autoscroll">
+      <% issue_sequence = IssueStatus.order(:position).pluck(:name) %>
+      <h2><%= l(:label_hierarchy_projects) %></h2>
+      <table class="list">
+
+      <%= render partial: "project_table_header", locals: {issue_sequence: issue_sequence} %>
+
+      <%= render partial: "project_table" , locals: {projects: @hierarchy_projects, heading: "Hierarchy Projects", project_pages:  @hierarchy_project_pages, project_count: @hierarchy_project_count, offset: @hierarchy_project_offset, limit: @hierarchy_project_limit, issue_sequence: issue_sequence, project_managers: @project_managers } %>
+      </table>
+      <span class="pagination"><%= pagination_links_full @hierarchy_project_pages, @hierarchy_project_count %></span>
+  </div>        
+<% end -%>

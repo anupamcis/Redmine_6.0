@@ -1,0 +1,52 @@
+en:
+  calendar: "Calendar"
+  holidays: "Holiday"
+  holiday:  "Holiday"
+  my_issues: "My tasks"
+  all_issues: "All tasks"
+  user: "User"
+  start: "Start"
+  reason: "Reason"
+  end: "End"
+  action: "Action"
+  show: "Show"
+  edit: "Edit"
+  new: "Add Leave"
+  destroy: "Delete"
+  prev: "Prev"
+  next: "Next"
+  save: "Save"
+  list: "List"
+  def_holiday_color: "Default color for holiday"
+  def_color: "Default color"
+  project: "Project"
+  status: "Status"
+  save_question: "Do you really want to save?"
+  field_start: "Start"
+  field_end: "End"
+  select_default: "Select..."
+  sub_path: "Sub path URL"
+  no_right: "You do not have the necessary rights to view this section!"
+  allowed_users: "Allowed users"
+  activerecord:
+    errors:
+      models:
+        holiday:
+          attributes:
+            end:
+              greater_than_start: "must be greater than start date"
+  date_permissions: "Please contact project manager for updating %{date}"
+  greater_than_start: "must be greater than start date"
+  field_reason: Reason
+  label_user_leaves_plural: Leaves
+  label_public_holidays: Holidays
+  label_assign_to_me: "Assign to me"
+  public_name: Name
+  public_event_date: Date
+  holiday_synced: Holidays synced successfully
+  holiday_list_not_synced: "Holidays not synced, Please try after some time."
+  sync_holiday: Sync Holidays
+  add_holiday_label_plural: Add Holiday
+  dont_allow_back_date: date is not be older then todays date.
+  leave_updateion_error: "You are not authorized to edit other users leave."
+  roles: Client Roles

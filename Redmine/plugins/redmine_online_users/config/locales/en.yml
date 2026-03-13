@@ -1,0 +1,4 @@
+# English strings go here for Rails i18n
+en:
+  set_user_idle_time: Set Idle Time
+  set_user_message: If user is idle for given time then set his status to away

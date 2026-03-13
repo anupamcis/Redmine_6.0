@@ -1,0 +1,17 @@
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_lessons, @project, global: true)%>
+    <h2><%= l(:lesson_learned) %></h2>
+    <%= render partial: "lessons/index" %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_reusable_artifacts, @project, global: true)%>
+    <h2><%= l(:reusable_artifact) %></h2>
+    <%= render partial: "reusable_artifacts/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_reusable_artifacts, @project, global: true)%>
+    <%= link_to l(:add_reusable_artifact), new_project_reusable_artifact_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>

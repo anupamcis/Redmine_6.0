@@ -1,0 +1,83 @@
+/* page layout structure */ 
+#w { 
+  display: block; 
+  width:100%; 
+  margin: 0 auto; 
+  padding-top: 15px; 
+  padding-right:0px;
+}
+
+#container { 
+  display: block; 
+  width: 100%; 
+  background: #fff; 
+  padding: 14px 0px; 
+}
+
+  /* comments area */
+#comments { 
+  display: block;    
+  padding-left: 0; 
+}
+
+#comments .cmmnt, ul .cmmnt, ul ul .cmmnt { 
+  display: block; 
+  position: relative; 
+  padding-right: 0px; 
+}
+
+#comments .cmmnt .avatar  { 
+  position: absolute; 
+  top: 8px; 
+  left: 0; 
+}
+
+#comments .cmmnt .avatar img { 
+  -webkit-border-radius: 3px; 
+  -moz-border-radius: 3px; 
+  border-radius: 3px; 
+  -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
+  -webkit-transition: all 0.4s linear;
+  -moz-transition: all 0.4s linear;
+  -ms-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+}
+
+#comments .cmmnt .avatar a:hover img { 
+  opacity: 0.77; 
+}
+
+#comments .cmmnt .cmmnt-content {  
+  padding-bottom: 20px; 
+  padding-top: 20px;
+  border-bottom: 1px solid #ddd; 
+}
+
+#comments .cmmnt .cmmnt-content header { font-size: 1.3em; 
+  display: block; 
+  margin-bottom: 8px; 
+  background: #ddd;
+  padding: 10px;
+}
+
+#comments .cmmnt .cmmnt-content header .pubdate { 
+  color: #777; 
+}
+
+#comments .cmmnt .cmmnt-content header .userlink { 
+  font-weight: bold; 
+} 
+
+#comments .cmmnt .replies { 
+  margin-bottom: 7px; 
+}
+
+.icon {
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    background-position: 0% 50%;
+    padding-right: 20px;
+}

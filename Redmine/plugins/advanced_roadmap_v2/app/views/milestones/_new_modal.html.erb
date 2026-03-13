@@ -1,0 +1,6 @@
+<h3 class="title"><%=l(:label_milestone_new)%></h3>
+
+<%= labelled_form_for [@project, @milestone], :as => 'milestone', :url=> project_milestones_path(@project), :remote => true do |f| %>
+  <%= render(:partial => "form", :locals => {:f => f}) %>
+  <%= submit_tag(l(:button_create)) %>
+<% end %>

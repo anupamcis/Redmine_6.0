@@ -1,0 +1,6 @@
+gem 'tinder', '1.10.1'
+gem 'exception_notification'
+
+group :test do
+  gem 'coveralls', :require => false
+end

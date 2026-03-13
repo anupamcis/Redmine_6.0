@@ -1,0 +1,76 @@
+<div style="float:left">
+  <h2>Untracked Mail</h2>
+</div>
+
+<div style="float:right">
+  <%= link_to "Back", User.current.admin? ? untracked_mails_path : project_untracked_mails_path(@project), :method => :get %>
+</div>
+</br></br></br>
+<div class="details issue">
+  <table>
+   <!--  <tr>
+      <th><%#= l(:uid)%></th>
+      <td class=""> <%#= @untracked_mail.uid %></td>
+    </tr> -->
+
+    <tr>
+      <th><%= l(:headers) %></th>
+      <td class=""> <%= @untracked_mail.headers.present? ? @untracked_mail.headers : '-' %></td>
+    </tr>
+
+    <tr>
+      <th><%= l(:subject)%></th>
+      <td class=""> <%= @untracked_mail.subject.present? ?  @untracked_mail.subject : "-"%></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <tr>
+        <th><%= l(:message_id) %></th>
+        <td class=""> <%= @untracked_mail.message_id.present? ? @untracked_mail.message_id : '-' %></td>
+      </tr>
+    </tr>
+
+    <tr>
+      <th><%= l(:references) %></th>
+      <td><%= @untracked_mail.references.present? ? @untracked_mail.references : '-' %></td>
+    </tr>
+
+    <tr>
+      <th><%= l(:reply_to) %></th>
+      <td class=""> <%= @untracked_mail.reply_to.present? ? @untracked_mail.reply_to : '-'%></td>
+    </tr>
+
+    <tr>
+      <th><%= l(:to) %></th>
+      <td class=""> <%= @untracked_mail.to_mail.present? ? show_to_users_name(eval(@untracked_mail.to_mail)) : "-" %></td>
+    </tr>
+
+    <tr>
+      <th><%= l(:from) %></th>
+      <td class=""> <%= User.joins(:email_address).where("email_addresses.address = ? ", @untracked_mail.from_mail).first.try(:name) %></td>
+    </tr>
+
+    <tr>
+      <th><%= l(:cc) %></th>
+      <td class=""> <%= @untracked_mail.cc.present? ? show_to_users_name(eval(@untracked_mail.cc)) : '-' %></td>
+    </tr>
+
+    <tr>
+      <th><%= l(:created_on) %></th>
+      <td class=""> <%= format_date(@untracked_mail.created_on) %></td>
+    </tr>
+
+    <tr>
+      <th><%= l(:sent_mail) %></th>
+      <td class=""> <%= format_date(@untracked_mail.sent_mail) %></td>
+    </tr>
+  </table>
+</div>
+<div class="details issue">
+  <b>Message:</b>
+  <%= raw @untracked_mail.message %>
+</div>
+<div>
+  <%= link_to_attachments @untracked_mail, thumbnails: true %>
+</div>

@@ -1,0 +1,7 @@
+<p>
+  <%= content_tag(:label, l(:set_untouched_project_days)) %>
+  <%= text_field_tag 'settings[set_untouched_project_days]', @settings['set_untouched_project_days'], :size => 10 %>
+  <em class="info">
+    <%= l(:set_untouched_project_days_message) %> <%= l(:label_default) %>: 5 Days   
+  </em>
+</p>

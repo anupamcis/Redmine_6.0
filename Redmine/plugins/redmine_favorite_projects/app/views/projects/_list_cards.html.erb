@@ -1,0 +1,136 @@
+<% if @projects.nil? || @projects.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+<div id="projects">
+ <div class ="recently_viewed"> <%=l(:label_recent_projects)%>
+ </div>
+  <%if params["search"] && params["search"].empty? || params["order_projects"] && params["order_projects"].empty? %>
+  <div class="row">
+      <% @recent_projects.each do |project| %>
+        <% project_tags = project.respond_to?(:tags) ? project.tags : [] %>
+        <% project_tag_count = project_tags.count %>
+        <% open_issues = project.issues.open %>
+        <% cache_key1 = "redmine_favorite_projects/projects/#{project.updated_on}/#{@project_count}/project_tags/#{project_tag_count}/issues/#{open_issues.size}" %>          
+          <% cache(cache_key1) do %>              
+            <div class="card">
+              <div class="project_card" style="background-color: lavender">
+                <% parent_project = project.parent %>
+                <% if parent_project.present? %>
+                <div class="parent" onclick="location.href='<%= respond_to?(:project_launch_page_url) ? project_launch_page_url(parent_project) : project_path(parent_project) %>'">
+                  <h4><%= parent_project.name %> </h4>
+                  <div>»</div>
+                </div>
+                <% end %>
+                <div class="title">
+                  <%# Image removed - New.png asset not found %>
+                  <%= favorite_tag(project, User.current) %><h4><a href="<%= respond_to?(:project_launch_page_url) ? project_launch_page_url(project) : project_path(project) %>" title="<%= project.name %>" target="_blank" > <%= project.name %></a></h4>
+                </div>
+                <p style="margin-bottom: 5px;"></p>
+                <p class="author"><%= l(:object_added_by) %>: <%= project.try(:author).try(:name)%>(<%= format_date(project.created_on) %>)</p>
+                <p style="margin-bottom: 5px;"></p>
+                <% if project.short_description.present? %>
+                  <span>
+                    <div class="description">
+                      <table>
+                        <tr>
+                          <td>
+                            <span><%= raw project.short_description %></span>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </span>
+                <% end %>
+                <% if (User.current.allowed_to?(:view_issues, project) || User.current.admin?) && open_issues.any? %>
+                  <div class="items_count">
+                    <% if respond_to?(:render_project_issues_count) %>
+                      <%= render_project_issues_count(project, open_issues) %>
+                    <% else %>
+                      <div><%= l(:label_issue_plural) %>: <%= link_to(l(:label_x_open_issues_abbr, :count => open_issues.count), :controller => 'issues', :action => 'index', :project_id => project, :set_filter => 1) %> <small>(<%= l(:label_total) %>: <%= project.issues.count %>)</small></div>
+                    <% end %>
+                  </div>
+                  <% end %>
+                  <% if !User.current.respond_to?(:company_id) || User.current.company_id.nil? || (User.current.respond_to?(:company) && User.current.company&.default_company) %>
+                  <div class="tags">
+                    <% if project_tags.any? %>
+                      <%= project_tags.map{|tag| favorite_project_tag_link(tag.name)}.join(' ').html_safe %>
+                    <% end %>
+                  </div>
+                <% end %>
+              <!--  <div class="people">
+                  <%# project.users.each do |user| %>
+                  <span title="<%#= user.name %>"><%#= avatar(user, :rating=> 'PG', :size => 50) %></span>
+                  <%# end %>
+                </div> -->
+              </div>
+            </div>
+          <% end %>        
+      <% end %>
+  </div>
+  <%end%>
+
+  <div class="row">
+    <% @projects.each do |project| %>
+      <% project_tags = project.respond_to?(:tags) ? project.tags : [] %>
+      <% project_tag_count = project_tags.count %>
+      <% open_issues = project.issues.open %>
+      <% cache_key1 = "redmine_favorite_projects/projects/#{project.updated_on}/#{@project_count}/project_tags/#{project_tag_count}/issues/#{open_issues.size}" %>
+      <% cache(cache_key1) do %>
+        <div class="card">
+          <div class="project_card">
+            <% parent_project = project.parent %>
+            <% if parent_project.present? %>
+            <div class="parent" onclick="location.href='<%= respond_to?(:project_launch_page_url) ? project_launch_page_url(parent_project) : project_path(parent_project) %>'">
+              <h4><%= parent_project.name %> </h4>
+              <div>»</div>
+            </div>
+            <% end %>
+            <div class="title">
+              <%# Image removed - New.png asset not found %>
+              <%= favorite_tag(project, User.current) %><h4><a href="<%= respond_to?(:project_launch_page_url) ? project_launch_page_url(project) : project_path(project) %>" title="<%= project.name %>" target="_blank"> <%= project.name %></a></h4>
+            </div>
+            <p style="margin-bottom: 5px;"></p>
+            <p class="author"><%= l(:object_added_by) %>: <%= project.try(:author).try(:name)%>(<%= format_date(project.created_on) %>)</p>
+            <p style="margin-bottom: 5px;"></p>
+            <% if project.short_description.present? %>
+            <span>
+              <div class="description">
+                <table>
+                  <tr>
+                    <td>
+                      <span><%= raw project.short_description %></span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </span>
+            <% end %>
+            <% if (User.current.allowed_to?(:view_issues, project) || User.current.admin?) && open_issues.any? %>
+            <div class="items_count">
+              <% if respond_to?(:render_project_issues_count) %>
+                <%= render_project_issues_count(project, open_issues) %>
+              <% else %>
+                <div><%= l(:label_issue_plural) %>: <%= link_to(l(:label_x_open_issues_abbr, :count => open_issues.count), :controller => 'issues', :action => 'index', :project_id => project, :set_filter => 1) %> <small>(<%= l(:label_total) %>: <%= project.issues.count %>)</small></div>
+              <% end %>
+            </div>
+            <% end %>
+            <% if !User.current.respond_to?(:company_id) || User.current.company_id.nil? || (User.current.respond_to?(:company) && User.current.company&.default_company) %>
+            <div class="tags">
+              <% if project_tags.any? %>
+                <%= project_tags.map{|tag| favorite_project_tag_link(tag.name)}.join(' ').html_safe %>
+              <% end %>
+            </div>
+            <% end %>
+           <!--  <div class="people">
+              <%# project.users.each do |user| %>
+              <span title="<%#= user.name %>"><%#= avatar(user, :rating=> 'PG', :size => 50) %></span>
+              <%# end %>
+            </div> -->
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<span class="pagination"><%= pagination_links_full @project_pages, @project_count %></span>
+<% end %>

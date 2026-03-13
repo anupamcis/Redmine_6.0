@@ -1,0 +1,6 @@
+<tr class="<%= cycle("odd", "even") %>">
+  <td class=""> <%= link_to untracked_mail.subject, User.current.admin? ? admin_show_path(mail_id: untracked_mail) : show_path(@project, untracked_mail) %></td>
+  <td class=""> <%= User.joins(:email_address).where("email_addresses.address = ? ", untracked_mail.from_mail).first.try(:name) %></td>
+  <td class=""> <%= format_date(untracked_mail.sent_mail) %></td>
+  <td class=""> <%= format_date(untracked_mail.created_on) %></td>
+</tr>

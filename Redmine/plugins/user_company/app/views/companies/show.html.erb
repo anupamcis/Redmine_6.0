@@ -1,0 +1,51 @@
+<% if User.current.admin? %>
+  <div class="contextual">
+    <%= link_to(l(:button_edit), edit_company_path(@company), :class => 'icon icon-edit') %>
+  </div>
+<% end %>
+
+<h2><%= avatar @company, :size => "50" %> <%= @company.name %></h2>
+
+<div class="splitcontentleft">
+  <ul>
+    <li><%=l(:field_name)%>: <%= @company.name %></li>
+    <li><%=l(:field_phone_number)%>: <%= @company.phone_number %></li>
+    <li><%=l(:field_fax_number)%>: <%= @company.fax_number %></li>
+    <li><%=l(:field_homepage)%>: <%= @company.homepage %></li>
+    <li><%=l(:field_address)%>: <%= @company.address %></li>
+  </ul>
+  <br>
+  <% if @company.service_details.any? %>
+    Services <br>
+    <div class="autoscroll">
+      <table class="list">
+        <thead>
+          <tr>
+            <th><%= l(:field_service_id) %></th>
+            <th><%= l(:project) %></th>
+            <th><%= l(:field_service_type) %></th>
+            <th><%= l(:field_service_status) %></th>
+            <th><%= l(:field_name) %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for service_detail in @company.service_details -%>
+            <tr class="<%= cycle("odd", "even") %>">
+              <td class="username"><%= service_detail.service_name %></td>
+              <td class="firstname"><%= service_detail.project.present? ? service_detail.project.name : "NA" %></td>
+              <td class="lastname"><%= service_detail.service_detail_type %></td>
+              <td class="lastname"><%= service_detail.status %></td>
+              <td><%= service_detail.employee.present? ? service_detail.employee.name : "-" %></td>
+              <td class="buttons">
+                <%= button_to l(:sync_service), update_service_path(service_detail.service.id), :method => :post if User.current.admin? || User.current.self_and_descendents.map(&:id).include?(service_detail.try(:employee).try(:user).try(:id)) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>
+
+<% html_title @company.name %>

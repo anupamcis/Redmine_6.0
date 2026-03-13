@@ -1,0 +1,12 @@
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2
+/home/cis/.rbenv/versions/2.7.8/bin/ruby -I/home/cis/.rbenv/versions/2.7.8/lib/ruby/2.7.0/rubygems -rrubygems /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/rake-13.3.0/exe/rake RUBYARCHDIR\=/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/xapian-full-alaveteli-1.4.22.2 RUBYLIBDIR\=/home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/xapian-full-alaveteli-1.4.22.2
+Extracting xapian-core-1.4.22.tar.xz into tmp/x86_64-linux-gnu/ports/xapian-core/1.4.22... OK
+Running 'configure' for xapian-core 1.4.22... OK
+Running 'compile' for xapian-core 1.4.22... OK
+Running 'install' for xapian-core 1.4.22... OK
+Activating xapian-core 1.4.22 (from /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-core/1.4.22)...
+Extracting xapian-bindings-1.4.22.tar.xz into tmp/x86_64-linux-gnu/ports/xapian-bindings/1.4.22... OK
+Running 'configure' for xapian-bindings 1.4.22... OK
+Running 'compile' for xapian-bindings 1.4.22... OK
+Running 'install' for xapian-bindings 1.4.22... OK
+Activating xapian-bindings 1.4.22 (from /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_dmsf/vendor/bundle/ruby/2.7.0/gems/xapian-full-alaveteli-1.4.22.2/ports/x86_64-linux-gnu/xapian-bindings/1.4.22)...

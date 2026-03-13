@@ -1,0 +1,9 @@
+<% if User.current.allowed_to?(:view_customer_specific_security_requirements, @project, global: true) %>
+  <h2><%= l(:customer_specific_security_requirements) %></h2>
+
+  <%= render partial: "customer_specific_security_requirements/index" %>
+<%end%>
+
+<% if User.current.allowed_to?(:create_customer_specific_security_requirements, @project, global: true)%>
+  <%= link_to l(:add_security_requirement), new_project_customer_specific_security_requirement_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => l(:add), remote: true %>
+<%end%>

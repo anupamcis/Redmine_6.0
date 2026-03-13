@@ -1,0 +1,35 @@
+# English strings go here for Rails i18n
+en:
+  daily_status: "Daily Report"
+  label_last_status_not_available: "%{days} days ago status not available."
+  label_status_saved: "Status Saved"
+  label_email_sent_to_all_members: " , and mail has been sent to all members."
+  label_today_no_status: "No status available for today"
+  label_no_status: "No status available."
+  label_send_email_project_members: "Send Email to Members"
+  label_send_email_project_watchers: "Send Email to Watchers"
+  label_sent_email: "Email already sent for today's this update."
+  label_update: "Add status"
+  label_cancel: "Cancel"
+  label_email_subject: "Daily Status: "
+  label_thanks: "Thanks,"
+  label_add_update_today_status: "Add/Update Today's Status"
+  label_edit_today_status: "Add Today's Status"
+  label_invalid_date_format: "Invalid date format.It should be in YYYY-mm-dd"
+  label_email_note: "Daily status email will be sent to all project members"
+  manage_daily_status: Email Notification
+  label_daily_status_plural: Daily Statuses
+  label_add_signature: Add Signature
+  already_add_status_message: You have already added today's status
+  label_email_sent_to_all_members_first: "Mail has been sent to all members."
+  reply_added_message: "Reply added successfully."
+  reply_failed_message: "Failed to save reply."
+  add_reply: Add Reply.
+  label_send_reply_project_members: Send Reply to Members
+  label_reply_saved: "Reply added, and mail has been sent to all members."
+  label_daily_status_signature: Signature
+  label_signature: Signature
+  select_receiver_for_email: You have not selected any member of this mail, please select
+  note_message: "While reply on daily status please do not change its subject and from email id otherwise it might possible that project member or stackholder's will not receive this email"
+  thanks_n_regards: Thanks & Regards
+  error_daily_status_not_found: "Daily status not found. It may have been deleted."

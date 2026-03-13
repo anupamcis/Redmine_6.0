@@ -1,0 +1,74 @@
+<% risks = User.current.is_client? ? @project.risks.where(is_visible_to_client: true) : @project.risks %>
+<% if risks.any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_risk_description) %></th>
+          <th><%= l(:field_risk_category) %></th>
+          <th><%= l(:field_source) %></th>
+          <th><%= l(:field_probability) %></th>
+          <th><%= l(:field_impact) %></th>
+          <th><%= l(:field_exposure) %></th>
+          <th><%= l(:field_mitigation_plan) %></th>
+          <th><%= l(:field_contingency_plan) %></th>
+          <th><%= l(:field_comment) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for risk in risks -%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="firstname"><%= risk.risk_description %></td>
+            <td class="lastname"><%= risk.risk_category %></td>
+            <td class="lastname"><%= risk.source %></td>
+            <td class="lastname"><%= risk.probability %></td>
+            <td class="lastname"><%= risk.impact %></td>
+            <td class="lastname"><%= risk.exposure %></td>
+            <td class="lastname"><%= risk.mitigation_plan %></td>
+            <td class="lastname"><%= risk.contingency_plan %></td>
+            <td class="lastname"><%= risk.comment %></td>
+            <td class="buttons">
+              <%= link_to l(:add_risk_mitigation_plan), new_project_risk_mitigation_plan_path(@project, risk_id: risk.id, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => l(:add_risk_mitigation_plan), remote: true if User.current.allowed_to?(:create_risks, @project, global: true) %>
+              <%= link_to l(:edit), edit_project_risk_path(@project,risk, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_risks, @project, global: true) %>
+              <%= delete_link project_risk_path(@project,risk, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_risks, @project, global: true)%>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<% if User.current.allowed_to?(:create_risks, @project, global: true)%>
+  <%= link_to l(:add_risk), new_project_risk_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => l(:add), remote: true %>
+<%end%>
+<br><br>
+<h2><%= l(:summary) %></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:item_name) %></th>
+        <th><%= l(:count) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="<%= cycle("odd", "") %>">
+        <td class="firstname"><%= l(:identified) %></td>
+        <td class="lastname"><%= @project.risk_count("identified") %></td>
+      </tr>
+      <tr class="<%= cycle("even", "") %>">
+        <td class="firstname"><%= l(:occurred) %></td>
+        <td class="lastname"><%= @project.risk_count("occurred") %></td>
+      </tr>
+      <tr class="<%= cycle("odd", "") %>">
+        <td class="firstname"><%= l(:mitigated) %></td>
+        <td class="lastname"><%= @project.risk_count("mitigated") %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

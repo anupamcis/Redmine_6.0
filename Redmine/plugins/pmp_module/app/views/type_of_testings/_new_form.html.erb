@@ -1,0 +1,10 @@
+<%= error_messages_for 'type_of_testing' %>
+
+<div class="">
+  <%-@global_testings.each do |gtest|%>
+    <%- unless @project.type_of_testings.include?(gtest.type_of_testing) %>
+      <input type="checkbox" name="global_testing[]" value="<%=gtest.id%>" class="global_testing_name"> <%=gtest.type_of_testing_name%>
+    <%end%>
+  <%end%>
+</div>
+<br/>

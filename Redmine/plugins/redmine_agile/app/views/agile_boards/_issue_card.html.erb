@@ -1,0 +1,72 @@
+<div class="issue-card hascontextmenu status-<%= issue.status.name.downcase.gsub(' ', '-') %> <%= agile_color_class(issue, :color_base => @query.respond_to?(:color_base) && @query.color_base) %>" data-id="<%= issue.id %>">
+    <span class="fields">
+        <% if @query.has_column_name?(:project) %>
+        <p class="project">
+          <%= issue.project.name %>
+        </p>
+        <% end %>
+        <p class="issue-id <%= 'without-tracker' if @query.has_column_name?(:tracker).blank? %>">
+          <%= check_box_tag("ids[]", issue.id, false, :id => nil, :class => 'checkbox') %>
+          <% if @query.has_column_name?(:tracker) %>
+          <strong><%= issue_heading(issue) %></strong>
+          <% end %>
+          <%= render_issue_card_hours(@query, issue) %>
+        </p>        
+        <p class="name" ><%= link_to "#{'#' + issue.id.to_s + ': ' if @query.has_column_name?(:id) && @query.has_column_name?(:tracker).blank?}#{issue.subject.truncate(100)}", issue_path(issue) %></p>
+        <p class="attributes">
+          <% @query.card_columns.select{|c| !c.value(issue).blank? }.each do |column| %>
+            <b><%= column.caption %></b>: <%= column_content(column, issue) %> <br>
+          <% end %>
+        </p>
+        <em class="info description">
+          <%= issue.description.truncate(200).html_safe %>
+        </em>
+        <% if @query.has_column_name?(:sub_issues) && issue.sub_issues.any? %>
+          <div class='sub-issues'>
+            <%= issue_children(issue) %>
+          </div>
+        <% end %>
+        <% if @query.has_column_name?(:thumbnails)  %>
+          <% image = issue.attachments.select(&:thumbnailable?).last %>
+          <% if image %>
+          <div class="thumbnail" style="background-image: url('<%= thumbnail_path(image, :size => 250) %>')"/>
+          </div>
+          <% end %>
+        <% end %>
+        <div class="progress_board">
+          <% if @query.has_column_name?(:done_ratio) %>
+            <div class="progress_board_bar"><%= progress_bar(issue.done_ratio, :width => '100%') %></div>
+            <div class="progress_board_per"><%="#{issue.done_ratio}%"%></div>
+          <% end %>
+        </div>
+        <div class="user_board">
+          <% if @query.has_column_name?(:assigned_to) %>
+            <p class="info" style="<%= 'display: none;' unless issue.assigned_to %>">
+              <span class="user">
+                <%if issue.assigned_to%>
+                  <% board_user = issue.assigned_to
+                    name = board_user.name
+                  %>
+                  <% if board_user.active?%>
+                    <%= link_to user_path(board_user) do %>
+                      <%= image_tag('user.svg',:alt=>name ,:title=> name,:class=>'user_pic')%>
+                      <%= content_tag(:span, name).html_safe%>
+                    <% end %>
+                  <%else%>
+                    <%=name%>
+                  <%end%>
+                <%end%>
+              </span>
+            </p>
+          <% end %>
+          <div class = "board_date_priority" >
+              <%if issue.start_date.present? %>
+                <div class = "board_date" ><%=issue.start_date.strftime("%b %y")%></div>
+              <%end%>
+              <%if issue.priority.present? %>
+                <div class ="board_priority_<%=issue.priority.name.downcase%>"><%= issue.priority.name%></div>
+              <%end%>
+          </div>
+        </div>
+    </span>
+</div>

@@ -1,0 +1,14 @@
+<%= error_messages_for 'communication_plan' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "communication_plan[project_id]", @project.id %>
+  <p><%= f.select :stackholder_name, options_from_collection_for_select(@project.users.where.not(firstname: "CIS"), 'name', 'name', @communication_plan.stackholder_name), {required: true, include_blank: "Select stackholder"}, {class: "select small"} %></p>
+  <p><%= f.text_field :communication_need, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :means_of_communication, :size => 25 %></p>
+
+  <p><%= f.select :frequency_of_communication, options_for_select(COMMUNICATION_MEANS, @communication_plan.frequency_of_communication),{:required => true, include_blank: 'select frequency of communication'}, {class: "small select2"} %></p>
+
+  <p><%= f.select :responsibility_of_communication, options_from_collection_for_select(@project.users.where.not(firstname: "CIS"), 'name', 'name', @communication_plan.responsibility_of_communication), {required: true, include_blank: "Select responsible person"}, {class: "select small"} %></p>
+  <p><br>
+</div>

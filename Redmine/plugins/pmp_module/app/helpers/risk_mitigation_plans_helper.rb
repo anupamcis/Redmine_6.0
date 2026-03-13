@@ -1,0 +1,2 @@
+module RiskMitigationPlansHelper
+end

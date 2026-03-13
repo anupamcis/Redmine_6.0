@@ -1,0 +1,27 @@
+<% if @company.present? && @projects.present? %>
+  <%= form_tag(services_migrate_project_company_path, :method => :get) do %>
+  <p>
+  <%= text_field_tag 'client_company', @company.name, disabled: true, :size=>"80"%>
+  <%= hidden_field_tag 'client_company_id', @company.erp_client_id %>
+  </p>
+  <p>
+  <%= select_tag "client_project", grouped_options_for_select(Project.group_projects_by_status(@projects.to_a)), prompt: 'select project...', class: "select2 small" %>
+  </p>
+  <p>
+    <%= submit_tag l(:connect_company) %>
+  </p>
+  <% end %>
+<% else %>
+  <% if params[:client_email].present? %>
+    No company found for <%= params[:client_email] %> email id
+  <% end%>
+<% end %>
+
+<style type="text/css">
+  .select2-container--default .select2-results__group {
+    font-size: 17px;
+  }
+  .select2-results__options {
+    max-height: 100% !important;
+  }
+</style>

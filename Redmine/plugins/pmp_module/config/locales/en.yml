@@ -1,0 +1,487 @@
+# English strings go here for Rails i18n
+en:
+  pmp_reports: "PMP"
+  label_acronyms_and_glossary: Acronyms and glossary
+  label_hardware_and_software_plan: "HW/SW plan"
+  label_project_process: Project process
+  label_staffing_plan: Staffing plan
+  label_training: Training
+  label_communication_and_coordination: Communication and Coordination
+  label_verification: Verification
+  label_risk: Risk
+  label_lessons_learned_and_reusable_artifacts: Lessons learned and reusable artifacts
+  label_configuration_and_data_management_plan: Configuration and data management plan
+  label_security_requirements: Customer specific security requirements
+  label_standards_and_guidelines : Standards and guidelines
+  label_deployment_strategy: Deployment strategy
+  label_project_monitoring_review: Project monitoring review
+
+  # Acronym
+  field_abbreviation: Abbreviation
+  field_full_form: Full Form
+  acronyms_delete_success: Acronym deleted successfully
+  acronyms_update_success: Acronym updated successfully
+  acronyms_add_success: Acronym added successfully
+  add_acronym: Add acronym
+  edit_acronym: Edit acronym
+
+  # Security requirement
+  add_security_requirement: Add security requirement
+  edit_security_requirement: Edit security requirement
+  field_security_requirement: Security requirement
+  field_remarks: Remarks
+  field_is_visible_to_client: Visible to client
+  security_requirement_delete_success: Security requirement deleted successfully
+  security_requirement_update_success: Security requirement updated successfully
+  security_requirement_add_success: Security requirement added successfully
+
+  # Standard
+  add_standard: Add standard
+  edit_standard: Edit standard
+  field_document_name: Standard/guidelines name
+  field_source: Source url
+  standard_delete_success: Standard deleted successfully
+  standard_update_success: Standard updated successfully
+  standard_add_success: Standard added successfully
+
+  #deployment_strategy
+  add_deployment_strategy: Add deployment strategy
+  edit_deployment_strategy: Edit deployment strategy
+  field_release_plan: Release plan
+  field_release_date: Release date
+  field_details: Details
+  deployment_strategy_delete_success: Deployment strategy deleted successfully
+  deployment_strategy_update_success: Deployment strategy updated successfully
+  deployment_strategy_add_success: Deployment strategy added successfully
+
+
+  #Project monitoring review
+  add_monitoring_review: Add project monitoring review
+  edit_monitoring_review: Edit project monitoring review
+  field_milestone: Milestone
+  field_frequency: Frequency
+  monitoring_review_delete_success: Project monitoring review deleted successfully
+  monitoring_review_update_success: Project monitoring review updated successfully
+  monitoring_review_add_success: Project monitoring review added successfully
+
+  #communication_plans
+  add_communication_plan: Add communication plan
+  edit_communication_plan: Edit communication plan
+  field_stackholder_name: Stakeholder name
+  field_communication_need: Communication need
+  field_means_of_communication: Means of communication
+  field_frequency_of_communication: Frequency of communication
+  field_responsibility_of_communication: Responsibility of communication
+  communication_plan_delete_success: Communication plan deleted successfully
+  communication_plan_update_success: Communication plan updated successfully
+  communication_plan_add_success: Communication plan added successfully
+  label_communication_plan: No communication plan to display
+
+  #coordination_plans
+  add_coordination_plan: Add coordination plan
+  edit_coordination_plan: Edit coordination plan
+  field_coordination_need: Coordination need
+  field_planed_date_of_receivables: Planned date of receivables
+  coordination_plan_delete_success: Coordination plan deleted successfully
+  coordination_plan_update_success: Coordination plan updated successfully
+  coordination_plan_add_success: Coordination plan added successfully
+  label_coordination_plans: No coordination plan to display
+
+  #coordination_plans
+  add_verification_plan: Add verification plan
+  edit_verification_plan: Edit verification plan
+  field_sdlc_phase: SDLC phase
+  field_work_product: Work product
+  field_verification_method: Verification method
+  field_validation_technique: Validation technique
+  verification_plan_delete_success: Verification plan deleted successfully
+  verification_plan_update_success: Verification plan updated successfully
+  verification_plan_add_success: Verification plan added successfully
+  label_verification_plans: No verification plan to display
+
+  #stakeholder_management_plan
+  add_stakeholder_management_plan: Add stakeholder management plan
+  edit_stakeholder_management_plan: Edit stakeholder management plan
+  field_stakeholder_name: Stakeholder name
+  field_unaware: Unaware
+  field_resistant: Resistant
+  field_netural: Neutral
+  field_supportive: Supportive
+  field_leading: Leading
+  field_planed_date_of_receivables: Planned date of receivables
+  stakeholder_management_plan_delete_success: Stakeholder management plan deleted successfully
+  stakeholder_management_plan_update_success: Stakeholder management plan updated successfully
+  stakeholder_management_add_success: Stakeholder management plan added successfully
+  label_stakeholder_management_plan: No stakeholder management plan to display
+  stackholder_name_validation: "and responsibility of communication should not be same."
+
+  #type_of_testings
+  add_type_of_testing: Add type of testing
+  edit_type_of_testing: Edit type of testing plan
+  field_type_of_testing: Types of testing
+  field_testing_method: Testing method
+  field_stakeholder: Stakeholder
+  type_of_testing_delete_success: Type of testing plan deleted successfully
+  type_of_testing_update_success: Type of testing plan updated successfully
+  type_of_testing_add_success: Type of testing plan added successfully
+  label_type_of_testings: No type of testing plan to display
+  hint_for_type_stakholder: For updating stakeholder double click on stakeholder
+
+  #training_need
+  add_training_need: Add training need
+  edit_training_need: Edit training need
+  field_training_type: Training Type
+  field_name_of_training: Name of training
+  field_training_method: Training method
+  field_expected_date: Expected date
+  field_actual_date: Actual date
+  field_status: Status
+  field_comment: Comment
+  field_attendees: Attendees
+  field_duration: Duration
+  training_need_delete_success: Training need deleted successfully
+  training_need_update_success: Training need updated successfully
+  training_need_add_success: Training need added successfully
+
+  #knowledge_and_skill_requirement
+  add_knowledge_and_skill_requirement: Add knowledge and skill requirement
+  edit_knowledge_and_skill_requirement: Edit knowledge and skill requirement
+  field_resource_name: Resource
+  field_skill_required: Skill required
+  field_competency_scale_required: Competency scale required
+  field_competency_available: Competency available
+  field_gap: "Gap (Name of skills)"
+  field_means_of_acquiring_skills: Means of acquiring skills
+  knowledge_and_skill_requirement_delete_success: Knowledge and skill requirement deleted successfully
+  knowledge_and_skill_requirement_update_success: Knowledge and skill requirement updated successfully
+  knowledge_and_skill_requirement_add_success: Knowledge and skill requirement added successfully
+
+  #staff_need
+  add_staff_need: Add staff need
+  edit_staff_need: Edit staff need
+  field_role: Role
+  field_allocated_persons: Name(s) allocated persons
+  field_technologies: Technologies
+  field_no_of_persons: No of persons
+  field_min_experience: Experience(Months)
+  field_min_experience1: Experience(Years)
+  field_from_date: From date
+  field_to_date: To date
+  staff_need_delete_success: Staff need deleted successfully
+  staff_need_update_success: Staff need updated successfully
+  staff_need_add_success: Staff need added successfully
+  staff_need_experience_validate: can not be greater than 360 months
+
+  #user_role_and_responsibilities
+  add_user_role_and_responsibility: Add user role and responsibility
+  edit_user_role_and_responsibility: Edit user role and responsibility
+  field_name_of_person: Name of person
+  field_role_and_responsibility: Role
+  field_reporting_person: Reporting person
+  user_role_and_responsibility_delete_success: User role and responsibility deleted successfully
+  user_role_and_responsibility_update_success: User role and responsibility updated successfully
+  user_role_and_responsibility_add_success: User role and responsibility added successfully
+  hint_for_responsbility: For updating reporting person double click on person name
+
+  #reusable_artifact
+  reusable_artifact: "Reusable code/artifact"
+  add_reusable_artifact: Add reusable artifact
+  edit_reusable_artifact: Edit reusable artifact
+  field_reusable_component_name: Reusable component name
+  field_short_description: Short description
+  field_url: Url
+  url_hint: Use lms url.
+  reusable_artifact_delete_success: Reusable artifact deleted successfully
+  reusable_artifact_update_success: Reusable artifact updated successfully
+  reusable_artifact_add_success: Reusable artifact added successfully
+
+  #lesson learned
+  lesson_learned: Lessons learned
+  add_lesson: Add lesson learned
+  edit_lesson: Edit lesson learned
+  field_lesson_learnt_type: Type
+  field_description: Description
+  lesson_delete_success: Lesson learned deleted successfully
+  lesson_update_success: Lesson learned updated successfully
+  lesson_add_success: Lesson learned added successfully
+
+  #project_folder_structure
+  project_folder_structure: Project folder structure
+  add_project_folder_structure: Add project folder structure
+  edit_project_folder_structure: Edit project folder structure
+  field_folder_name: Source url
+  field_configuration_item: Configuration item
+  field_access_details: Access details
+  project_folder_structure_delete_success: Project folder structure deleted successfully
+  project_folder_structure_update_success: Project folder structure updated successfully
+  project_folder_structure_add_success: Project folder structure added successfully
+
+  #configuration item
+  configuration_item: Configuration item
+  add_configuration_item: Add configuration item
+  edit_configuration_item: Edit configuration item
+  field_phase: Phase
+  field_configuration: Configuration
+  field_storage_location: Storage location
+  configuration_item_delete_success: Configuration item deleted successfully
+  configuration_item_update_success: Configuration item updated successfully
+  configuration_item_add_success: Configuration item added successfully
+
+  #back_up_detail
+  back_up_detail: Backup details
+  add_back_up_detail: Add Backup detail
+  edit_back_up_detail: Edit Backup detail
+  field_server_name: Server name
+  field_backup_type: Backup type
+  field_data_detail: Backup data details
+  field_media_label: Media Label(Location Name/Project Name/Server Name)
+  field_backup_frequency: Backup frequency
+  field_detail_of_media_storage: Details of Media Storage
+  field_role_responsible: Role responsible
+  back_up_detail_delete_success: Backup detail deleted successfully
+  back_up_detail_update_success: Backup detail updated successfully
+  back_up_detail_add_success: Backup detail added successfully
+
+  #Project process
+  field_sheet_name: Sheet name
+  field_is_enabled: Enable/Disable
+
+  #configuration_audit
+  configuration_audit: Configuration audit
+  add_configuration_audit: Add configuration audit
+  edit_configuration_audit: Edit configuration audit
+  field_cm_audit: "CM audit"
+  field_date_or_event: Date or Event to trigger the Audit
+  field_focus_of_audit: Focus of the Audit
+  field_auditor: Auditor
+  field_min_experience: Experience(Months)
+  field_from_date: From date
+  field_to_date: To date
+  configuration_audit_delete_success: Configuration audit deleted successfully
+  configuration_audit_update_success: Configuration audit updated successfully
+  configuration_audit_add_success: Configuration audit added successfully
+
+  #data retention plan
+  data_retention_plan: Data retention plan
+  add_data_retention_plan: Add data retention plan
+  edit_data_retention_plan: Edit data retention plan
+  field_record_name: Record Name
+  field_min_retention: Min Retention
+  field_type_of_record: Type of Record/Medium
+  field_storage_path: Storage Path
+  field_disposal: Disposal
+  data_retention_plan_delete_success: Data retention plan deleted successfully
+  data_retention_plan_update_success: Data retention plan updated successfully
+  data_retention_plan_add_success: Data retention plan added successfully
+
+  #Base lining plan
+  base_lining_plan: Baselining plan
+  add_base_lining_plan: Add baselining plan
+  edit_base_lining_plan: Edit baselining plan
+  field_when_to_baseline: When to baseline
+  field_trigger_for_baseline: Trigger for baseline
+  field_what_to_baseline: What to baseline
+  base_lining_plan_delete_success: Baselining plan deleted successfully
+  base_lining_plan_update_success: Baselining plan updated successfully
+  base_lining_plan_add_success: Baselining plan added successfully
+
+  #Client specific credential
+  client_specific_credential: Client specific credential
+  add_client_specific_credential: Add client specific credential
+  edit_client_specific_credential: Edit client specific credential
+  field_site_path: Path/Url
+  field_login_id: Login id
+  field_login_password: Login password
+  field_ip_address: Ip address
+  field_credentials_for: Credentials for (like staging server, git, pms2 etc.)
+  client_specific_credential_delete_success: Client specific credential deleted successfully
+  client_specific_credential_update_success: Client specific credential updated successfully
+  client_specific_credential_add_success: Client specific credential added successfully
+
+  #hardware_software_suplied_by_clients
+  hardware_software_suplied_by_client: Items supplied by client
+  add_hardware_software_suplied_by_client: Add item supplied by client
+  edit_hardware_software_suplied_by_client: Edit item supplied by client
+  field_client_supplied_item: Client supplied item
+  hardware_software_suplied_by_client_delete_success: Item supplied by client deleted successfully
+  hardware_software_suplied_by_client_update_success: Item supplied by client updated successfully
+  hardware_software_suplied_by_client_add_success: Item supplied by client added successfully
+
+  #Hardware software plan
+  hardware_software_plan: Hardware software plan
+  add_hardware_software_plan: Add hardware software plan
+  edit_hardware_software_plan: Edit hardware software plan
+  field_profile_type: Type
+  field_resource: Resource
+  field_environment: Environment
+  field_quantity: Quantity
+  field_item_version: Version
+  field_action_type: Action
+  field_profile_name: Profile Name
+  field_responsible_person: Responsible person
+  field_critical_resource: Critical resource
+  field_send_mail: Send mail
+  field_is_visible_to_client: Visible to client
+  hardware_software_plan_delete_success: Hardware software plan deleted successfully
+  hardware_software_plan_update_success: Hardware software plan updated successfully
+  hardware_software_plan_add_success: Hardware software plan added successfully
+  add_more_hardware_software_plan: Add hardware software plan to %{to}
+  hardware_software_plan_added_success_add_more: Hardware software plan added successfully to %{to}
+
+  #risk
+  risk: Risk
+  add_risk: Add risk
+  edit_risk: Edit risk
+  field_risk_description: Description
+  field_is_occurred: Occurred
+  field_is_mitigated: Mitigated
+  field_risk_category: Category
+  field_probability: Probability
+  field_impact: Impact
+  field_exposure: Exposure
+  field_source: Source
+  field_mitigation_plan: Mitigation plan
+  field_contingency_plan: Contingency plan
+  field_date_occurred: Occurred date
+  field_closed_date: Closed date
+  field_action_taken: Action taken
+  risk_delete_success: Risk deleted successfully
+  risk_update_success: Risk updated successfully
+  risk_add_success: Risk added successfully
+  identified: No of risk identified
+  occurred: No of risk occurred
+  mitigated: No of risk mitigated
+  risk_manadatory_mitigation_hint: If risk exposure is greater than %{config}, Then mitigation plan field is mandatory
+  risk_manadatory_contingency_hint: If risk exposure is greater than %{config}, Then contingency plan field is mandatory
+
+  #admin_section
+  raci_chart: Raci chart configuration
+  button_work_type: Add work type
+  field_work_type: Work type
+  edit_button_work_type: Edit work type
+  label_pmp_tab_new: Add New tab
+  label_pmp_tab_plural: PMP tabs
+  field_tab_name: PMP tab name
+  field_lock_percent: Percent for locking tab
+  field_position: Position
+  field_parent_work_type: Parent work type
+  hardware_software_profile: HW/SW Global Profile
+  field_resource_type: Resource type
+  field_project_types: Project types
+  global_profile_plural: HW/SW Global Profile
+  label_global_profile_new: Add New HW/SW Global Profile
+  global_profile_data: Global profile data
+  hardware_and_software_profile_added: HW/SW profile added successfully
+  hardware_and_software_profile_updated: HW/SW profile updated successfully
+  hardware_and_software_profile_deleted: HW/SW profile updated successfully
+  edit_pmp_config: Edit admin Configuration
+  skill_requirement_config: Knowledge and skills requirement configuration
+  risk_config: Risk configuration
+
+
+  # PmpAdminConfiguration
+  admin_configuration: Admin Configuration
+  field_skill_requirement_cale_differnce: Skill requirement scale differnce
+  field_risk_mitigation_difference: Risk mitigation difference
+  field_risk_contingency_difference: Risk contingency difference
+  edit_admin_configuration: Edit admin configuration
+  pmp_admin_configuration_update_success: Admin configuration updated successfully
+
+
+  #Extra
+  best_practice: Best practice
+  went_wrong: Went wrong
+  went_right: Went right
+  item_name: Type name
+  count: Count
+  summary: Summary
+
+  #Matrix
+  field_matrix_type: Matrix Type
+  field_matrix_filter: Matrix Filter
+
+  #HardwareSoftwareConfiguration
+  hardware_software_configuration: Configuration type
+  hardware_software_resource: Resource type
+  label_hardware_software_configuration_plural: HW/SW configurations
+  label_hardware_software_resource_plural: HW/SW resources
+  label_hardware_software_configuration_new: Add New HW/SW Configuration
+  field_configuration_item_name: Name
+  button_create: Create
+  button_update: Update
+  button_save: Save
+  field_hardware_software_resource: Resource Name
+  configure_create_message: Configuration added successfully
+  configure_destroy_message: Configuration deleted successfully
+  configure_update_message: Configuration updated successfully
+
+  #responsibility_matrix
+  label_no_responsibility_matrix: No responsibility matrix to display
+  add_responsibility_assignment_matrix: Add responsibility assignment matrix
+  edit_responsibility_assignment_matrix: Edit responsibility assignment matrix
+  assignment_matrix_add_success: Responsibility assignment matrix added successfully
+  assignment_matrix_update_success: Responsibility assignment matrix updated successfully
+  assignment_matrix_delete_success: Responsibility assignment matrix deleted successfully
+  raci_hint: If you update matrix type then project responsibility data will be reset, Then you have to reassign responsibilities for this project
+  raci_accountable: Accountable
+  raci_consult: Consult
+  raci_inform: Inform
+  raci_responsible: Responsible
+
+
+  #acronyms and glossaries
+  acronyms_and_glossaries: Acronyms and glossary
+  communication_plans: Communication plans
+  coordination_plans: Coordination plans
+  stakeholder_management_plans: Stakeholder management plans
+  deployment_strategies: Deployment strategies
+  project_monitoring_reviews: Project monitoring reviews
+  project_processes: Project process
+  customer_specific_security_requirements: Customer specific security requirements
+  project_responsibility_assignment_matrix_filter: Project responsibility assignment matrix filter
+  user_role_and_responsibilities: User role and responsibilities
+  staff_needs: Staff needs
+  standard_and_guidlines: Standard and guidelines
+  training_needs: Training needs
+  knowledge_and_skill_requirements: Knowledge and skill requirements
+  verification_plans: Verification plans
+  type_of_testings: Types of testings
+  resources: Resources
+  create_resource_message: Resource added successfully
+  destroy_resource_message: Resource deleted successfully
+  update_resource_message: Resource updated successfully
+  not_auth: You are not authorised to access this page
+  filter_matrix_add_success: Project responsibility assignment matrix filters added successfully
+  filter_matrix_updated_success: Project responsibility assignment matrix filters updated successfully
+
+  #global_type_of_testing
+  label_global_type_of_testing_new: Add new profile
+  label_global_type_of_testing_plural: Global type of testing profiles
+  field_type_of_testing_name: Type of testing profile name
+  field_testing_method: Testing methods
+
+  #global_profiles
+  pmp_global_profiles: PMP global profiles
+  label_global_acronyms_and_glossary_plural: Global acronyms and glossary
+  label_global_acronyms_and_glossary_new: Add new acronym
+  label_global_back_up_detail_new: Add new back up detail
+  label_global_back_up_detail_plural: Global back up details
+  label_global_data_retention_plan_new: Add new global data retention plan
+  label_global_data_retention_plan_plural: Global data retention plans
+  label_global_work_product_new: Add verification plan work product
+  label_global_work_product_plural: Add verification plan work products
+
+  # RiskMitigationPlan
+  risk_mitigation_plan: Risk Mitigation Plan
+  field_risk_id: Risk
+  field_risk: Risk
+  edit_risk_mitigation_plan: Edit Risk Mitigation Plan
+  field_date_occurred: Date Occurred
+  field_closed_date: Closed Date
+  field_assigned_to: Assigned To
+  field_action_taken: Action Taken
+  add_risk_mitigation_plan: Add Risk Mitigation Plan
+  risk_mitigation_plan_delete_success: Risk Mitigation Plan deleted successfully
+  risk_mitigation_plan_update_success: Risk Mitigation Plan updated successfully
+  risk_mitigation_plan_add_success: Risk Mitigation Plan added successfully
+  field_tailoring: Tailoring

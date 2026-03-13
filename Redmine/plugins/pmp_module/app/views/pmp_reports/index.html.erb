@@ -1,0 +1,10 @@
+<%= render partial: 'title_bar' %>
+<h1><%= l(:pmp_reports) %>
+<% if @project.created_on < Date.parse("18/07/2017") %>
+  <span style="color: red; font-size: 20px;">(Created before V 2.6)</span>
+<% end %>
+</h1></br>
+
+<%= render_tabs pmp_settings_tabs %>
+<%= calendar_for('abc_hello') %>
+<% html_title(l(:pmp_reports)) -%>

@@ -1,0 +1,25 @@
+<% if @projects.nil? || @projects.empty? %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead><tr>
+        <th></th>
+        <th></th>
+        <% @query.columns.each do |column| %>
+        <%= content_tag('th', h(column.caption)) %>
+        <% end %>
+      </tr></thead>
+      <tbody>
+        <% project_tree(@projects) do |project, level| %>
+        <tr class="<%= cycle("odd", "even") %> <%= project.css_classes %> <%= level > 0 ? "idnt idnt-#{level}" : nil %>">
+          <td><%# Image removed - New.png asset not found %></td>
+          <td><%= favorite_tag(project, User.current) %></td>
+          <% @query.columns.each do |column| %><%= content_tag 'td', column_content(column, project), :class => column.css_classes %><% end %>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<span class="pagination"><%= pagination_links_full @project_pages, @project_count %></span>
+<% end %>

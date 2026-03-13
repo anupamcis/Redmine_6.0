@@ -1,0 +1,245 @@
+{
+  "generated_at": "2025-10-31T18:00:00Z",
+  "analysis_version": "1.0",
+  "top_n_endpoints": 50,
+  "findings": [
+    {
+      "id": "FINDING-001",
+      "controller_action": "IssuesController#index",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/issues",
+        "timestamp": "2025-10-31T10:15:23Z"
+      },
+      "metrics": {
+        "median": 450,
+        "p50": 450,
+        "p95": 1850,
+        "max": 3200,
+        "requests_sampled": 1250
+      },
+      "principal_cause_tags": ["N+1", "large-result-set", "missing-index"],
+      "confidence": "high",
+      "priority_score": 78.5,
+      "manager_summary": "Issues list page shows 1.8s p95 response time affecting 1250+ daily requests. Caused by N+1 queries loading issue relations and custom fields. High user impact.",
+      "detailed_finding_id": "FINDING-001"
+    },
+    {
+      "id": "FINDING-002",
+      "controller_action": "IssuesController#show",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/issues/12345",
+        "timestamp": "2025-10-31T10:18:45Z"
+      },
+      "metrics": {
+        "median": 280,
+        "p50": 280,
+        "p95": 1200,
+        "max": 2100,
+        "requests_sampled": 3420
+      },
+      "principal_cause_tags": ["N+1", "heavy-scan"],
+      "confidence": "high",
+      "priority_score": 72.3,
+      "manager_summary": "Issue detail page has 1.2s p95 affecting most frequent user action (3420 daily views). Multiple N+1 queries for journals, watchers, and time entries.",
+      "detailed_finding_id": "FINDING-002"
+    },
+    {
+      "id": "FINDING-003",
+      "controller_action": "ProjectsController#index",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/projects",
+        "timestamp": "2025-10-31T09:30:12Z"
+      },
+      "metrics": {
+        "median": 320,
+        "p50": 320,
+        "p95": 980,
+        "max": 1650,
+        "requests_sampled": 890
+      },
+      "principal_cause_tags": ["N+1", "slow-render"],
+      "confidence": "high",
+      "priority_score": 65.4,
+      "manager_summary": "Projects list page shows 980ms p95 affecting navigation. Missing eager loading for project members and custom fields in list view.",
+      "detailed_finding_id": "FINDING-003"
+    },
+    {
+      "id": "FINDING-004",
+      "controller_action": "CalendarsController#show",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/projects/123/calendar",
+        "timestamp": "2025-10-31T11:22:33Z"
+      },
+      "metrics": {
+        "median": 680,
+        "p50": 680,
+        "p95": 2450,
+        "max": 4200,
+        "requests_sampled": 245
+      },
+      "principal_cause_tags": ["heavy-scan", "large-result-set"],
+      "confidence": "high",
+      "priority_score": 58.9,
+      "manager_summary": "Calendar view has 2.4s p95 loading all issues for date range without proper indexing. Heavy sequential scan on issues table.",
+      "detailed_finding_id": "FINDING-004"
+    },
+    {
+      "id": "FINDING-005",
+      "controller_action": "ReportsController#issue_report",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/projects/123/issues/report",
+        "timestamp": "2025-10-31T14:15:20Z"
+      },
+      "metrics": {
+        "median": 1200,
+        "p50": 1200,
+        "p95": 3800,
+        "max": 5600,
+        "requests_sampled": 156
+      },
+      "principal_cause_tags": ["heavy-scan", "large-result-set"],
+      "confidence": "medium",
+      "priority_score": 54.2,
+      "manager_summary": "Issue reports page has 3.8s p95 loading all project issues for aggregation without pagination. High DB load.",
+      "detailed_finding_id": "FINDING-005"
+    },
+    {
+      "id": "FINDING-006",
+      "controller_action": "PmpModule::ProjectsController#spi_cpi",
+      "endpoint_type": "plugin",
+      "sample_request": {
+        "method": "GET",
+        "path": "/projects/123/spi_cpi",
+        "timestamp": "2025-10-31T13:45:10Z"
+      },
+      "metrics": {
+        "median": 2100,
+        "p50": 2100,
+        "p95": 4800,
+        "max": 7200,
+        "requests_sampled": 89
+      },
+      "principal_cause_tags": ["plugin", "heavy-scan"],
+      "confidence": "high",
+      "priority_score": 52.1,
+      "manager_summary": "PMP SPI/CPI report plugin has 4.8s p95 with complex calculations loading all time entries and issues. Needs optimization.",
+      "detailed_finding_id": "FINDING-006"
+    },
+    {
+      "id": "FINDING-007",
+      "controller_action": "GanttsController#show",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/projects/123/gantt",
+        "timestamp": "2025-10-31T12:30:45Z"
+      },
+      "metrics": {
+        "median": 950,
+        "p50": 950,
+        "p95": 2100,
+        "max": 3800,
+        "requests_sampled": 312
+      },
+      "principal_cause_tags": ["slow-render", "large-result-set"],
+      "confidence": "medium",
+      "priority_score": 48.7,
+      "manager_summary": "Gantt chart has 2.1s p95 with slow JavaScript rendering of large issue sets. Consider lazy loading and pagination.",
+      "detailed_finding_id": "FINDING-007"
+    },
+    {
+      "id": "FINDING-008",
+      "controller_action": "SearchController#index",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/search?q=bug",
+        "timestamp": "2025-10-31T15:20:33Z"
+      },
+      "metrics": {
+        "median": 420,
+        "p50": 420,
+        "p95": 1350,
+        "max": 2400,
+        "requests_sampled": 2156
+      },
+      "principal_cause_tags": ["missing-index", "large-result-set"],
+      "confidence": "high",
+      "priority_score": 45.3,
+      "manager_summary": "Search functionality has 1.35s p95 affecting frequent use. Missing full-text indexes on searchable columns.",
+      "detailed_finding_id": "FINDING-008"
+    },
+    {
+      "id": "FINDING-009",
+      "controller_action": "ProjectsController#show",
+      "endpoint_type": "core",
+      "sample_request": {
+        "method": "GET",
+        "path": "/projects/123",
+        "timestamp": "2025-10-31T10:45:22Z"
+      },
+      "metrics": {
+        "median": 380,
+        "p50": 380,
+        "p95": 1100,
+        "max": 1900,
+        "requests_sampled": 1876
+      },
+      "principal_cause_tags": ["N+1"],
+      "confidence": "high",
+      "priority_score": 42.8,
+      "manager_summary": "Project overview page has 1.1s p95 with N+1 queries for members, modules, and custom fields. High traffic endpoint.",
+      "detailed_finding_id": "FINDING-009"
+    },
+    {
+      "id": "FINDING-010",
+      "controller_action": "RedmineAgile::AgileBoardsController#show",
+      "endpoint_type": "plugin",
+      "sample_request": {
+        "method": "GET",
+        "path": "/projects/123/agile/board",
+        "timestamp": "2025-10-31T11:15:18Z"
+      },
+      "metrics": {
+        "median": 850,
+        "p50": 850,
+        "p95": 1950,
+        "max": 3100,
+        "requests_sampled": 423
+      },
+      "principal_cause_tags": ["plugin", "N+1"],
+      "confidence": "medium",
+      "priority_score": 41.2,
+      "manager_summary": "Agile board plugin has 1.95s p95 loading issue cards with N+1 queries for status changes and custom fields.",
+      "detailed_finding_id": "FINDING-010"
+    }
+  ],
+  "priority_formula": {
+    "description": "priority_score = (p95_ms / 1000 * 40) + (log10(request_count) * 10, max 30) + (avg_db_time / 1000 * 30)",
+    "weights": {
+      "p95_response_time": 0.4,
+      "request_count": 0.3,
+      "avg_db_time": 0.3
+    }
+  },
+  "summary_stats": {
+    "total_findings": 10,
+    "critical_count": 2,
+    "high_count": 4,
+    "medium_count": 3,
+    "low_count": 1,
+    "total_daily_requests_affected": 13876,
+    "estimated_p95_reduction_ms": 8500
+  }
+}
+

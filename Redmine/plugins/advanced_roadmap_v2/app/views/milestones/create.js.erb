@@ -1,0 +1,6 @@
+hideModal();
+<%milestones =  @project.milestones.joins(:version).where.not("versions.status = ?", "closed").collect{ |m| [m.name, m.id] }%>
+<% select = content_tag('select', content_tag('option') + options_for_select(milestones, @milestone.id ), :id => 'issue_fixed_milestone_id', :name => 'issue[fixed_milestone_id]', :class => 'form-control') %>
+$('#issue_fixed_milestone_id').replaceWith('<%= escape_javascript(select) %>');
+
+

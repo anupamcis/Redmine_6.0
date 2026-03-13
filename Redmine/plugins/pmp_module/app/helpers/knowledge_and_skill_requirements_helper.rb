@@ -1,0 +1,2 @@
+module KnowledgeAndSkillRequirementsHelper
+end

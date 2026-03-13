@@ -1,0 +1,87 @@
+﻿# japanease translation
+ja:
+  # Setting Tab
+  label_baseline: ベースライン
+  label_baseline_show: ベースラインの照会
+  label_baseline_edit: ベースラインの編集
+  label_baseline_create: ベースラインの作成
+  label_baseline_version: ベースライン履歴
+  label_baseline_set: ベースラインを設定
+  label_baseline_start_date: 開始日
+  label_baseline_due_date: 終了日
+  label_baseline_bac: BAC
+  label_created_date: 作成日
+  label_current_baseline: 最新
+  label_old_baseline: 過去
+  label_latest_baseline: 最新のベースラインで表示
+  label_basis_hours_of_day: 一日の基準時間
+  label_limit_spi: SPIの閾値 0.99未満で設定してください。
+  label_limit_cpi: CPIの閾値 0.99未満で設定してください。
+  label_limit_cr: CRの閾値 0.99未満で設定してください。
+  # Message
+  messsage_delete_baseline: 本当に削除しますか？
+  # Main form
+  title_evm_tab: Track with EVM
+  subtitle_evm_summary: サマリー
+  subtitle_evm_graph_main: チャート
+  subtitle_evm_incomplete_issues: 未完了のチケット
+  subtitle_evm_graph_performance: パフォーマンス
+  subtitle_evm_graph_version: バージョン
+  # Option
+  label_basis_date: 基準日
+  label_basis: ベースラインを使用してEVM値を計算
+  label_no_use_baseline: 使用しない
+  label_graph: チャート表示
+  label_forecast: 予測値の表示
+  label_display_version: バージョンの表示
+  label_display_performance: パフォーマンス指標の表示
+  label_display_incomplete: 未完了チケットの表示
+  label_calculate : ETCの計算方法
+  label_calc_method1: 楽観的
+  label_calc_method2: 通常
+  label_calc_method3: 悲観的
+  label_Display : EVM値の説明
+  label_display_explanation: サイドバーに表示
+  label_evmbaseline_plural: ベースライン
+  label_ativity_message_new: ベースラインが作成されました
+  label_ativity_message_edit: ベースラインが更新されました
+  label_evm_print: 印刷
+  # Explanation title
+  explanation_basis: 基本
+  explanation_difference: 差異
+  explanation_performance: パフォーマンス
+  explanation_forecast: 予測値
+  # Explanation
+  explanation_bac: 完成時総予算。プロジェクトのチケットの総見積もり工数
+  explanation_pv: 今日までのチケットの予定工数。
+  explanation_ev: 出来高。チケットが完了となった時に予定工数を計上
+  explanation_ac: 作業時間の記録から集計した作業時間。
+  explanation_sv: スケジュール差異。予定していた工数と達成している工数の差(EV-PV)
+  explanation_cv: コスト差異。予定していた作業時間と実績時間の差(EV-AC)
+  explanation_spi: スケジュール効率指数(EV÷PV) 1以下の場合は遅れ
+  explanation_cpi: コスト効率指数(EV÷AC) 1以下の場合はコスト超過
+  explanation_cr: プロジェクトパフォーマンス(1以上であれば良好)
+  explanation_complete: BACに対する完了率(EV/BAC)
+  explanation_eac: プロジェクト完了時の総コスト見積もり(AC＋ETC)
+  explanation_etc: 残作業のコスト見積り((BAC－EV)÷CPI)
+  explanation_vac: プロジェクト完了時コのスト差異(BAC－EAC) マイナスはコスト超過
+  explanation_difference_end_date: 完了予想日と計画完了日との差(日数)
+  explanation_tcpi: 残作業効率指数((BAC-EV)/(BAC-AC))。残作業を達成するために、どれくらいの生産性が必要か？1以上は生産性を高める必要あり。
+  # Indicator table header
+  indicator_table_header_date: 基準日
+  indicator_table_header_today: 基準日の指標
+  indicator_table_header_difference: 差異
+  indicator_table_header_performance: 効率
+  indicator_table_header_forecast: 予測
+  # Indicator table legend
+  explanation_upper_row: 上段の値は時間
+  explanation_lower_row: 下段の値は人日
+  # Permission
+  project_module_Issuevm: EVM
+  permission_view_evms: EVMプラグインタブの表示
+  permission_manage_evmbaselines: ベースラインの設定
+  permission_view_evm_baselines: ベースラインの一覧表示
+  # Tab Display
+  tab_display_name: EVM
+  # incomplete_issue
+  incomplete_issue_parent_id: 親チケット#

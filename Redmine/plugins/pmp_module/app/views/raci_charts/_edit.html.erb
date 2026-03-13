@@ -1,0 +1,21 @@
+<%= error_messages_for 'raci_chart' %>
+
+<h3 class="title"><%= l(:edit_button_work_type) %> </h3>
+
+  <%= labelled_form_for @raci_chart, remote: true, html: {id: 'raci-chart-config-edit-form'} do |f| %>
+    <div class="box tabular">
+      <p><%= f.text_field :work_type, required: true, size: 25 %></p>
+      <p><%= f.text_field :parent_work_type, required: true, size: 25 %></p>
+      <%#= link_to l(:button_cancel), "javascript:void();", id: "cancel_work_type_form" %></p>
+    </div>
+    <p><%= submit_tag l(:button_submit) %>
+  <% end %>
+
+<style type="text/css">
+  .ui-dialog-content .box {
+    background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+    border: solid;
+    box-shadow: none;
+    padding: 15px 31px 0 0;
+  }
+</style>

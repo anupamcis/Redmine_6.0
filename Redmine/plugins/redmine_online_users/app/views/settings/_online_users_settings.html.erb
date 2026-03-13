@@ -1,0 +1,7 @@
+<p>
+  <%= content_tag(:label, l(:set_user_idle_time)) %>
+  <%= text_field_tag 'settings[set_user_idle_time]', @settings['set_user_idle_time'], :size => 10 %>
+  <em class="info">
+    <%= l(:set_user_message) %> <%= l(:label_default) %>: 15 minutes   
+  </em>
+</p>

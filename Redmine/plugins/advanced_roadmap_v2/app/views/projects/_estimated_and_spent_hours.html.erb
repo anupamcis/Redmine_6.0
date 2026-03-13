@@ -1,0 +1,52 @@
+<%
+  sql = "SELECT  ISNULL(milestones.name, 'Other'), SUM(issues.estimated_hours), SUM(time_entries.hours) FROM issues LEFT JOIN milestones ON milestones.id = issues.fixed_milestone_id LEFT JOIN time_entries ON time_entries.issue_id = issues.id WHERE issues.project_id = #{@project.id}  group by milestones.name"
+  @estimated_and_spent_hours = ActiveRecord::Base.connection.exec_query(sql).rows
+%>
+
+<% if @estimated_and_spent_hours.present? %>
+  <div class="double_chart">
+    <div id="estimated_and_spent_hours"></div>
+  </div>
+    <script type="text/javascript">
+      var chart;
+      $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            credits: {
+              enabled: false
+            },
+          chart: {
+            renderTo: 'estimated_and_spent_hours',
+            type: 'column'
+          },
+
+          title: {
+            text: 'Milestone Wise <%= t(:estim_hours)%>'
+          },
+          xAxis: {
+            categories: <%= @estimated_and_spent_hours.map{ |situacao| situacao.first}.inspect.html_safe %>,
+            crosshair: true
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: 'Hours',
+            }
+          },
+          legend: {
+            enabled: true
+          },
+          tooltip: {
+            formatter: function() {
+              return '<b>'+ this.series.name +'</b><br/>'+
+               Highcharts.numberFormat(this.y, 2) + 'Hours';
+            }
+          },
+
+          series: [{
+            name: 'Estimated Hours',
+            data: <%= @estimated_and_spent_hours.map{ |situacao| situacao[1]} %>
+          }]
+        });
+      });
+    </script>
+<% end %>

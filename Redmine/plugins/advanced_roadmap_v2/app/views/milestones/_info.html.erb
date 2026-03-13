@@ -1,0 +1,148 @@
+<%#= render :partial => 'versions/overview', :locals => {:version => version} %>
+<%#= render(:partial => "wiki/content", :locals => {:content => version.wiki_page.content}) if version.wiki_page %>
+
+<%- # Version cached values.
+    milestone_estimated_speed = milestone.estimated_speed
+    milestone_spent_hours = milestone.spent_hours
+    milestone_rest_hours = milestone.rest_hours
+    milestone_speed_rest_hours = milestone.speed_rest_hours
+    milestone_parallel_rest_hours = milestone.parallel_rest_hours
+    milestone_parallel_speed_rest_hours = milestone.parallel_speed_rest_hours -%>
+    
+<%- if @issues.present? -%> 
+<%- show_due_time = (Setting.plugin_advanced_roadmap_v2["show_due_time"]) -%>
+<fieldset class="related-issues"><legend><%= l(:label_related_issues) %></legend>
+<%= form_tag({}) do %>
+<table class="list related-issues">
+  <thead>
+    <%- width = 73
+        if User.current.allowed_to?(:view_issue_estimated_hours, @project)
+          width -= 9 # estimated hours
+        end
+        if User.current.allowed_to?(:view_time_entries, @project)
+          width -= 9 # spent time
+          if User.current.allowed_to?(:view_issue_estimated_hours, @project)
+            width -= 9 # due in
+            if !milestone_estimated_speed.nil?
+              width -= 9 # estimated speed
+            end
+          end
+        end -%>
+    <th width="14%" align="left"><%= l(:field_category) %></th>
+    <th width="#{width}%" align="left"><%= l(:field_issue) %></th>
+    <%- if User.current.allowed_to?(:view_issue_estimated_hours, @project) -%>
+      <th width="9%" align="center"><%= l(:field_estimated_hours) %></th>
+    <%- end -%>
+    <%- if User.current.allowed_to?(:view_time_entries, @project) -%>
+      <th width="9%" align="center"><%= l(:label_spent_time) %></th>
+    <%- end -%>
+    <th width="9%" align="center"><%= l(:field_done_ratio)  if  (User.current.allowed_to?(:hide_percentage_done, nil, global: true) || User.current.admin?) %></th>
+    <%- if User.current.allowed_to?(:view_time_entries, @project) and
+           User.current.allowed_to?(:view_issue_estimated_hours, @project) -%>
+      <th width="9%" align="center">
+         <%= ( show_due_time ? l(:label_roadmap_due_in, "") : l(:field_due_date) ) %>  
+      </th>
+      <%- if !milestone_estimated_speed.nil? -%>
+        <th width="9%" align="center"><%= l(:label_roadmap_due_in, "") %><br />(<%= l(:label_estimated_speed) %>)</th>
+      <%- end -%>
+    <%- end -%>
+  </thead>
+  <tbody>
+  <%- @issues.each do |issue| -%>
+    <%- # Issue cached values.
+        issue_estimated_hours = issue.estimated_hours
+        issue_spent_hours = issue.total_spent_hours
+        issue_done_ratio = issue.done_ratio
+        issue_rest_hours = issue.rest_hours
+
+        color = ""
+        begin_strike = ""
+        end_strike = ""
+        if issue_estimated_hours && issue_done_ratio
+          color = color_by_ratio(issue_spent_hours / ((issue_estimated_hours * issue_done_ratio) / 100.0))
+        end
+        if issue.closed?
+          begin_strike = "<strike>".html_safe
+          end_strike = "</strike>".html_safe
+        end -%>
+    <tr class="hascontextmenu <%= cycle("odd", "even") %>">
+      <%- tab = ("&nbsp;" * 3 * issue.parents_count).html_safe -%>
+      <td style="text-align: left;"><%= issue.category %></td>
+      <td class="checkbox" align="left"><%= check_box_tag("ids[]", issue.id) %></td>
+      <td align="left" style="text-align: left;">
+        <div class="tooltip">
+          <%= tab %>
+          <font color="<%= color %>"><%= begin_strike %>
+            <%= link_to_issue(issue, :project => (@project != issue.project)) %>
+          <%= end_strike %></font>
+          <span class="tip">
+            <table width="100%">
+              <tr><td colspan="2"><%= link_to_issue(issue) %></td></tr>
+              <%- if @project != issue.project -%>
+              <tr><td><strong><%= l(:field_project) %>:</strong></td><td><%= link_to_project(issue.project) %></td></tr>
+              <%- end -%>
+              <tr><td><strong><%= l(:field_status) %>:</strong></td><td><%= issue.status.name %></td></tr>
+              <tr><td><strong><%= l(:field_priority) %>:</strong></td><td><%= issue.priority.name %></td></tr>
+              <tr><td><strong><%= l(:field_assigned_to) %>:</strong></td><td><%= link_to_user(issue.assigned_to) %></td></tr>
+              <tr><td><strong><%= l(:field_category) %>:</strong></td><td><%= issue.category %></td></tr>
+              <tr><td><strong><%= l(:field_start_date) %>:</strong></td><td><%= format_date(issue.start_date) %></td></tr>
+              <tr><td width="40%"><strong><%= l(:field_due_date) %>:</strong></td><td width="60%"><%= format_date(issue.due_date) %></td></tr>
+            </table>
+          </span>
+        </div>
+      </td>
+      <%- if User.current.allowed_to?(:view_issue_estimated_hours, @project) -%>
+        <td align="center"><font color="<%= color %>"><%= begin_strike %><%= ("%.2f" % issue_estimated_hours) if issue_estimated_hours %><%= end_strike %></font></td>
+      <%- end -%>
+      <%- if User.current.allowed_to?(:view_time_entries, @project) -%>
+        <td align="center"><font color="<%= color %>"><%= begin_strike %><%= "%.2f" % issue_spent_hours %><%= end_strike %></font></td>
+      <%- end -%>
+      <td align="center"><font color="<%= color %>"><%= begin_strike %><%= (("%.0f" % issue_done_ratio) + "%")  if  (User.current.allowed_to?(:hide_percentage_done, nil, global: true) || User.current.admin?) %><%= end_strike %></font></td>
+      <%- if User.current.allowed_to?(:view_time_entries, @project) and
+             User.current.allowed_to?(:view_issue_estimated_hours, @project) -%>
+        <td align="center"><font color="<%= color %>">
+          <%- if show_due_time -%>
+            <%= begin_strike %><%= ("%.2f" % issue_rest_hours) if issue_estimated_hours or issue_spent_hours %><%= end_strike %>
+          <%- else -%>
+            <%= format_date(issue.due_date) %>
+          <%- end -%>
+        </font></td>
+        <%- if !milestone_estimated_speed.nil? -%>
+          <td align="center"><font color="<%= color %>"><%= begin_strike %><%= ("%.2f" % (issue_rest_hours * ((!issue.closed? and (!issue_spent_hours or issue_spent_hours <= 0.0) and !milestone_estimated_speed.nil?) ? milestone_estimated_speed : 1.0))) if issue_estimated_hours or issue_spent_hours %><%= end_strike %></font></td>
+        <%- end -%>
+      <%- end -%>
+    </tr>
+  <%- end -%>
+  </tbody>
+  <thead>
+    <th align="left"><%= l(:label_total) %></th>
+    <th></th>
+    <%- if User.current.allowed_to?(:view_issue_estimated_hours, @project) -%>
+      <th align="center"><%= ("%.2f" % @milestone.estimated_hours) %></th>
+    <%- end -%>
+    <%- if User.current.allowed_to?(:view_time_entries, @project) -%>
+      <th align="center"><%= ("%.2f" % milestone_spent_hours) %></th>
+    <%- end -%>
+    <th align="center">
+      <%- if  (User.current.allowed_to?(:hide_percentage_done, nil, global: true) || User.current.admin?) %>
+        <%= ("%.0f" % @milestone.completed_percent) %>%
+      <%- end %>
+    </th>
+    <%- if User.current.allowed_to?(:view_time_entries, @project) and
+           User.current.allowed_to?(:view_issue_estimated_hours, @project) -%>
+      <th align="center">
+       <%- if show_due_time -%>
+         <%= ("%.2f" % milestone_rest_hours) %>
+       <%- else -%>
+         <%= format_date(@milestone.due_date) %>
+       <%- end -%>
+      </th>
+      <%- if !milestone_estimated_speed.nil? -%>
+        <th align="center"><%= ("%.2f" % milestone_speed_rest_hours) %></th>
+      <%- end -%>
+    <%- end -%>
+  </thead>
+</table>
+<% end %>
+</fieldset>
+<%- end -%>

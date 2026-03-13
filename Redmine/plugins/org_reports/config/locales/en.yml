@@ -1,0 +1,10 @@
+# English strings go here for Rails i18n
+en:
+  label_setting_project_size_to: Project size to
+  label_setting_project_size_from: Project size from
+  label_setting_issue_count: Issue count
+  label_setting_involment: User involvement
+  label_setting_bug_percent: Bug Percent(%)
+  label_dashboard: Dashboard
+  label_beta: Beta
+  label_home_without_permission: Home

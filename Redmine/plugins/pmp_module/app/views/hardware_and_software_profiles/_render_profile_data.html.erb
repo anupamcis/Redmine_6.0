@@ -1,0 +1,51 @@
+<div class="nested-form autoscroll" id="profile-nested-form">
+<div class="row">
+
+	
+    <%= hidden_field_tag "hardware_and_software_profile_data[#{i}][profile_data_id]", (params[:hardware_and_software_profile_data][i.to_s][:profile_data_id].present? ? params[:hardware_and_software_profile_data][i.to_s][:profile_data_id] : nil) if params[:action] == "edit" || params[:action] == "update" %>
+	
+
+	<div class="col-sm-3 profile-col">
+	<label>Select Type</label>
+    <% profile_type = params[:hardware_and_software_profile_data].present? ? params[:hardware_and_software_profile_data][i.to_s][:profile_type] : '' %>
+    <%= select_tag "hardware_and_software_profile_data[#{i}][profile_type]", options_for_select(["Hardware", "Software"], profile_type),{required: true,prompt: "Select type"} %>
+	</div>
+	
+	<div class="col-sm-3 profile-col">
+	<label>Resource</label>
+    <% resource = params[:hardware_and_software_profile_data].present? ? params[:hardware_and_software_profile_data][i.to_s][:resource] : nil %>
+    <%= text_field_tag "hardware_and_software_profile_data[#{i}][resource]", resource, placeholder: 'Enter resource...',required: true %>
+	</div>
+
+	<div class="col-sm-3 profile-col">
+	<label>Configuration</label>
+    <% configuration = params[:hardware_and_software_profile_data].present? ? params[:hardware_and_software_profile_data][i.to_s][:configuration] : nil %>
+    <%= text_field_tag "hardware_and_software_profile_data[#{i}][configuration]", configuration, placeholder: 'Enter configuration...' %>
+	</div>
+
+	<div class="col-sm-3 profile-col">
+	<label>Environment</label>
+    <% environment = params[:hardware_and_software_profile_data].present? ? params[:hardware_and_software_profile_data][i.to_s][:environment] : '' %>
+    <%= select_tag "hardware_and_software_profile_data[#{i}][environment]", options_for_select(["Development", "Staging"], environment),{required: true,prompt: "select environment"} %>
+	</div>
+
+	<div class="col-sm-3 profile-col">
+	<label>Version</label>
+    <% version = params[:hardware_and_software_profile_data].present? ? params[:hardware_and_software_profile_data][i.to_s][:version] : nil %>
+    <%= text_field_tag "hardware_and_software_profile_data[#{i}][version]", version, placeholder: 'Enter ...' %>
+	</div>
+
+	<div class="col-sm-3 profile-col">
+	<label>Quantity</label>
+    <% quantity = params[:hardware_and_software_profile_data].present? ? params[:hardware_and_software_profile_data][i.to_s][:quantity] : nil %>
+    <%= text_field_tag "hardware_and_software_profile_data[#{i}][quantity]", quantity, placeholder: 'Enter quantity...' %>
+	</div>
+
+	<div class="col-sm-3 profile-col">
+	<label>Action</label>
+    <% action = params[:hardware_and_software_profile_data].present? ? params[:hardware_and_software_profile_data][i.to_s][:action] : nil %>
+    <%= text_field_tag "hardware_and_software_profile_data[#{i}][action]", action, placeholder: 'Enter action...' %>
+	</div>
+
+</div>
+</div>

@@ -1,0 +1,15 @@
+ul.projects ul.progressive-project-menu {
+	padding-left: 0;
+}
+ul.progressive-project-menu li {
+	float:left;
+	margin-right: 10px;
+}
+
+time.progressive-overdue {
+	color: red;
+}
+
+div.child a.project {
+	font-weight: bold;
+}

@@ -1,0 +1,67 @@
+<%= form_for @template, :url => (@template.new_record? ? notification_email_templates_path : notification_email_template_path(@template)), 
+             :html => {:method => (@template.new_record? ? :post : :put), :multipart => true} do |f| %>
+  <%= error_messages_for @template %>
+
+  <div class="box tabular">
+    <p>
+      <%= f.label :name, l(:field_name), :class => 'required' %>
+      <%= f.text_field :name, :size => 60, :required => true %>
+    </p>
+
+    <p>
+      <%= f.label :template_type, l(:field_template_type), :class => 'required' %>
+      <%= f.select :template_type, 
+                   options_for_select([
+                     ['1 Day Inactive', 'inactivity_1_day'],
+                     ['2 Days Inactive', 'inactivity_2_days'],
+                     ['1 Week Inactive', 'inactivity_1_week'],
+                     ['15 Days Inactive', 'inactivity_15_days'],
+                     ['1 Month Inactive', 'inactivity_1_month'],
+                     ['1 Year Inactive', 'inactivity_1_year'],
+                     ['No Activity', 'inactivity_no_activity'],
+                     ['Default Template', 'default']
+                   ], @template.template_type),
+                   {},
+                   {:required => true} %>
+      <em class="info"><%= l(:text_template_type_info) %></em>
+    </p>
+
+    <p>
+      <%= f.label :subject, l(:field_subject), :class => 'required' %>
+      <%= f.text_field :subject, :size => 80, :required => true %>
+      <em class="info"><%= l(:text_subject_variables_info) %></em>
+    </p>
+
+    <p>
+      <%= f.label :is_active, l(:field_is_active) %>
+      <%= f.check_box :is_active %>
+    </p>
+
+    <p>
+      <%= f.label :body_html, l(:field_body_html) %>
+      <%= f.text_area :body_html, :rows => 15, :cols => 80, :class => 'wiki-edit' %>
+      <em class="info"><%= l(:text_html_body_variables_info) %></em>
+    </p>
+
+    <p>
+      <%= f.label :body_text, l(:field_body_text) %>
+      <%= f.text_area :body_text, :rows => 15, :cols => 80, :class => 'wiki-edit' %>
+      <em class="info"><%= l(:text_text_body_variables_info) %></em>
+    </p>
+  </div>
+
+  <fieldset class="box">
+    <legend><%= l(:label_available_variables) %></legend>
+    <ul>
+      <li><code>{{project_name}}</code> - <%= l(:text_variable_project_name) %></li>
+      <li><code>{{project_identifier}}</code> - <%= l(:text_variable_project_identifier) %></li>
+      <li><code>{{project_url}}</code> - <%= l(:text_variable_project_url) %></li>
+      <li><code>{{days_inactive}}</code> - <%= l(:text_variable_days_inactive) %></li>
+      <li><code>{{user_name}}</code> - <%= l(:text_variable_user_name) %></li>
+      <li><code>{{user_email}}</code> - <%= l(:text_variable_user_email) %></li>
+      <li><code>{{notification_date}}</code> - <%= l(:text_variable_notification_date) %></li>
+    </ul>
+  </fieldset>
+
+  <%= submit_tag l(:button_save) %>
+<% end %>

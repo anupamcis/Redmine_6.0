@@ -1,0 +1,145 @@
+<div id="form_acor">
+  <%= render :partial => 'acronyms_and_glossaries/new' %>
+</div>
+<br>
+<% if @project.try(:acronyms_and_glossaries).any? %>
+  <div class="autoscroll">
+    <table class="list" id="acronyms_and_glossary_table">
+      <thead>
+        <tr>
+          <th><%= l(:field_abbreviation)%></th>
+          <th><%= l(:field_full_form) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+      <%- @project.acronyms_and_glossaries.each_with_index do |acronyms_and_glossary, index| %>
+        <tr class="<%= cycle("odd", "even") %>" data-id="<%=index+1%>" object-id="<%=acronyms_and_glossary.id%>" project-id="<%=@project.id%>">
+          <td data-field="abbreviation" class="firstname" ><%= acronyms_and_glossary.abbreviation %></td>
+          <td data-field="full_form" class="lastname"><%= acronyms_and_glossary.full_form %></td>
+          <td class="buttons">
+            <a class="button button-small edit" title="Edit">
+              <i class="icon icon-edit"><%= l(:edit) %></i>
+            </a>
+            <%= delete_link project_acronyms_and_glossary_path(@project, acronyms_and_glossary), :title => "Delete" if User.current.allowed_to?(:delete_acronyms_and_glossaries, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<script type="text/javascript">
+
+  function updateAcronymsAndGlossary(projectId, id, data){
+    $.ajax({
+      url: "/projects/"+projectId+"/acronyms_and_glossaries/"+id,
+      dataType: 'json',
+      data: data,
+      type: 'PUT',
+      success: function(res) {
+        $('#tab-content-acronyms_and_glossaries').find('#errorExplanation').remove();
+        $('#content').find('.flash').remove();
+        $('#content').prepend('<div class="flash notice" id="flash_notice">'+res["msg"]+'</div>');
+      },
+      error: function(res){
+        $('#content').find('.flash').remove();
+        var error = JSON.parse(res["responseText"]);
+        var msg = error["msg"] ? error["msg"].replace(/↵/g, "") : error["msg"]
+        var errorContainer = $('#tab-content-acronyms_and_glossaries');
+        errorContainer.find('#errorExplanation').remove();
+        errorContainer.prepend(msg);
+      }
+    });
+  }
+
+  function hideEditMode(isNew){
+    $('table#acronyms_and_glossary_table tr').each(function(){
+      $(this).find("td[data-field]").each(function(){
+        if($(this).find('input').length){
+          var val = isNew ? $(this).find('input').val() : $(this).find('input').attr('data-old');
+          $(this).empty().text(val);
+          $(this).parent('tr').find(".edit i")
+          .removeClass('icon icon-save')
+          .addClass('icon icon-edit')
+          .attr('title', 'Edit')
+          .text('Edit');
+        }
+      });
+    })
+  }
+
+  function makeEditable(e){
+    hideEditMode(false);
+    var that;
+    if($(event.target).hasClass('icon-edit')){
+      var that = $(event.target).parent().parent().parent();
+    }else{
+      that = this;
+    }
+
+    $(that).find("td[data-field]").each(function() {
+      if($(this).find('input').length){
+        var val = $(this).find('input').val();
+        $(this).empty().text(val);
+        $(this).parent('tr').find(".edit i")
+        .removeClass('icon icon-save')
+        .addClass('icon icon-edit')
+        .attr('title', 'Edit')
+        .css("cursor", "pointer")
+        .text('edit');
+      }else{
+        var val = $(this).text();
+        var textBox = $('<input type="text" data-old='+val+' class="editable-field"/>').val(val);
+        $(this).html(textBox);
+        $(this).parent('tr').find(".edit i")
+        .removeClass('icon icon-edit')
+        .addClass('icon icon-save')
+        .attr('title', 'Save')
+        .css("cursor", "pointer")
+        .text('Save');
+      }
+    });
+  }
+
+
+  $('#wrapper').on('click',function(e){
+    if(e.target.className != 'editable-field' && $(e.target).parent('a.edit').length == 0 &&
+      $(e.target).parent('tr').length == 0){
+        hideEditMode(false);
+    }
+  });
+
+  $(function() {
+    $('table#acronyms_and_glossary_table tr').on('dblclick', makeEditable);
+    $('#wrapper').on('click','table#acronyms_and_glossary_table tbody tr td .icon-edit',makeEditable);
+  });
+
+  $('#wrapper').on( 'click','table#acronyms_and_glossary_table tbody tr td .icon-save',function () {
+    var tr = $(this).parent().parent().parent();
+    var abbreviation = $(tr.find('td')[0]).find('input').val();
+    var fullForm = $(tr.find('td')[1]).find('input').val();
+    var oldAbbreviation = $(tr.find('td')[0]).find('input').attr('data-old');
+    var oldFullForm = $(tr.find('td')[1]).find('input').attr('data-old');
+
+    if(abbreviation+fullForm != oldAbbreviation+oldFullForm){
+      var id = $(tr).attr('object-id');
+      var projectId = $(tr).attr('project-id');
+      var data = {acronyms_and_glossary: {}};
+      data.acronyms_and_glossary['abbreviation'] = abbreviation;
+      data.acronyms_and_glossary['full_form'] = fullForm;
+      updateAcronymsAndGlossary(projectId, id, data);
+    }
+    hideEditMode(true);
+  });
+</script>
+
+<style type="text/css">
+  .edit{
+    cursor: pointer;
+  }
+</style>

@@ -1,0 +1,268 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - list:
+          - listitem [ref=e5]:
+            - link "My account" [ref=e6] [cursor=pointer]:
+              - /url: /my/account
+          - listitem [ref=e7]:
+            - link "Sign out" [ref=e8] [cursor=pointer]:
+              - /url: /logout
+      - generic [ref=e9]:
+        - text: Logged in as
+        - link "admin" [ref=e10] [cursor=pointer]:
+          - /url: /users/1
+      - list:
+        - listitem [ref=e11]:
+          - link "Dashboard" [ref=e12] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=e13]:
+          - link "My page" [ref=e14] [cursor=pointer]:
+            - /url: /my/page
+        - listitem [ref=e15]:
+          - link "Projects" [ref=e16] [cursor=pointer]:
+            - /url: /projects
+        - listitem [ref=e17]:
+          - link "Project Reports" [ref=e18] [cursor=pointer]:
+            - /url: /project_reports
+        - listitem [ref=e19]:
+          - link "Help" [ref=e20] [cursor=pointer]:
+            - /url: /help
+        - listitem [ref=e21]:
+          - link "Global Permissions" [ref=e22] [cursor=pointer]:
+            - /url: /projects/global-permissions
+        - listitem [ref=e23]:
+          - link "Administration" [ref=e24] [cursor=pointer]:
+            - /url: /admin
+        - listitem [ref=e25]:
+          - link "Services" [ref=e26] [cursor=pointer]:
+            - /url: /services
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - link "Search" [ref=e31] [cursor=pointer]:
+              - /url: /search
+            - text: ":"
+          - textbox "Search:" [ref=e32]
+        - generic [ref=e34] [cursor=pointer]: Jump to a project...
+      - heading "PMS 2.0" [level=1] [ref=e35]
+      - list [ref=e37]:
+        - listitem [ref=e38]:
+          - link "Projects" [ref=e39] [cursor=pointer]:
+            - /url: /projects
+    - generic [ref=e40]:
+      - link [ref=e43] [cursor=pointer]:
+        - /url: "#"
+        - img [ref=e44]
+      - generic [ref=e46]:
+        - heading "New project" [level=2] [ref=e47]
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - img [ref=e50]
+            - list [ref=e52]:
+              - listitem [ref=e53]: Identifier cannot be blank
+              - listitem [ref=e54]: Description cannot be blank
+              - listitem [ref=e55]: Application Type cannot be blank
+              - listitem [ref=e56]: Description is too short (minimum is 100 characters)
+          - generic [ref=e57]:
+            - paragraph [ref=e58]:
+              - generic [ref=e59]: Name *
+              - textbox "Name *" [active] [ref=e60]: QA-1761725824326
+            - paragraph [ref=e61]:
+              - generic [ref=e62]: Application Type *
+              - combobox [ref=e63]
+              - combobox "select application type..." [ref=e66] [cursor=pointer]:
+                - generic "select application type..." [ref=e67]
+            - paragraph [ref=e68]:
+              - generic [ref=e69]: Description *
+              - application "Rich Text Editor, project_description" [ref=e70]:
+                - group "Editor toolbars" [ref=e71]:
+                  - toolbar [ref=e72]:
+                    - button "Source" [ref=e73]:
+                      - generic [ref=e75]: Source
+                  - toolbar [ref=e76]:
+                    - button "Undo" [disabled] [ref=e77]
+                    - button "Redo" [disabled] [ref=e79]
+                    - separator [ref=e81]
+                    - button "Find" [ref=e82]
+                    - button "Replace" [ref=e84]
+                  - toolbar [ref=e86]:
+                    - button "Bold" [ref=e87]
+                    - button "Italic" [ref=e89]
+                    - button "Underline" [ref=e91]
+                    - button "Strikethrough" [ref=e93]
+                    - separator [ref=e95]
+                    - button "Subscript" [ref=e96]
+                    - button "Superscript" [ref=e98]
+                    - separator [ref=e100]
+                    - button "Insert/Remove Numbered List" [ref=e101]
+                    - button "Insert/Remove Bulleted List" [ref=e103]
+                    - separator [ref=e105]
+                    - button "Decrease Indent" [disabled] [ref=e106]
+                    - button "Increase Indent" [ref=e108]
+                    - button "Block Quote" [ref=e110]
+                    - separator [ref=e112]
+                    - button "Align Left" [ref=e113]
+                    - button "Center" [ref=e115]
+                    - button "Align Right" [ref=e117]
+                    - button "Justify" [ref=e119]
+                    - separator [ref=e121]
+                    - button "Link" [ref=e122]
+                    - button "Unlink" [disabled] [ref=e124]
+                    - separator [ref=e126]
+                    - button "Browse and upload images" [ref=e127]
+                    - button "Table" [ref=e129]
+                    - button "Insert Horizontal Line" [ref=e131]
+                  - toolbar [ref=e133]:
+                    - button "Styles" [ref=e134]:
+                      - generic [ref=e135]: Styles
+                    - button "Format" [ref=e138]:
+                      - generic [ref=e139]: Format
+                    - button "Font" [ref=e142]:
+                      - generic [ref=e143]: Font
+                    - button "Size" [ref=e146]:
+                      - generic [ref=e147]: Size
+                    - button "Text Color" [ref=e150]
+                    - button "Background Color" [ref=e153]
+                  - toolbar [ref=e156]:
+                    - button "Show Blocks" [ref=e157]
+                - iframe [ref=e159]:
+                  - paragraph [ref=f1e2]
+                - generic "Resize" [ref=e160]: ◢
+                - group "Elements path" [ref=e161]
+            - paragraph [ref=e163]:
+              - generic [ref=e164]: Identifier *
+              - textbox "Identifier *" [ref=e165]
+              - emphasis [ref=e166]:
+                - text: Length between 1 and 100 characters. Only lower case letters (a-z), numbers, dashes and underscores are allowed, must start with a lower case letter.
+                - text: Once saved, the identifier cannot be changed.
+            - paragraph [ref=e167]:
+              - generic [ref=e168]: Home Page
+              - textbox "Home Page" [ref=e169]
+            - paragraph [ref=e170]
+            - paragraph [ref=e171]:
+              - generic [ref=e172]: Default version
+              - combobox "Default version" [ref=e173]:
+                - option "Select Version" [selected]
+                - option "Testversion"
+            - paragraph [ref=e174]:
+              - generic [ref=e175]: Technology
+              - combobox [ref=e176]
+              - combobox "select technology skill..." [ref=e179] [cursor=pointer]:
+                - generic "select technology skill..." [ref=e180]
+          - group "Modules" [ref=e181]:
+            - generic [ref=e182]: Modules
+            - generic [ref=e183]:
+              - checkbox "Task tracking" [checked] [ref=e184]
+              - text: Task tracking
+            - generic [ref=e185]:
+              - checkbox "Time tracking" [checked] [ref=e186]
+              - text: Time tracking
+            - generic [ref=e187]:
+              - checkbox "News" [checked] [ref=e188]
+              - text: News
+            - generic [ref=e189]:
+              - checkbox "Documents" [checked] [ref=e190]
+              - text: Documents
+            - generic [ref=e191]:
+              - checkbox "Files" [ref=e192]
+              - text: Files
+            - generic [ref=e193]:
+              - checkbox "Wiki" [ref=e194]
+              - text: Wiki
+            - generic [ref=e195]:
+              - checkbox "Repository" [checked] [ref=e196]
+              - text: Repository
+            - generic [ref=e197]:
+              - checkbox "Forums" [ref=e198]
+              - text: Forums
+            - generic [ref=e199]:
+              - checkbox "Calendar" [checked] [ref=e200]
+              - text: Calendar
+            - generic [ref=e201]:
+              - checkbox "Gantt" [checked] [ref=e202]
+              - text: Gantt
+            - generic [ref=e203]:
+              - checkbox "Pmp reports" [checked] [ref=e204]
+              - text: Pmp reports
+            - generic [ref=e205]:
+              - checkbox "Projects reporting" [checked] [ref=e206]
+              - text: Projects reporting
+            - generic [ref=e207]:
+              - checkbox "Kanban" [checked] [ref=e208]
+              - text: Kanban
+            - generic [ref=e209]:
+              - checkbox "Code reviews" [checked] [ref=e210]
+              - text: Code reviews
+            - generic [ref=e211]:
+              - checkbox "Daily status" [checked] [ref=e212]
+              - text: Daily status
+            - generic [ref=e213]:
+              - checkbox "Documents" [checked] [ref=e214]
+              - text: Documents
+            - generic [ref=e215]:
+              - checkbox "EVM" [checked] [ref=e216]
+              - text: EVM
+            - generic [ref=e217]:
+              - checkbox "Monitoring & Controlling by Project" [checked] [ref=e218]
+              - text: Monitoring & Controlling by Project
+            - generic [ref=e219]:
+              - checkbox "Pivot" [checked] [ref=e220]
+              - text: Pivot
+            - generic [ref=e221]:
+              - checkbox "Release update" [ref=e222]
+              - text: Release update
+            - generic [ref=e223]:
+              - checkbox "Scrum" [ref=e224]
+              - text: Scrum
+            - generic [ref=e225]:
+              - checkbox "Service module" [checked] [ref=e226]
+              - text: Service module
+            - generic [ref=e227]:
+              - checkbox "Untracked mails" [checked] [ref=e228]
+              - text: Untracked mails
+          - group "Trackers" [ref=e229]:
+            - generic [ref=e230]: Trackers
+            - generic [ref=e231]:
+              - checkbox "Bug" [checked] [ref=e232]
+              - text: Bug
+            - generic [ref=e233]:
+              - checkbox "Feature" [checked] [ref=e234]
+              - text: Feature
+            - generic [ref=e235]:
+              - checkbox "Support" [checked] [ref=e236]
+              - text: Support
+            - generic [ref=e237]:
+              - checkbox "Test case" [ref=e238]
+              - text: Test case
+            - generic [ref=e239]:
+              - checkbox "Task" [checked] [ref=e240]
+              - text: Task
+            - generic [ref=e241]:
+              - checkbox "Code Review" [checked] [ref=e242]
+              - text: Code Review
+            - generic [ref=e243]:
+              - checkbox "Code Defect" [checked] [ref=e244]
+              - text: Code Defect
+          - group "Custom fields" [ref=e245]:
+            - generic [ref=e246]: Custom fields
+            - generic [ref=e247]:
+              - checkbox "Browser Name" [ref=e248]
+              - text: Browser Name
+          - button "Create" [ref=e249] [cursor=pointer]
+          - button "Create and continue" [ref=e250] [cursor=pointer]
+    - generic [ref=e251]:
+      - text: Powered by
+      - link "Redmine" [ref=e252] [cursor=pointer]:
+        - /url: https://www.redmine.org/
+      - text: © 2006-2025 Jean-Philippe Lang
+  - log [ref=e253]
+  - log [ref=e254]
+  - log [ref=e255]
+  - log [ref=e256]
+```

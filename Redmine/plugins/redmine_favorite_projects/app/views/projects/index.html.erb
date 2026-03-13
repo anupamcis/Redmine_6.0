@@ -1,0 +1,123 @@
+<%
+  # Ensure the helper is available
+  unless ProjectsHelper.included_modules.include?(FavoriteProjectsHelper)
+    ProjectsHelper.send(:include, FavoriteProjectsHelper)
+  end
+%>
+<div class="contextual">
+  <%= render_project_action_links %>
+</div>
+
+  <% html_title(@query.new_record? ? l(:label_my_projects) : @query.name) %>
+
+  <div class="filters">
+    <%= form_tag({:controller => "favorite_projects", :action => "search"}, :method => :get,  :id => "query_form") do %>
+    <%= hidden_field_tag 'set_filter', '1' %>
+    <h2>
+      <%= @query.new_record? ? l(:label_project_plural) : h(@query.name) %>
+      <span class="live_search">
+        <%= text_field_tag(:search, params[:search], :autocomplete => "off", :class => "live_search_field", :placeholder => l(:label_search) ) %>
+        <label for='status'><%= l(:field_order_by) %></label>
+        <%= select_tag 'order_projects', options_for_select([['Order By Creation Date', 'order_by_date'],['Order By Alphabets', 'order_by_alphabets']], params[:order_projects]), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+
+      </span>
+    </h2>
+    <script type="text/javascript">
+     jQuery(function($) {
+          // when the #search field changes
+          $("#search").observe_field(2, function() {
+            var form = $("#query_form"); // grab the form wrapping the search bar.
+            var url = form.attr("action");
+            form.find('[name="c[]"] option').each(function(i, elem){
+              $(elem).attr('selected', true)
+            });
+            var formData = form.serialize();
+            form.find('[name="c[]"] option').each(function(i, elem){
+              $(elem).attr('selected', false)
+            });
+            $.get(url, formData, function(data) { // perform an AJAX get, the trailing function is what happens on successful get.
+                $("#projects_list").html(data); // replace the "results" div with the result of action taken
+              });
+          });
+        });
+      </script>
+
+      <fieldset id="filters" class="collapsible <%= @query.new_record? ? "" : "collapsed" %>">
+        <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+        <div style="<%= @query.filters.blank? ? "display: none;" : "" %>">
+          <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
+        </div>
+      </fieldset>
+
+      <fieldset class="collapsible collapsed">
+        <legend onclick="toggleFieldset(this);"><%= l(:label_options) %></legend>
+        <div style="display: none;">
+          <table>
+            <% list_style = respond_to?(:favorite_project_list_style) ? favorite_project_list_style : (RedmineFavoriteProjects.default_list_style rescue 'list') %>
+            <% if list_style == 'list' %>
+            <tr>
+              <td><%= l(:field_column_names) %></td>
+              <td><%= render_query_columns_selection(@query) %></td>
+            </tr>
+            <% end %>
+
+            <tr>
+              <td><label for='favorite_project_list_style'><%= l(:label_favorite_project_list_partial_style) %></label></td>
+              <td><%= select_tag('favorite_project_list_style', options_for_select(respond_to?(:favorite_project_list_styles_for_select) ? favorite_project_list_styles_for_select : [['List', 'list'], ['Cards', 'list_cards']], list_style)) %></td>
+            </tr>
+          </table>
+        </div>
+      </fieldset>
+
+      <p class="buttons hide-when-print">
+        <%= link_to l(:button_apply), "#", :onclick=>"$('#query_form').submit()", :class => 'icon icon-checked' %>
+        <%= link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  %>
+        <% if @query.new_record? && User.current.allowed_to?(:manage_favorite_project_queries, nil , :global => true) %>
+        <%= link_to_function l(:button_save),
+        "$('#query_form').attr('action', '#{ new_favorite_project_query_path }').submit()",
+        :class => 'icon icon-save' %>
+        <% end %>
+      </p>
+      <% end %>
+    </div>
+
+    <%= error_messages_for 'query' %>
+    <% if @query.valid? %>
+    <div id="projects_list">
+      <% list_style = respond_to?(:favorite_project_list_style) ? favorite_project_list_style : (RedmineFavoriteProjects.default_list_style rescue 'list') %>
+      <%if params["controller"].present? && params["controller"] == "projects" %>
+        <% @projects = @query.results_scope.
+        offset(@entry_pages.offset).
+        limit(@entry_pages.per_page) %>
+      <%end%>
+      <%= render :partial => "projects/#{list_style}" %>
+    </div>
+
+    <% if User.current.logged? %>
+    <p style="text-align:right;">
+      <span class="my-project"><%= l(:label_favorite_projects) %></span>
+    </p>
+    <% end %>
+    <% end %>
+    <% content_for :sidebar do %>
+      <% if User.current.admin? %>
+        <div id="tags">
+          <%= render :partial => 'projects/tags_cloud', :object => @tags %>
+        </div>
+      <% end %>
+
+      <div id="queries">
+        <%= render_sidebar_favorite_project_queries('favorite_projects') %>
+      </div>
+    <% end %>
+
+    <%# other_formats_links do |f| %>
+    <%#= f.link_to 'Atom', :url => {:key => User.current.rss_key} %>
+    <%# end %>
+
+    <% content_for :header_tags do %>
+    <%= javascript_include_tag :redmine_favorite_projects, :plugin => 'redmine_favorite_projects'  %>
+    <%= stylesheet_link_tag :redmine_favorite_projects, :plugin => 'redmine_favorite_projects'  %>
+    <% end %>
+
+    <% html_title(l(:label_project_plural)) -%>

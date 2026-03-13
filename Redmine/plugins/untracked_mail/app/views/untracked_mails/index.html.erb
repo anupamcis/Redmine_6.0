@@ -1,0 +1,23 @@
+<div class="autoscroll">
+ <%= form_tag(untracked_mails_path, :method => :get) do %>
+    <fieldset><legend><%= l(:label_filter_plural) %></legend>
+     <label><%= l(:filter_mail) %></label>
+    <%= select_tag 'mail_type', options_for_select([ "Unread", "All mail" ], params[:mail_type].present? ? params[:mail_type] : "Unread"), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+  <% end %>
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:subject)%></th>
+        <th><%= l(:from) %></th>
+        <%= sort_header_tag('sent_mail', :caption => l(:sent_mail)) %>
+        <%= sort_header_tag('created_on', :caption => l(:created_on)) %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render :partial => 'untracked_mail', :collection => @untracked_mails %>
+    </tbody>
+  </table>
+</div>
+<span class="pagination"><%= pagination_links_full @untracked_mails_pages, @untracked_mails_count if @untracked_mails_pages.present? && @untracked_mails_count.present? %></span>
+
+<% html_title(l(:untracked_mail)) -%>

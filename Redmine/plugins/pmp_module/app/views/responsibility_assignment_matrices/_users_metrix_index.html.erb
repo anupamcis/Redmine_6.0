@@ -1,0 +1,77 @@
+<% if @project.responsibility_assignment_matrices.present? %>
+<% project_matrix_fields = @project.project_responsibility_assignment_matrix_filter.matrix_filter%>
+<% work_types = RaciChart.where(id: project_matrix_fields) %>
+<% @user_ids = [] %>
+<% @user_names  = [] %>
+<% @resposiblity_array = {} %>
+
+<% @project.users.each do |user|
+  resposbility = user.responsibility_assignment_matrices.where(project_id: @project.id).try(:first).try(:responsibility)
+  if resposbility.present?
+    @user_ids.push(user.id)
+    @user_names.push(user.name)
+    resposbility.each do |key,value|
+      @resposiblity_array[key] = {} unless @resposiblity_array.keys.include?(key)
+      @resposiblity_array[key].merge!({user.id=>value})
+    end
+  end
+end %>
+  <% if @resposiblity_array.present? %>
+    <table class="list">
+      <tr>
+        <th>RACI Chart</th>
+        <th colspan="<%= @user_ids.size %>">RESOURCE</th>
+      </tr>
+      <tr>
+        <td>
+          Work
+        </td>
+        <% @user_names.each do |user_name| %>
+          <td><%=user_name%></td>
+        <% end %>
+      </tr>
+
+      <% work_types.each do |work_type| %>
+       <% if @resposiblity_array.keys.include?(work_type.work_type) %>
+         <tr class="<%= cycle("odd", "even") %>">
+          <td><%=work_type.work_type%></td>
+          <% @user_ids.each do |user_id| %>
+            <td>
+              <% if @resposiblity_array[work_type.work_type][user_id].present? %>
+                  <% @resposiblity_array[work_type.work_type][user_id].each do |user_work_type| %>
+                    <span title="<%= ResponsibilityAssignmentMatrix.tooltip_title(user_work_type) %>"><%= user_work_type %></span>
+                  <% end %>
+              <% else %>
+                  -
+              <% end %>
+            </td>
+          <% end %>
+         </tr>
+       <% end %>
+      <% end %>
+    </table>
+
+    <br>
+    <table border="1" align="left" style="font-weight:bold">
+      <tr>
+        <td>R</td>
+        <td><%= l(:raci_responsible)%></td>
+        <td>A</td>
+        <td><%= l(:raci_accountable)%></td>
+      </tr>
+      <tr>
+        <td>C</td>
+        <td><%= l(:raci_consult)%></td>
+        <td>I</td>
+        <td><%= l(:raci_inform)%></td>
+      </tr>
+    </table>
+  <% end %>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+<style type="text/css">
+  .rc_td{
+    text-align: center !important;
+   }
+</style>

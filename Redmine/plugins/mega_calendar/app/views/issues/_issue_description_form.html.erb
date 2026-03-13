@@ -1,0 +1,10 @@
+<%= form_tag(update_issue_description_path(@issue), :method => 'put') do %>
+    <%#= label_tag "notes", l(:description_notes), :class => "hidden-for-sighted" %>
+    <%= text_area_tag "issue[description]", @issue.description,
+          :class => 'wiki-edit' %>
+    <br>
+    <p><%= submit_tag l(:button_save) %> |
+      <%= link_to l(:button_cancel), '#', :onclick => "$('.edit_issue_description').html(''); return false;" %>
+    </p>
+<%= wikitoolbar_for "issue_description" %>
+<% end %>

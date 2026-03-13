@@ -1,0 +1,60 @@
+<link rel='stylesheet' href='<%= Setting.plugin_mega_calendar['sub_path'] %>plugin_assets/mega_calendar/javascripts/datetimepicker/jquery.datetimepicker.css' />
+<script src='<%= Setting.plugin_mega_calendar['sub_path'] %>plugin_assets/mega_calendar/javascripts/datetimepicker/build/jquery.datetimepicker.full.min.js'></script>
+
+<%= labelled_form_for @holiday do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <p>
+    <%= submit_tag l(:button_save) %> |
+    <%= link_to "Back", holidays_path(tab: 'leaves') %>
+  </p>
+<% end %>
+
+<%
+  js_locale = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first rescue nil
+  if js_locale.blank? || (js_locale != 'en' && js_locale != 'de' && js_locale != 'fr')
+    js_locale = 'en'
+  end
+%>
+<% holiday_list = Redmine::Helpers::Calendar.all_weekends(Time.now.year) %>
+<% holiday_list = holiday_list.map{|a| a.strftime("%-Y-%-m-%-d")} %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.datetimepicker.setLocale('<%= js_locale %>');
+    var options = {
+      i18n: {
+        de: {
+          months: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+          dayOfWeek: ["So.", "Mo", "Di", "Mi","Do", "Fr", "Sa."]
+        }
+      },
+      onGenerate:function( ct ){
+        add_holiday_class( ct );
+      },
+      timepicker: false,
+      datepicker: true,
+      format: 'Y-m-d',
+      minDate: 0
+    };
+    $("#holiday_start").datetimepicker(options);
+    $("#holiday_end_date").datetimepicker(options);
+  });
+
+  function add_holiday_class( ct ){
+    var arr = <%= raw holiday_list %>
+    $('.xdsoft_calendar').find('td').each(function() {
+      var date = $(this).attr('data-date')
+      var month = (parseInt($(this).attr('data-month')) + 1)
+      var year = $(this).attr('data-year')
+      var complete_date = year + '-' + month + '-' + date
+      if ($.inArray(complete_date, arr) !== -1){
+        $(this).addClass('holiday');
+      }
+    });
+  }
+</script>
+
+<style type="text/css">
+  .holiday{
+    background-color: #C0C0C0 !important;
+  }
+</style>

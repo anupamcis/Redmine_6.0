@@ -1,0 +1,469 @@
+/* Modern Kanban Board Styling */
+
+/* Board Container */
+.agile-board {
+  background: #f8f9fa;
+  min-height: 100vh;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Board Header */
+.board_new_task {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.board_new_task .new-issue {
+  background: #3498db;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: none;
+}
+
+.board_new_task .new-issue:hover {
+  background: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(52, 152, 219, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+/* Kanban Table */
+.kanban_table {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border: 1px solid #e9ecef;
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* Column Headers */
+.kanban_table thead th {
+  background: #2c3e50;
+  color: white;
+  padding: 20px 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.kanban_table thead th::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.kanban_table thead th:hover::before {
+  left: 100%;
+}
+
+/* Column Status Colors */
+.kanban_table thead th.status-new { background: #3498db; }
+.kanban_table thead th.status-in-progress { background: #f39c12; }
+.kanban_table thead th.status-resolved { background: #27ae60; }
+.kanban_table thead th.status-feedback { background: #e74c3c; }
+.kanban_table thead th.status-reopen { background: #95a5a6; }
+
+/* Column Cells */
+.kanban_table td.issue-status-col {
+  vertical-align: top;
+  padding: 20px 15px;
+  background: #f8f9fa;
+  border: none;
+  min-height: 400px;
+  transition: all 0.3s ease;
+}
+
+.kanban_table td.issue-status-col:hover {
+  background: #e9ecef;
+}
+
+/* Issue Cards */
+.issue-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.issue-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+/* Status-specific top border colors */
+.issue-card.status-new::before {
+  background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.issue-card.status-in-progress::before {
+  background: linear-gradient(90deg, #f39c12, #e67e22);
+}
+
+.issue-card.status-resolved::before {
+  background: linear-gradient(90deg, #27ae60, #229954);
+}
+
+.issue-card.status-feedback::before {
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.issue-card.status-reopen::before {
+  background: linear-gradient(90deg, #95a5a6, #7f8c8d);
+}
+
+.issue-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Status-specific hover effects */
+.issue-card.status-new:hover {
+  box-shadow: 0 15px 35px rgba(52, 152, 219, 0.25);
+}
+
+.issue-card.status-in-progress:hover {
+  box-shadow: 0 15px 35px rgba(243, 156, 18, 0.25);
+}
+
+.issue-card.status-resolved:hover {
+  box-shadow: 0 15px 35px rgba(39, 174, 96, 0.25);
+}
+
+.issue-card.status-feedback:hover {
+  box-shadow: 0 15px 35px rgba(231, 76, 60, 0.25);
+}
+
+.issue-card.status-reopen:hover {
+  box-shadow: 0 15px 35px rgba(149, 165, 166, 0.25);
+}
+
+/* Issue Card Content */
+.issue-card .issue-id {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.issue-card .issue-id strong {
+  color: #333;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.issue-card .name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.issue-card .name a {
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.issue-card .name a:hover {
+  color: #667eea;
+}
+
+/* Issue Attributes */
+.issue-card .attributes {
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #666;
+}
+
+.issue-card .attributes b {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Issue Description */
+.issue-card .description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+/* Progress Bar */
+.issue-card .progress_board {
+  margin-bottom: 15px;
+}
+
+.issue-card .progress_board_bar {
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 8px;
+  margin-bottom: 5px;
+}
+
+.issue-card .progress_board_bar .progress-bar {
+  background: linear-gradient(90deg, #4ecdc4, #44a08d);
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+/* Status-specific progress bar colors */
+.issue-card.status-new .progress_board_bar .progress-bar {
+  background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.issue-card.status-in-progress .progress_board_bar .progress-bar {
+  background: linear-gradient(90deg, #f39c12, #e67e22);
+}
+
+.issue-card.status-resolved .progress_board_bar .progress-bar {
+  background: linear-gradient(90deg, #27ae60, #229954);
+}
+
+.issue-card.status-feedback .progress_board_bar .progress-bar {
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.issue-card.status-reopen .progress_board_bar .progress-bar {
+  background: linear-gradient(90deg, #95a5a6, #7f8c8d);
+}
+
+.issue-card .progress_board_per {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* User Info */
+.issue-card .user_board {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.issue-card .user_board .user {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.issue-card .user_board .user img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 8px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.issue-card .user_board .user a {
+  color: #666;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.issue-card .user_board .user a:hover {
+  color: #667eea;
+}
+
+/* Date and Priority */
+.issue-card .board_date_priority {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.issue-card .board_date {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.issue-card .board_priority_high {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.issue-card .board_priority_normal {
+  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.issue-card .board_priority_low {
+  background: linear-gradient(45deg, #a8e6cf, #88d8a3);
+  color: #2c3e50;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.issue-card .board_priority_urgent {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Drag and Drop Effects */
+.issue-card.ui-sortable-helper {
+  transform: rotate(5deg) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.issues-board td.issue-status-col.droppable-hover {
+  background: rgba(102, 126, 234, 0.1);
+  border: 2px dashed #667eea;
+  border-radius: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .agile-board {
+    padding: 10px;
+  }
+  
+  .kanban_table {
+    font-size: 14px;
+  }
+  
+  .issue-card {
+    padding: 15px;
+  }
+  
+  .issue-card .name {
+    font-size: 14px;
+  }
+}
+
+/* Animation for card appearance */
+.issue-card {
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Status-specific card colors matching headers */
+.issue-card.status-new {
+  border-left: 4px solid #3498db;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15);
+}
+
+.issue-card.status-in-progress {
+  border-left: 4px solid #f39c12;
+  background: linear-gradient(135deg, #ffffff 0%, #fffbf5 100%);
+  box-shadow: 0 8px 25px rgba(243, 156, 18, 0.15);
+}
+
+.issue-card.status-resolved {
+  border-left: 4px solid #27ae60;
+  background: linear-gradient(135deg, #ffffff 0%, #f5fff8 100%);
+  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.15);
+}
+
+.issue-card.status-feedback {
+  border-left: 4px solid #e74c3c;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.15);
+}
+
+.issue-card.status-reopen {
+  border-left: 4px solid #95a5a6;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 8px 25px rgba(149, 165, 166, 0.15);
+}
+
+/* Flash messages */
+.flash.error {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+}
+
+/* Checkbox styling */
+.issue-card input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid #ddd;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.issue-card input[type="checkbox"]:checked {
+  background: #667eea;
+  border-color: #667eea;
+}

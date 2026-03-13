@@ -1,0 +1,3 @@
+$("tbody").find("tr").remove();
+$("tbody").append("<%= j render @daily_statuses %>");
+$(".pagination").html("<%= j pagination_links_full @daily_status_pages, @daily_status_count %>");

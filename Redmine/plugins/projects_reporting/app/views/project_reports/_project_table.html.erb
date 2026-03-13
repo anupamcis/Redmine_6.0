@@ -1,0 +1,7 @@
+<tbody>
+  <% @project_s.each do |project| %>
+    <% cache project do %>
+      <%= render partial: "table_row_data", locals: {issue_sequence: issue_sequence, project: project, project_managers: project_managers}  %>
+    <%end%>
+  <%end%>
+</tbody>

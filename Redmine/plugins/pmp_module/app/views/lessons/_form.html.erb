@@ -1,0 +1,13 @@
+<%= error_messages_for 'lesson' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "lesson[project_id]", @project.id %>
+  <p><%= f.select :sdlc_phase, options_for_select(SDLC_PHASE, @lesson.sdlc_phase),{:required => true, prompt: 'select sdlc phase...'}, {class: "small"} %></p>
+
+  <p><%= f.text_area :description, :required => true, :rows => 5, cols: 5, :class => 'wiki-edit' %>
+    <%= wikitoolbar_for 'lesson_description' %>
+  </p>
+  <p><%= f.select :lesson_learnt_type, options_for_select([l(:went_wrong), l(:went_right), l(:best_practice)], @lesson.lesson_learnt_type),{:required => true, prompt: 'select type...'}, {class: "small"} %></p>
+  <br>
+</div>

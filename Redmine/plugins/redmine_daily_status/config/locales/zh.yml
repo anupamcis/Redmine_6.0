@@ -1,0 +1,21 @@
+# Simple Chinese strings go here for Rails i18n
+zh:
+  daily_status: "日报"
+  label_last_status_not_available: "%{days} 天前的日报不存在."
+  label_status_saved: "日报已保存"
+  label_email_sent_to_all_members: " ，并且日报已经被发送给了所有成员。"
+  label_today_no_status: "今天得日报还没写。"
+  label_no_status: "日报不存在。"
+  label_send_email_project_members: "发送邮件给成员"
+  label_send_email_project_watchers: "发送邮件给跟踪者"
+  label_sent_email: "今天的更新已经通过邮件发送."
+  label_update: "更新"
+  label_cancel: "取消"
+  label_email_subject: "日报: "
+  label_thanks: "谢谢，"
+  label_add_update_today_status: "添加/编辑今天的日报"
+  label_edit_today_status: "编辑今天的日报"
+  label_invalid_date_format: "日期格式不合法，请使用YYYY-mm-dd的格式"
+  label_email_note: "每天的日报邮件将会发送给项目的所有成员"
+  manage_daily_status: "添加跟踪者"
+

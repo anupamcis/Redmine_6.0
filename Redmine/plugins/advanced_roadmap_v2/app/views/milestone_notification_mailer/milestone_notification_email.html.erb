@@ -1,0 +1,77 @@
+<style type="text/css">
+  .box{
+    padding:6px;
+    margin-bottom: 10px;
+    background-color:#f6f6f6;
+    color:#505050;
+    line-height:1.5em;
+    border: 1px solid #e4e4e4;
+    word-wrap: break-word;
+    border-radius: 3px;
+  }
+  table.issue-report {table-layout:fixed;}
+  table.list, .table-list { border: 1px solid #e4e4e4;  border-collapse: collapse; width: 100%; margin-bottom: 4px; }
+  table.list th, .table-list-header { background-color:#EEEEEE; padding: 4px; white-space:nowrap; font-weight:bold; }
+  table.list td {text-align:center; vertical-align:top; padding-right:10px;}
+  table.list td.id { width: 2%; text-align: center;}
+  table.list td.name, table.list td.description, table.list td.subject, table.list td.comments, table.list td.roles {text-align: left;}
+  table.list td.tick {width:15%}
+  table.list td.checkbox { width: 15px; padding: 2px 0 0 0; }
+  table.list td.checkbox input {padding:0px;}
+  table.list td.buttons, div.buttons { width: 15%; white-space:nowrap; text-align: right; }
+  table.list td.buttons a, div.buttons a { margin-right: 0.6em; }
+  table.list td.buttons img, div.buttons img {vertical-align:middle;}
+  table.list td.reorder {width:15%; white-space:nowrap; text-align:center; }
+  table.list table.progress td {padding-right:0px;}
+  table.list caption { text-align: left; padding: 0.5em 0.5em 0.5em 0; }
+  table p {margin:0;}
+    .odd {background-color:#f6f7f8;}
+    .even {background-color: #fff;}
+</style>
+
+<p>Hello All,</p>
+  <p>
+   One of your project (i.e <%= @project.name %>) milestone is completing on <%= @milestone.effective_date.strftime('%d-%m-%y')%>. Please find items status for the same below.
+  </p>
+<div class="issues box">
+  <h3><%=l(:label_milestone_tracking)%> report for <%= @milestone.name %></h3>
+    <% if @trackers.present? %>
+      <table class="list issue-report">
+        <thead>
+          <tr>
+            <th></th>
+            <th><%=l(:label_open_issues_plural)%></th>
+            <th><%=l(:label_closed_issues_plural)%></th>
+            <th><%=l(:label_total)%></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @trackers.each do |tracker| %>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="name">
+              <%= link_to tracker.name, project_issues_url(@project, :set_filter => 1, :tracker_id => tracker.id) %>
+                </td>
+            <td class="open-issue-count">
+              <%= link_to @open_issues_by_tracker[tracker].to_i, project_issues_url(@project, :set_filter => 1, :tracker_id => tracker.id) %>
+            </td>
+            <td class="closed-issue-count">
+              <%= link_to (@total_issues_by_tracker[tracker].to_i - @open_issues_by_tracker[tracker].to_i), project_issues_url(@project, :set_filter => 1, :tracker_id => tracker.id, :status_id => 'c') %>
+            </td>
+            <td class="total-issue-count">
+              <%= link_to @total_issues_by_tracker[tracker].to_i, project_issues_url(@project, :set_filter => 1, :tracker_id => tracker.id, :status_id => '*') %>
+            </td>
+          </tr>
+        <% end %>
+          <tr>
+            <th><%=l(:label_total)%></th>
+            <th id="open_total"><%= @total_open_issues %></th>
+            <th id="close_total"><%= @total_close_issues %></th>
+            <th id="grand_total"><%= @total_issues %></th>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+</div>
+
+<p>Thanks & regards,</p>
+<p>Admin</p>

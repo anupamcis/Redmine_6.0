@@ -1,0 +1,62 @@
+<h2><%= l(:delayed_by_projects) %> List</h2>
+
+<%= form_tag(project_reports_path, :method => :get) do %>
+  <fieldset>
+    <legend><%= l(:label_filter_plural) %></legend>
+    <%= hidden_field_tag('tab', "delayed_by")  %>
+    <label for='status'><%= l(:field_status) %> :</label>
+    <%= select_tag 'delayed_by_project_status', project_status_options_for_select(@delayed_by_project_status), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+  </fieldset>
+<% end %>
+
+
+<% if @late_projects.present? %>
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th> <%= l(:field_name)%> </th>
+        <th> <%= l(:field_project_lead)%> </th>
+        <th> <%= l(:field_project_manager)%> </th>
+        <th> <%= l(:field_project_end_date)%></th>
+        <th> <%= l(:field_delayed_by)%> </th>
+        <th> <%= l(:field_open_issues_count)%> </th>
+        <th> <%= l(:field_close_issues_count)%> </th>
+        <th> <%= l(:field_total_issues_count)%></th>
+        <th> <%= l(:field_percetage)%> </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @late_projects.each do |project|%>
+      <% project_progress =  project['project'].calculate_project_percent %>
+      <% total_issues, open_issues, close_issues = project['project'].issues.size, project['project'].issues.open.size, (project['project'].issues.size - project['project'].issues.open.size) %>
+      <tr>
+        <td><%= link_to project['project'].name, project_launch_page_url(project['project']) %></td>
+        <td><%= project['project'].project_leader %></td>
+        <td><%= project['project'].project_manager %></td>
+        <td><%= format_date(project['datetime']) %></td>
+        <td><%= due_date_tag(project['datetime']) %></td>
+        <td><%= open_issues %></td>
+        <td><%= close_issues  %></td>
+        <td> <%= total_issues %></td>
+        <td>
+          <div class="w3-progress-container" title="<%= project_progress %>%">
+            <div class="w3-progressbar w3-green" style="width:<%= project_progress %>%;">
+            </div>
+          </div>
+          <div class="progres_value">
+            <%= project_progress %>%
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<span class="pagination" style="display: inline-block;">
+  <%= pagination_links_full @late_projects_pages, @late_projects_count %>
+</span>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

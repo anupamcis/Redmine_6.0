@@ -1,0 +1,4 @@
+<div class="fixed-version attribute">
+  <div class="label"><%=l(:label_milestone)%>:</div>
+  <div class="value"><%= @issue.fixed_milestone ? @issue.fixed_milestone.try(:name) : "-" %></div>
+</div>

@@ -1,0 +1,13 @@
+<%= error_messages_for 'configuration_audit' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "configuration_audit[project_id]", @project.id %>
+  <p><%= f.text_field :cm_audit, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :date_or_event, :required => true, :size => 25 %>
+  <%= calendar_for('configuration_audit_date_or_event') %>
+  </p>
+  <p><%= f.text_field :focus_of_audit, :size => 25 %></p>
+  <p><%= f.text_field :auditor, :size => 25, :required => true, value: "SQA", disabled: true %></p>
+  <br>
+</div>

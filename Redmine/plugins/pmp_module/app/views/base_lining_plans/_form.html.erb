@@ -1,0 +1,11 @@
+<%= error_messages_for 'base_lining_plan' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "base_lining_plan[project_id]", @project.id %>
+  <p><%= f.text_field :when_to_baseline, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :trigger_for_baseline, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :what_to_baseline, :required => true, :size => 25 %></p>
+  <br>
+</div>
+

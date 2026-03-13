@@ -1,0 +1,31 @@
+<% if @project.try(:verification_plans).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_sdlc_phase) %></th>
+          <th><%= l(:field_work_product) %></th>
+          <th><%= l(:field_verification_method) %></th>
+          <th><%= l(:field_validation_technique) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for verification_plan in @project.verification_plans -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= verification_plan.sdlc_phase %></td>
+          <td class="lastname"><%= verification_plan.work_product %></td>
+          <td class="lastname"><%= verification_plan.verification_method %></td>
+          <td class="lastname"><%= verification_plan.validation_technique %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_verification_plan_path(@project,verification_plan, :back_url => request.original_fullpath), class: "icon icon-edit", :title => "Edit", remote: true if User.current.allowed_to?(:update_verification_plans, @project, global: true)%>
+            <%= delete_link project_verification_plan_path(@project,verification_plan, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_verification_plans, @project, global: true)%>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

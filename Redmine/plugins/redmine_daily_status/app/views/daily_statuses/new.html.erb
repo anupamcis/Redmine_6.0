@@ -1,0 +1,13 @@
+<% if User.current.allowed_to?(:manage_daily_status, @project) %>
+	<%= labelled_form_for([@project, @daily_status]) do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+	<div id="signature-modal" style="display:none;">
+		<h3><%= l(:label_daily_status_signature) %></h3>
+    <div><%= text_area(:daily_status, :signature, class: 'sign1-field', value: "#{l(:thanks_n_regards)},\n#{User.current.name}") %></div>
+  </div>
+  <div class ="daily_status_btn">
+    <%= submit_tag l(:save_as_draft) %>
+    <%= submit_tag l(:send_mail) %>
+  </div>
+	<% end %>
+<% end %>

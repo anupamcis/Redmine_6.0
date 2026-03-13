@@ -1,0 +1,7 @@
+<%= title [l(:label_company_plural), companies_path], l(:label_company_new) %>
+
+<%= labelled_form_for @company do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+  <%= submit_tag l(:button_create_and_continue), :name => 'continue' %>  
+<% end %>

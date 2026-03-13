@@ -1,0 +1,87 @@
+<link rel='stylesheet' href='<%= Setting.plugin_mega_calendar['sub_path'] %>plugin_assets/mega_calendar/javascripts/datetimepicker/jquery.datetimepicker.css' />
+<script src='<%= Setting.plugin_mega_calendar['sub_path'] %>plugin_assets/mega_calendar/javascripts/datetimepicker/build/jquery.datetimepicker.full.min.js'></script>
+<div class="contextual">
+<%#= link_to l(:label_profile), company_path(@company), :class => 'icon icon-user' %>
+</div>
+
+<%#= title [l(:label_company_plural), holidays_path], @holiday.name %>
+
+<%= labelled_form_for @holiday do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <p>
+    <%= submit_tag l(:button_save) %> |
+    <%= link_to "Back", holidays_path(tab: 'leaves') %>
+  </p>
+<% end %>
+
+<%
+  js_locale = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first rescue nil
+  if js_locale.blank? || (js_locale != 'en' && js_locale != 'de' && js_locale != 'fr')
+    js_locale = 'en'
+  end
+%>
+
+<% holiday_list = Redmine::Helpers::Calendar.all_weekends(Time.now.year) %>
+<% holiday_list = holiday_list.map{|a| a.strftime("%-Y-%-m-%-d")} %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.datetimepicker.setLocale('<%= js_locale %>');
+    var options_start = {
+      i18n: {
+        de: {
+          months: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+          dayOfWeek: ["So.", "Mo", "Di", "Mi","Do", "Fr", "Sa."]
+        }
+      },
+      onGenerate:function( ct ){
+        add_holiday_class( ct );
+      },
+      timepicker: false,
+      datepicker: true,
+      format: 'Y-m-d',
+      minDate: 0,
+      value: '<%= @holiday.start.blank? ? '' : @holiday.start.to_date.to_s %>'
+    };
+    var options_end = {
+      i18n: {
+        de: {
+          months: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+          dayOfWeek: ["So.", "Mo", "Di", "Mi","Do", "Fr", "Sa."]
+        }
+      },
+      onGenerate:function( ct ){
+        add_holiday_class( ct );
+      },
+      timepicker: false,
+      datepicker: true,
+      format: 'Y-m-d',
+      minDate: 0,
+      value: '<%= @holiday.end_date.blank? ? '' : @holiday.end_date.to_date.to_s %>'
+    };
+
+    function add_holiday_class( ct ){
+      var arr = <%= raw holiday_list %>
+      $('.xdsoft_calendar').find('td').each(function() {
+        var date = $(this).attr('data-date')
+        var month = (parseInt($(this).attr('data-month')) + 1)
+        var year = $(this).attr('data-year')
+        var complete_date = year + '-' + month + '-' + date
+        if ($.inArray(complete_date, arr) !== -1){
+          $(this).addClass('holiday');
+        }
+      });
+    }
+
+    $("#holiday_start").datetimepicker(options_start);
+    $("#holiday_end_date").datetimepicker(options_end);
+    $("#holiday_user_id").val('<%= @holiday.user_id %>');
+    $("#holiday_reason").val('<%= @holiday.reason %>');
+  });
+</script>
+
+<style type="text/css">
+  .holiday{
+    background-color: #C0C0C0 !important;
+  }
+</style>

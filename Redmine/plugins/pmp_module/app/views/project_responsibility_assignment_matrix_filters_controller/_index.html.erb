@@ -1,0 +1,25 @@
+<% if @project.try(:project_responsibility_assignment_matrix_filter).present? %>
+  <div class="autoscroll">
+    <% if User.current.allowed_to?(:update_raci_chart_filter, @project, global: true) %>
+      <%= render 'responsibility_assignment_matrices/edit_project_matrix_filter', project_matrix_filter: @project.project_responsibility_assignment_matrix_filter %>
+    <% end %>
+    <br><br>
+    <% filter_type = @project.project_responsibility_assignment_matrix_filter.matrix_type %>
+    <% if filter_type.eql?("User") %>
+      <% if User.current.allowed_to?(:view_raci_chart, @project, global: true) %>
+        <%= render 'responsibility_assignment_matrices/users_metrix_index' %>
+      <% end %>
+    <% else %>
+      <% if User.current.allowed_to?(:view_raci_chart, @project, global: true) %>
+        <%= render 'responsibility_assignment_matrices/roles_metrix_index' %>
+      <% end %>
+    <% end %>
+  </div>
+  <%= render 'responsibility_assignment_matrices/actions', filter_type: filter_type %>
+<% else%>
+  <% if User.current.allowed_to?(:update_raci_chart_filter, @project, global: true) %>
+    <%= render 'responsibility_assignment_matrices/new_project_matrix_filter', project_matrix_filter: @project.build_project_responsibility_assignment_matrix_filter %>
+  <% end %>
+  <br><br>
+  <p class="nodata"><%= l(:label_no_responsibility_matrix) %></p>
+<% end %>

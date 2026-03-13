@@ -1,0 +1,51 @@
+Hello <%= @responsible_person_name %>,
+<p>
+  New Hardware and Software Requirement Added For Project - <%= @project_name %>
+  With following hardware and software requirement,
+</p>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_profile_type) %></th>
+        <th><%= l(:field_environment) %></th>
+        <th><%= l(:field_resource_name) %></th>
+        <th><%= l(:field_configuration) %></th>
+        <th><%= l(:field_quantity) %></th>
+        <th><%= l(:field_item_version) %></th>
+        <th><%= l(:field_action_type) %></th>
+        <th><%= l(:field_responsible_person) %></th>
+        <th><%= l(:field_critical_resource) %></th>
+        <th><%= l(:field_remarks) %></th>
+        <th><%= l(:field_start_date) %></th>
+        <th><%= l(:field_end_date) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @hw_sw_plans.each do |plan|%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%= plan.profile_type%></td>
+          <td><%= plan.environment%></td>
+          <td><%= plan.resource %></td>
+          <td><%= plan.configuration%></td>
+          <td><%= plan.quantity %></td>
+          <td><%= plan.version%></td>
+          <td><%= plan.action %></td>
+          <td><%= plan.responsible_person.name %></td>
+          <td><%= plan.critical_resource ? "Yes" : "No" %></td>
+          <td><%= plan.remarks %></td>
+          <td><%= format_date(plan.start_date) %></td>
+          <td><%= format_date(plan.end_date) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<p>
+  Please discuss with <%= @author_name %>, And provide hardware and softwares according to this plan.
+</p>
+
+<p>Thanks & regards,</p>
+<p><%= @author_name %></p>

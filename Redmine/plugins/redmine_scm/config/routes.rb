@@ -1,0 +1,1 @@
+get 'repository/project_repository', to: 'repositories#project_repository', as: :admin_project_repository

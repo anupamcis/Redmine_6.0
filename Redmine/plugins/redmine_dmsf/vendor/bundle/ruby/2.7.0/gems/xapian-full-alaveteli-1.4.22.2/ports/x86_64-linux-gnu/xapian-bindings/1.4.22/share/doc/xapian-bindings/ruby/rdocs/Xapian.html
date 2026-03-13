@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module Xapian - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#module-Xapian-label-Ruby+Xapian+bindings">Ruby Xapian bindings</a>
+    <li><a href="#module-Xapian-label-Underscore+methods">Underscore methods</a>
+  </ul>
+</div>
+
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-BAD_VALUENO">::BAD_VALUENO</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-Xapian">
+  <h1 id="module-Xapian" class="module">
+    module Xapian
+  </h1>
+
+  <section class="description">
+    
+<h1 id="module-Xapian-label-Ruby+Xapian+bindings">Ruby <a href="Xapian.html"><code>Xapian</code></a> bindings<span><a href="#module-Xapian-label-Ruby+Xapian+bindings">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Original version by Paul Legato (plegato@nks.net), 4/20/06.</p>
+
+<p>Copyright (C) 2006 Networked Knowledge Systems, Inc. Copyright (C) 2008,2011,2019 Olly Betts Copyright (C) 2010 Richard Boulton</p>
+
+<p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA</p>
+
+<h2 id="module-Xapian-label-Underscore+methods">Underscore methods<span><a href="#module-Xapian-label-Underscore+methods">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Note: Methods whose names start with an underscore character _ are internal methods from the C++ API. Their functionality is not accessible in a Ruby-friendly way, so this file provides wrapper code to make it easier to use them from a Ruby programming idiom.  Most are also dangerous insofar as misusing them can cause your program to segfault.  In particular, all of Xapian&#39;s *Iterator classes are wrapped into nice Ruby-friendly Arrays.</p>
+
+<p>It should never be necessary to use any method whose name starts with an underscore from user-level code. Make sure you are <em>VERY</em> certain that you know exactly what you&#39;re doing if you do use one of these methods. Beware. You&#39;ve been warned…</p>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-BAD_VALUENO" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">BAD_VALUENO</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Compatibility wrapping for Xapian::BAD_VALUENO (wrapped as a constant since xapian-bindings 1.4.10).</p>
+          
+          
+
+          
+          <div class="method-source-code" id="BAD_VALUENO-source">
+            <pre><span class="ruby-comment"># File xapian.rb, line 403</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">Xapian</span><span class="ruby-operator">::</span><span class="ruby-constant">BAD_VALUENO</span>()
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">Xapian</span><span class="ruby-operator">::</span><span class="ruby-constant">BAD_VALUENO</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.2.1.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

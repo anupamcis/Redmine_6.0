@@ -1,0 +1,53 @@
+<div id="container<%=chart_type.gsub(' ', '')%><%=type.gsub(' ', '')%>" class="<%=classname%>"></div>
+
+<script type="text/javascript">
+  $(function () {
+    var chart;
+    $(document).ready(function () {
+      chart = new Highcharts.Chart({
+        credits: {
+          enabled: false
+        },
+        chart: {
+          type: 'pie',
+          renderTo: "container<%=chart_type.gsub(' ', '')%><%=type.gsub(' ', '')%>",
+          options3d: {
+            enabled: true,
+            alpha: 55,
+            beta: 0
+          }
+        },
+        title: {
+          text: "<%=type%>"
+        },
+        exporting: {
+          enabled: false
+        },
+        tooltip: {
+          formatter: function () {
+            return '<b>' + this.point.name + '</b>: ' + Highcharts.numberFormat(this.percentage, 1) + ' %';
+          }
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 50,
+            dataLabels: {
+              enabled: true,
+              color: '#000000',
+              connectorColor: '#000000',
+              formatter: function () {
+                return '<b>' + this.point.name + '</b>: ' + Highcharts.numberFormat(this.percentage, 1) + ' %';
+              }
+            }
+          }
+        },
+        series: [{
+          type: 'pie',
+          data: <%= projects.inspect.html_safe %>
+        }]
+      });
+    });
+  });
+</script>

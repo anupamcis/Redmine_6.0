@@ -1,0 +1,32 @@
+<h3 class="title"><%=l(:edit_admin_configuration)%></h3>
+<%= error_messages_for 'pmp_admin_configuration' %>
+<%= labelled_form_for @pmp_admin_configuration, url: update_admin_configuration_pmp_tab_and_lock_configurations_path, method: :put, remote: true do |f| %>
+  <div class="box tabular">
+    <p><%= f.text_field :skill_requirement_cale_differnce, :required => true, class: 'admin-pmp-setting'%></p>
+    <p><%= f.text_field :risk_mitigation_difference, :required => true, class: 'admin-pmp-setting' %></p>
+    <p><%= f.text_field :risk_contingency_difference, :required => true, class: 'admin-pmp-setting' %></p>
+    </br> 
+  </div>
+  <%= submit_tag l(:button_update) %>
+<% end %>
+
+<style type="text/css">
+  .ui-dialog-content .box {
+    background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+    border: solid;
+    box-shadow: none;
+    padding: 15px 31px 0 0;
+  }
+</style>
+<script type="text/javascript">
+  $('.admin-pmp-setting').keydown(function (e) {
+    if (e.shiftKey || e.ctrlKey || e.altKey) {
+      e.preventDefault();
+    } else {
+    var key = e.keyCode;
+    if (!((key == 8) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105) || key == 110 || key == 190)) {
+        e.preventDefault();
+      }
+    }
+  });
+</script>

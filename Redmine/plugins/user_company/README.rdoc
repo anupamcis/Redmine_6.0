@@ -1,0 +1,13 @@
+= user_company
+
+Description goes here
+
+Installation
+
+bundle exec rake redmine:plugins:migrate RAILS_ENV=production
+
+Usage
+
+Now admin and users who have user company permissions is allowed to perform CRUD operations for company.
+
+And when we create any user or edit any user we get companies drop down from that drop, we can add user's company.

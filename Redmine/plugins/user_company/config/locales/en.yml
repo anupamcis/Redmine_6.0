@@ -1,0 +1,32 @@
+# English strings go here for Rails i18n
+en:
+  # my_label: "My label"
+  company: "Company"
+  label_company_plural: "Companies"
+  label_company_new: "New Company"
+  field_name: "Name"
+  field_phone_number: "Phone Number"
+  field_fax_number: "Fax Number"
+  field_homepage: "Home Page"
+  field_address: "Address"
+  permission_add_company: "Add Company"
+  permission_show_company: "View Company"
+  permission_index_company: "Manage Company"
+  permission_edit_company: "Edit Company"
+  permission_destroy_company: "Delete Company"
+  field_company: "Company"
+  client_not_found: "No Client Found"
+  internal_user_not_found: "Not Found Any CIS User"
+  field_video: Video
+  login_id_validation: "As per the cis policy email is not selected as a login id"
+  object_added_by: Created By
+  users_count: Number of users
+  notice_unable_delete_company: "Unable to delete company because users attached with this company."
+  intrenal_member_search: "Search for CIS users"
+  external_member_search: "Search for Clients"
+  email_id_validation: "Please enter cis email id"
+  label_login_information_mail: Here is the link to PMS
+  help_link_information_mail: For any query/assistance, please visit
+  label_search_user: Search users
+  member_search_note: "If more than one user found with the same name than take mouse over user name and verify user with full name and email id. IN PMS2 preferred by to search user is by email id for adding a user as member into the project"
+  sync_service: Sync Service From ERP

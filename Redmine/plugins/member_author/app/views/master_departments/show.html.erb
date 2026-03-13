@@ -1,0 +1,15 @@
+<%= title [l(:label_master_department_plural), master_departments_path],  @master_department.name %>
+
+<div class="contextual">
+  <%= link_to(l(:button_edit), edit_master_department_url(@master_department), :class => 'icon icon-edit') %>
+</div>
+
+<h2><%= avatar @master_department, :size => "50" %> <%= @master_department.name %></h2>
+
+<div class="splitcontentleft">
+  <ul>
+    <li><%=l(:field_name)%>: <%= @master_department.name %></li>
+  </ul>
+</div>
+
+<% html_title @master_department.name %>

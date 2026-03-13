@@ -1,0 +1,11 @@
+<p>
+  <label><%= l(:traning_help_label_internal_tarning_video_links) %></label><br /><label>
+  <small><%= l(:traning_help_label_separate_multiple_videos_with_commas) %></small>
+  </label><%= text_area_tag 'settings[internal_tarning_video_links]', @settings['internal_tarning_video_links'], :rows => 5, :cols => 60 %>
+</p>
+
+<p>
+  <label><%= l(:traning_help_label_client_tarning_video_links) %></label><br /><label>
+  <small><%= l(:traning_help_label_separate_multiple_videos_with_commas) %></small>
+  </label><%= text_area_tag 'settings[client_tarning_video_links]', @settings['client_tarning_video_links'], :rows => 5, :cols => 60 %>
+</p>

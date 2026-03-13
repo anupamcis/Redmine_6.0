@@ -1,0 +1,49 @@
+<% if @milestone_planed_date_comments.present? %>
+  <h3><%= l(:planed_end_date_log, for: @milestone.name) %></h3>
+  <div class="box tabular">
+    <table class="list">
+      <tr>
+        <th><%= l(:field_previous_date) %></th>
+        <th><%= l(:field_changed_date) %></th>
+        <th><%= l(:field_changed_on) %></th>
+        <th><%= l(:field_author) %></th>
+        <th><%= l(:milestone_comment) %></th>
+      </tr>
+      <% @milestone_planed_date_comments.each do |milestone_comment| %>
+      <tr class="<%= cycle 'odd', 'even' %>">
+        <td><%= format_date(milestone_comment.previous_date) %></td>
+        <td><%= format_date(milestone_comment.changed_date) %></td>
+        <td><%= format_date(milestone_comment.created_on) %></td>
+        <td><%= milestone_comment.comment %></td>
+        <td><%= milestone_comment.try(:author).try(:name) %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+<% else %>
+  <p class=nodata><%= l(:no_planed_date_logs, for: @milestone.name)%></p>
+<% end %>
+<br>
+<% if @milestone_actual_date_comments.present? %>
+  <h3><%= l(:actual_end_date_log, for: @milestone.name) %></h3>
+  <div class="box tabular">
+    <table class="list">
+      <tr>
+        <th><%= l(:field_reopened_date) %></th>
+        <th><%= l(:field_closed_date) %></th>
+        <th><%= l(:field_author) %></th>
+        <th><%= l(:milestone_comment) %></th>
+      </tr>
+      <% @milestone_actual_date_comments.each do |milestone_comment| %>
+      <tr class="<%= cycle 'odd', 'even' %>">
+        <td><%= format_date(milestone_comment.previous_date) %></td>
+        <td><%= format_date(milestone_comment.changed_date) %></td>
+        <td><%= milestone_comment.try(:author).try(:name) %></td>
+        <td><%= milestone_comment.comment %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+<% else %>
+  <p class=nodata><%= l(:no_actual_date_logs, for: @milestone.name)%></p>
+<% end %>

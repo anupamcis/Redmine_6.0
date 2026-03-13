@@ -1,0 +1,8 @@
+{
+  "issues": [
+    { "id": 101, "subject": "Fix login bug", "assignee": {"id":2,"name":"Alice"}, "status":"In Progress", "priority":"High", "dueDate":"2025-11-10" },
+    { "id": 102, "subject": "Add onboarding", "assignee": {"id":3,"name":"Bob"}, "status":"Open", "priority":"Normal", "dueDate":"2025-11-20" }
+  ]
+}
+
+

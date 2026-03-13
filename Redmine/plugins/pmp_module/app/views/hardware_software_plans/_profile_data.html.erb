@@ -1,0 +1,75 @@
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_resource_name) %></th>
+        <th><%= l(:field_profile_type) %></th>
+        <th><%= l(:field_environment) %></th>
+        <th><%= l(:field_configuration) %></th>
+        <th><%= l(:field_item_version) %></th>
+        <th><%= l(:field_quantity) %></th>
+        <th><%= l(:field_action_type) %></th>
+        <th><%= l(:field_responsible_person) %></th>
+        <th><%= l(:field_critical_resource) %></th>
+        <th><%= l(:field_remarks) %></th>
+        <th><%= l(:field_start_date) %></th>
+        <th><%= l(:field_end_date) %></th>
+        <% unless User.current.is_client?%>
+          <th><%= l(:field_is_visible_to_client) %></th>
+        <% end %>
+        <th><%= l(:field_send_mail) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @profile_data.each_with_index do |profile_data, i|%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td>
+            <%= hidden_field_tag "hardware_and_software_plan[#{i}][profile_id]", profile_data.hardware_and_software_profile_id %>
+            <%= hidden_field_tag "hardware_and_software_plan[#{i}][profile_data_id]", profile_data.id %>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][resource]", profile_data.resource, size: 10, placeholder: 'Enter resource...',required: true %>
+          </td>
+          <td>
+            <%= select_tag "hardware_and_software_plan[#{i}][profile_type]", options_for_select(["Hardware", "Software"], profile_data.profile_type),{required: true, prompt: "Select type", class: "type-select"
+} %>
+          </td>
+          <td>
+            <%= select_tag "hardware_and_software_plan[#{i}][environment]", options_for_select(["Development", "Staging", "Production"], profile_data.environment),{required: true,prompt: "select environment", class: "environment-select"} %>
+          </td>
+          <td>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][configuration]", profile_data.configuration, size: 10, placeholder: 'Enter configuration...' %>
+          </td>
+          <td>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][version]", profile_data.version, size: 10, placeholder: 'Enter version...', class: "version-input" %>
+          </td>
+          
+          <td>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][quantity]", profile_data.quantity, size: 10, placeholder: 'Enter quantity...', class: "version-input" %>
+          </td>
+          <td>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][action]", profile_data.action, size: 10, placeholder: 'Enter action...' %>
+          </td>
+          <td>
+            <%= select_tag "hardware_and_software_plan[#{i}][responsible_person_id]",options_from_collection_for_select(Department.find(9).employees, 'id', 'name'),{:required => true, class: "small"} %>
+          </td>
+          <td>
+            <%= select_tag "hardware_and_software_plan[#{i}][critical_resource]", options_for_select([["Yes", true],["No", false]]),{:required => true, class: "small"} %>
+          </td>
+          <td>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][remarks]", nil, :size => 10 %>
+          </td>
+          
+          <td>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][start_date]", nil, size: 10 %>
+            <%= calendar_for("hardware_and_software_plan_#{i}_start_date") %>
+          </td>
+          <td>
+            <%= text_field_tag "hardware_and_software_plan[#{i}][end_date]", nil, size: 10 %>
+            <%= calendar_for("hardware_and_software_plan_#{i}_end_date") %>
+          </td>
+          <td><%= check_box_tag "hardware_and_software_plan[#{i}][is_visible_to_client]" %></td>
+          <td><%= check_box_tag "hardware_and_software_plan[#{i}][send_mail]" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

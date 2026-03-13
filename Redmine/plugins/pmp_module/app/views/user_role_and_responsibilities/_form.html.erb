@@ -1,0 +1,21 @@
+<%= error_messages_for 'user_role_and_responsibility' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "user_role_and_responsibility[project_id]", @project.id %>
+  
+  <p><%= f.select :user_id, options_from_collection_for_select(@project.users.where.not(firstname: "CIS"), 'id', 'name', @user_role_and_responsibility.user_id), {include_blank: "Select user....", :required => true }, {data: {remote: true, url: url_for(controller: 'user_role_and_responsibilities', action: 'user_roles', project_id: @project.id) }, class: "select small"}   %></p>
+
+  <% if @user_role_and_responsibility.user.present? %>
+    <p>
+      <label>Roles</label>
+      <%= @project.members.where(user_id: @user_role_and_responsibility.user_id).first.roles.where("name not like (?) ", "%CIS%").map(&:name).join(", ") %>
+    </p>
+  <% else %>
+    <p id="responsibility_roles"></p>
+  <% end %>
+  
+  <p><%= f.select :reporting_person, options_from_collection_for_select(@project.users, 'name', 'name', @user_role_and_responsibility.reporting_person), {:required => true}, {class: "select small"} %>
+  </p>
+  <br>
+</div>

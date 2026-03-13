@@ -1,0 +1,9 @@
+#admin-menu a.company { background-image: url(../images/Passed.png); }
+#admin-menu a.untracked-mail { background-image: url(../images/email_add.png); }
+#admin-menu a.add-tutorial { background-image: url(../images/Film.png); }
+#admin-menu a.find-repository { background-image: url(../images/repository.png); }
+#admin-menu a.label-hardware-software-resource-plural { background-image: url(../images/hw_sw_plan.png); }
+#admin-menu a.label-pmp-tab-plural { background-image: url(../images/pmp.png); }
+#admin-menu a.raci-chart { background-image: url(../images/raci_chart.png); }
+#admin-menu a.pmp-global-profiles { background-image: url(../images/global-network.png); }
+

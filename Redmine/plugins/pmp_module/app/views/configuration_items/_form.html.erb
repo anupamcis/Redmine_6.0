@@ -1,0 +1,11 @@
+<%= error_messages_for 'configuration_item' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "configuration_item[project_id]", @project.id %>
+  <p><%= f.text_field :phase, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :configuration_item, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :configuration_id, :size => 25 %></p>
+  <p><%= f.text_field :storage_location, :required => true, :size => 25 %></p>
+  <br>
+</div>

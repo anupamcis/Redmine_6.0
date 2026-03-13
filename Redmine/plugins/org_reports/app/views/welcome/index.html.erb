@@ -1,0 +1,156 @@
+<%#= render :partial => '/mc_menu/contentHeader' %>
+<div class="dash-inner-content">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+  <% if User.current.allowed_to?(:view_org_reports, nil, global: true) %>
+    <div class="ribbon-wrapper-green"><div class="ribbon-green"><%= l(:label_beta)%></div></div>
+    </br>
+    <h2><%= l(:label_dashboard) %></h2>
+    <div class="splitcontentleft">
+      <div class="wiki">
+        <%= textilizable Setting.welcome_text %>
+      </div>
+      <%= call_hook(:view_welcome_index_left) %>
+    </div>
+
+    <div class="charts_filters">
+      <%= form_tag({ :controller => 'welcome', :action => 'index'},
+                :method => :get, :id => 'filter_form') do %>
+        <p>
+          <!-- Size Filter Fields-->
+          <label for="to"><b>Project Size(In Hours)</b></label>
+          <%= number_field_tag "project_size_from", params[:project_size_from], placeholder: "From", min: 0, :oninvalid => "setCustomValidity('Please select value that is not less than 0.')", :onchange => "try{setCustomValidity('')}catch(e){}" %>
+          <%= number_field_tag "project_size_to", params[:project_size_to], placeholder: "To", min: 0, :oninvalid => "setCustomValidity('Please select value that is not less than 0.')", :onchange => "try{setCustomValidity('')}catch(e){}" %>
+
+          |
+
+          <!-- Radio buttons for enable/disable bug filters -->
+          <%= check_box_tag  "enable_disable_bug_filter", params[:enable_disable_bug_filter], params[:enable_disable_bug_filter] %>
+          <label for="enable_disable_bug_filter"><b>Enable bug filters</b></label>
+          <span class="bug_filter_div">
+            <%= radio_button_tag 'enable_bug_filter', '1', params[:enable_bug_filter] == "1" %>
+            <label for="number_of_bugs">Number of bugs</label>
+              <%= radio_button_tag 'enable_bug_filter', '2',  params[:enable_bug_filter] == "2" %>
+              <label for="number_of_bugs">Percent of bugs</label>
+
+              <!-- Bug filters Fields -->
+              <% display_number_of_bugs = params[:enable_bug_filter] == "1" ? "" : "display: none;" %>
+              <span class="b1" style="<%= display_number_of_bugs %>">
+                <label for="number_of_bugs"><b>Number of bugs</b></label>
+                <%= number_field_tag "number_of_bugs", params[:number_of_bugs], placeholder: "Number of bugs", min: 0 %>
+              </span>
+
+              <% display_percent_of_bugs = params[:enable_bug_filter] == "2" ? "" : "display: none;" %>
+              <span class="a2" style="<%= display_percent_of_bugs %>">
+                <label for="percent_of_hours"><b>Percent Of Bugs</b></label>
+                <%= select_tag 'percent_of_hours', options_for_select(("10%".."100%").step(10), params[:percent_of_hours]), prompt: "select percent of bugs" %>
+              </span>
+            </span>
+
+            |
+
+            <!-- User involvement filter field -->
+            <label for="user_involvement"><b>User Involvement</b></label>
+            <%= select_tag "user_involvement", options_for_select(["Direct", "Indirect"], params[:user_involvement]), prompt: "select user involvement" %>
+
+            |
+
+            <!-- Apply Button -->
+            <%= submit_tag "Apply", id: "apply_filter_button" %>
+            <%= link_to l(:button_clear), home_url, :class => 'icon icon-reload', id: "apply_filter_button" %>
+        </p>
+      <% end %>
+    </div>
+    <% if @projects.present? %>
+      <% if @cpi_chart_data.present? || @spi_chart_data.present? %>
+        <div class="spi_cpi">
+          <div class="spi">
+            <%= render :partial => 'spi_chart' %>
+          </div>
+        </div>
+        <div class="spi_cpi">
+          <div class="cpi">
+            <%= render :partial => 'cpi_chart' %>
+          </div>
+        </div>
+      <% end %>
+      <% if @percent_chart_data.present? || @numbers_chart_data.present? %>
+        <div class="defect_charts">
+          <div class="percent_chart">
+            <%= render :partial => 'defect_density_percent_chart' %>
+          </div>
+        </div>
+        <div class="defect_charts">
+          <div class="number_chart">
+            <%= render :partial => 'defect_density_numbers_chart' %>
+          </div>
+        </div>
+      <% end %>
+      <% if @final_data.present? %>
+        <div class="pie_tech">
+          <%= render :partial => 'technology_pie_chart', :collection => @final_data %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="divnodata">
+        <p class="nodata">No Projects Found</p>
+      </div>
+    <% end %>
+  <% else %>
+    <h2><%= l(:label_home_without_permission) %></h2>
+  <% end %>
+
+  <div class="splitcontentright">
+    <% if @news.any? %>
+    <div class="news box">
+    <h3><%=l(:label_news_latest)%></h3>
+      <%= render :partial => 'news/news', :collection => @news %>
+      <%= link_to l(:label_news_view_all), :controller => 'news' %>
+    </div>
+    <% end %>
+    <%= call_hook(:view_welcome_index_right) %>
+  </div>
+
+  <% content_for :header_tags do %>
+    <%= auto_discovery_link_tag(:atom, {:controller => 'news', :action => 'index', :key => (User.current.respond_to?(:rss_key) ? User.current.rss_key : nil), :format => 'atom'},
+                                       :title => "#{Setting.app_title}: #{l(:label_news_latest)}") %>
+    <%= auto_discovery_link_tag(:atom, {:controller => 'activities', :action => 'index', :key => (User.current.respond_to?(:rss_key) ? User.current.rss_key : nil), :format => 'atom'},
+                                       :title => "#{Setting.app_title}: #{l(:label_activity)}") %>
+  <% end %>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      filters_enable = $("#enable_disable_bug_filter")
+      var value = filters_enable.is(':checked');
+      if(value == false){
+        filters_enable.attr("value", false);
+        $(".bug_filter_div").hide();
+      }else{
+        filters_enable.attr("value", true);
+        $(".bug_filter_div").show();
+      }
+    });
+
+    $("#enable_disable_bug_filter").on('click', function(){
+      checked_status = $(this).is(':checked');
+      if(checked_status == false){
+        $(this).attr("value", false);
+        $(".bug_filter_div").hide();
+      }else{
+        $(this).attr("value", true);
+        $(".bug_filter_div").show();
+      }
+    });
+
+    $("#enable_bug_filter_1").on('click', function(){
+      $(".b1").show();
+      $(".a2").hide();
+    });
+
+    $("#enable_bug_filter_2").on('click', function(){
+      $(".b1").hide();
+      $(".a2").show();
+    });
+  </script>
+</div>

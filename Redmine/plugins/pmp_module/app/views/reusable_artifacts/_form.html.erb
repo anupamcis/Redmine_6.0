@@ -1,0 +1,14 @@
+<%= error_messages_for 'reusable_artifact' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "reusable_artifact[project_id]", @project.id %>
+  <p><%= f.text_field :reusable_component_name, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :short_description, :required => true %></p>
+  <p><%= f.text_field :url, :size => 25 %>
+    <em class="info">
+      <span style="color: red; font-size: 14;"><%= l(:url_hint) %></span>
+    </em>
+  </p>
+  <br>
+</div>

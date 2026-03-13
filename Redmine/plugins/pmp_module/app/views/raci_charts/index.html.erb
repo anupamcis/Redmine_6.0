@@ -1,0 +1,41 @@
+<%= link_to l(:button_work_type), "javascript:void();", class: 'icon icon-add add_work_type', id: "add_work_type" %>
+
+<div id="div_raci_chart" style="display: none;">
+  <%= render :partial => 'new' %>
+</div>
+
+<div class="autoscroll">
+  <table class="list" id='raci_charts'>
+    <thead>
+      <tr>
+        <th><%= l(:field_work_type) %></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @raci_charts.flatten.each do |raci_chart| %>
+        <% if raci_chart.is_a? String %>
+          <tr>
+            <th colspan="3"><%= raci_chart %></th>
+          </tr>
+        <% else %>
+            <% raci_chart.each do |chart| %>
+            <%= render "raci_chart", raci_chart: chart %>
+          <% end %>
+        <% end-%>
+      <% end-%>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  $('#add_work_type').on('click', function(){
+    $("#div_raci_chart").css("display", "")
+  });
+
+  $('#cancel_work_type_form').on('click', function(){
+    $("#div_raci_chart").css("display", "none")
+    return false;
+  })
+</script>

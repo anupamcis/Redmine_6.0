@@ -1,0 +1,172 @@
+<% if User.current.admin? %>
+  <div class="contextual">
+    <%= link_to l(:label_company_new),
+                new_company_path,
+                class: 'icon icon-add' %>
+  </div>
+
+  <h2><%= l(:label_company_plural) %></h2>
+
+  <%= form_tag(companies_path, method: :get, id: 'query_form') do %>
+    <fieldset>
+      <legend><%= l(:label_filter_plural) %></legend>
+
+      <label for="name"><%= l(:company) %>:</label>
+      <%= text_field_tag 'name', params[:name], size: 30 %>
+
+      <%= submit_tag l(:button_apply), class: "small", name: nil %>
+      <%= link_to l(:button_clear),
+                  companies_path,
+                  class: 'icon icon-reload' %>
+    </fieldset>
+  <% end %>
+  &nbsp;
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <%= sort_header_tag('name', caption: l(:field_name)) %>
+          <%= sort_header_tag('phone_number', caption: l(:field_phone_number)) %>
+          <%= sort_header_tag('fax_number', caption: l(:field_fax_number)) %>
+          <%= sort_header_tag('homepage', caption: l(:field_homepage)) %>
+          <th><%= l(:field_address) %></th>
+          <th><%= l(:object_added_by) %></th>
+          <th><%= l(:users_count) %></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @companies.each do |company| %>
+          <tr class="<%= cycle('odd', 'even') %>">
+            <td class="username">
+              <%= link_to company.name, company_url(company) %>
+            </td>
+            <td><%= company.phone_number %></td>
+            <td><%= company.fax_number %></td>
+            <td><%= company.homepage %></td>
+            <td><%= company.address %></td>
+            <td><%= company.try(:author).try(:name) %></td>
+            <td class="users_count"><%= company.company_users_count %></td>
+
+            <td class="buttons">
+              <% if User.current.allowed_to?(:show_company, nil, global: true) %>
+                <%= link_to "show",
+                            company_path(company),
+                            class: "icon-show" %>
+              <% end %>
+
+              <% if User.current.allowed_to?(:destroy_company, nil, global: true) || User.current.admin? %>
+                <%= delete_link company_path(
+                      company,
+                      back_url: request.original_fullpath
+                    ) %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+
+        <tr>
+          <th>Total</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th id="grand_total"></th>
+          <th></th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <span class="pagination">
+    <%= pagination_links_full @company_pages, @company_count %>
+  </span>
+
+<% else %>
+  <% searched = params[:set_filter].present? && params[:name].present? %>
+
+  <h2><%= l(:label_company_plural) %></h2>
+
+  <%= form_tag(companies_path, method: :get) do %>
+    <fieldset>
+      <legend><%= l(:label_filter_plural) %></legend>
+
+      <label for="company_search"><%= l(:company) %>:</label>
+
+      <%= hidden_field_tag 'set_filter', '1' %>
+
+      <%= hidden_field_tag 'id', 'global-permissions' %>
+
+      <%= text_field_tag 'name',
+            searched ? params[:name] : '',
+            size: 30,
+            id: 'company_search' %>
+
+      <%= submit_tag l(:button_apply),
+            class: 'small',
+            name: nil %>
+    </fieldset>
+  <% end %>
+
+  <% if searched %>
+    <% if @companies.present? %>
+      <div class="autoscroll">
+        <table class="list">
+          <thead>
+            <tr>
+              <%= sort_header_tag('name', caption: l(:field_name)) %>
+              <%= sort_header_tag('phone_number', caption: l(:field_phone_number)) %>
+              <%= sort_header_tag('fax_number', caption: l(:field_fax_number)) %>
+              <%= sort_header_tag('homepage', caption: l(:field_homepage)) %>
+              <th><%= l(:field_address) %></th>
+              <th><%= l(:object_added_by) %></th>
+              <th><%= l(:users_count) %></th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @companies.each do |company| %>
+              <tr class="<%= cycle('odd', 'even') %>">
+                <td class="username"><%= company.name %></td>
+                <td><%= company.phone_number %></td>
+                <td><%= company.fax_number %></td>
+                <td><%= company.homepage %></td>
+                <td><%= company.address %></td>
+                <td><%= company.try(:author).try(:name) %></td>
+                <td class="users_count"><%= company.company_users_count %></td>
+
+                <td class="buttons">
+                  <% if User.current.allowed_to?(:show_company, nil, global: true) %>
+                    <%= link_to l(:button_show),
+                                company_path(company, context_id: 'global-permissions'),
+                                class: 'icon icon-show' %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <span class="pagination">
+        <%= pagination_links_full @company_pages, @company_count %>
+      </span>
+
+    <% else %>
+      <p class="nodata"><%= l(:label_no_data) %></p>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% html_title(l(:label_company_plural)) -%>
+
+<script type="text/javascript">
+  var total = 0;
+  document.querySelectorAll('.users_count').forEach(function (el) {
+    total += parseFloat(el.textContent) || 0;
+  });
+  var target = document.getElementById('grand_total');
+  if (target) target.textContent = total;
+</script>

@@ -1,0 +1,24 @@
+<p>
+  <%= label_tag 'settings[project_size_to]', l(:label_setting_project_size_to) %>
+  <%= text_field_tag('settings[project_size_to]', @settings["project_size_to"]) %>
+</p>
+
+<p>
+  <%= label_tag 'settings[project_size_from]', l(:label_setting_project_size_from) %>
+  <%= text_field_tag('settings[project_size_from]', @settings["project_size_from"]) %>
+</p>
+
+<p>
+  <%= label_tag 'settings[issue_count]', l(:label_setting_issue_count) %>
+  <%= text_field_tag('settings[issue_count]', @settings["issue_count"]) %>
+</p>
+
+<p>
+  <%= label_tag 'settings[bug_percent]', l(:label_setting_bug_percent) %>
+  <%= text_field_tag('settings[bug_percent]', @settings["bug_percent"]) %>
+</p>
+
+<p>
+  <%= label_tag 'settings[user_involvement]', l(:label_setting_involment) %>
+  <%= text_field_tag('settings[user_involvement]', @settings["user_involvement"]) %>
+</p>

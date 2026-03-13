@@ -1,0 +1,12 @@
+<%= render :partial => '/mc_menu/progressbar' %>
+<nav id="menu">
+    <ul>
+      <li><%= link_to t(:mc_tasksmgmt_menu_label), monitoring_controlling_project_path(@project), :class => ("home_monitoring_controlling_project" == params[:controller] ? "menu_selected" : "")   %></li>
+      <li><%= link_to t(:mc_timemgmt_menu_label), monitoring_controlling_time_path(@project), :class => ("mc_time_mgmt_project" == params[:controller] ? "menu_selected" : "")  %></li>
+      <li><%= link_to t(:mc_humanresourcemgmt_menu_label), monitoring_controlling_resource_path(@project), :class => ("mc_human_resource_mgmt_project" == params[:controller] ? "menu_selected" : "")  %></li>
+      <li><%= link_to l(:field_statistics), project_issues_report_path(@project), :class => ("reports" == params[:controller] ? "menu_selected" : "")  %></li>
+      <li><span id="progressbar" style="width: 250px; margin: 0 0 0 0; float: right; padding: 0;"></span></li>
+    </ul>
+</nav>
+
+

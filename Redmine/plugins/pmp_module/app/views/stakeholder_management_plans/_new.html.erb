@@ -1,0 +1,29 @@
+<h3 class="title"><%= header_label(@project)%> </h3>
+
+<%= labelled_form_for [@project, @stakeholder_management_plan], :remote => true do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag button_label(@project), class: 'stakeholder_management_plan' %>
+  <table class="list engagement-table">
+    <tbody>
+      <tr><td>C</td><td>Current Engagement</td></tr>
+      <tr><td>D</td><td>Desired Engagement</td></tr>
+    </tbody>
+  </table>
+<% end %>
+
+<style type="text/css">
+  .ui-dialog-content .box {
+    background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+    border: solid;
+    box-shadow: none;
+    padding: 15px 31px 0 0;
+  }
+  .engagement-table{
+    margin-left: 37%;
+    margin-top: -5%;
+    width: 24%!important;
+  }
+  .stakeholder_management_plan{
+    margin-top: 2%
+  }
+</style>

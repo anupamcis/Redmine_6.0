@@ -1,0 +1,17 @@
+# English strings go here for Rails i18n
+en:
+  uid: UID
+  headers: Headers
+  subject: Subject
+  message_id: Message ID
+  message: Message
+  references: References
+  reply_to: Reply To
+  to: To
+  from: From
+  cc: CC
+  attachments: Attachments
+  untracked_mail: Untracked Mail
+  created_on: Created On
+  filter_mail: Filter Mail
+  sent_mail: Mail Sent On

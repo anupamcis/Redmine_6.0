@@ -1,0 +1,50 @@
+<%= render :partial => 'versions/overview', :locals => {:version => version} %>
+<%= render(:partial => "wiki/content", :locals => {:content => version.wiki_page.content}) if version.wiki_page %>
+
+<%- # Version cached values.
+    version_estimated_speed = version.estimated_speed
+    version_spent_hours = version.spent_hours
+    version_rest_hours = version.rest_hours
+    version_speed_rest_hours = version.speed_rest_hours
+    version_parallel_rest_hours = version.parallel_rest_hours
+    version_parallel_speed_rest_hours = version.parallel_speed_rest_hours -%>
+
+<%- if (params[:controller] == "versions" and params[:action] == "index") or
+       (params[:controller] == "milestones" and params[:action] == "show") -%>
+  <table>
+    <%- if (totals[:spent_hours] + totals[:rest_hours]) > 0 -%>
+      <tr>
+        <td width="310px" align="right">% <%= (params[:controller] == "milestones") ? l(:label_milestone) : l(:label_project) %></td>
+        <td width="340px" class="total-hours"><%= "%.0f" % (((version_spent_hours + version_rest_hours) * 100.0) / (totals[:spent_hours] + totals[:rest_hours])) %>%</td>
+      </tr>
+    <%- end -%>
+    <%- if User.current.allowed_to?(:view_time_entries, @project) and
+           User.current.allowed_to?(:view_issue_estimated_hours, @project) -%>
+      <%- if !version_estimated_speed.nil? -%>
+        <tr>
+            <td width="310px" align="right">% <%= l(:label_estimated_speed) %></td>
+            <td width="340px" class="total-hours"><font color="<%= color_by_ratio(version_estimated_speed) %>"><%= ("%.0f" % (100.0 / version_estimated_speed)) %>%</font></td>
+        </tr>
+      <%- end -%>
+      <%- if version_rest_hours > 0.0 %>
+        <tr>
+          <td width="310px" align="right"><%= l(:label_roadmap_due_in, "") %></td>
+            <%- due, tmp = '', version_rest_hours 
+                due << l_weeks(tmp.div 40) << ' ' and tmp %= 40.0 if (tmp / 40.0) > 1.0
+                due << l_days(tmp.div 8) << ' ' and tmp %= 8.0 if (tmp / 8.0) > 1.0
+                due << l_hours(tmp) if tmp > 0.0 %>
+          <td width="340px" class="total-hours"><%= "#{due}" %></td>
+        </tr>
+        <%- if version_rest_hours != version_speed_rest_hours -%>
+          <tr>
+            <td width="310px" align="right"><%= l(:label_roadmap_due_in, "") %> (<%= l(:label_estimated_speed) %>)</td>
+            <%- due = l_hours(version_speed_rest_hours) %>
+            <%- due = l_days(version_speed_rest_hours / 8.0) if (version_speed_rest_hours / 8.0) > 1.5 %>
+            <%- due = l_weeks(version_speed_rest_hours / 40.0) if (version_speed_rest_hours / 40.0) > 1.5 %>
+            <td width="340px" class="total-hours"><%= "#{due}" %></td>
+          </tr>
+        <%- end -%>
+      <%- end -%>
+    <%- end -%>
+  </table>
+<%- end -%>

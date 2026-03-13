@@ -1,0 +1,15 @@
+<%= f.hidden_field :user_id, value: User.current.id %>
+<%= f.text_area :comment, class: "wiki-edit", rows: 5, required: 'required', label: "Add Comment" %>
+<%= submit_tag l(:button_create), class: "submit_comment" %>
+<%= link_to l(:button_cancel), "javascript:void(0);" , :class => "create_cancel", id: "comment"  %>
+
+<script type="text/javascript">
+  $(".submit_comment").on("click", function(){
+    comment = $("#release_update_comment_comment").val()
+     new_comment = $.trim(comment);
+     if (new_comment == null || new_comment == ""){
+      alert("Comment can not be blank")
+      return false
+    }
+  })
+</script>

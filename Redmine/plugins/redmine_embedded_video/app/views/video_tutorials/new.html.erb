@@ -1,0 +1,35 @@
+<%= title [l(:tutorial_page_title), video_tutorials_url], l(:back_to_tutorial) %>
+
+<%= error_messages_for 'video_tutorial' %>
+
+<%= labelled_form_for @video_tutorial do |f| %>
+  <div id="user_form" class="video_tutorial_form">
+    <fieldset class="box tabular">
+      <legend><%=l(:label_information_plural)%></legend>
+      <p><%= f.text_field :title, :required => true, :size => 25  %></p>
+      <p><%= f.text_field :description %></p>
+      <p><%= f.file_field :video, :required => true %></p>
+    </fieldset>
+  </div>
+  <%= submit_tag l(:button_create) %> 
+<% end %>
+<br>
+<% if @video_tutorials.blank? %>
+  <h1>There is no tutorial available for PMS.</h1>
+<% else %>
+  <% @video_tutorials.each do |video_tutorial| %>
+    <table>
+      <tbody>
+        <tr>
+          <td class="video_tutorials">
+            <h4 class="video-title"><%= video_tutorial.title %></h4>
+            <%= video_tag video_tutorial.video.url, controls: true, autobuffer: true, size: "320x240" %><br>
+            <%= link_to "Delete Video", video_tutorial_path(video_tutorial.id), method: :delete, data: { confirm: "Are you sure you want to delete this video?" }, class: "icon-only icon-del" %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+
+<% html_title(l(:tutorial_page_title)) -%>

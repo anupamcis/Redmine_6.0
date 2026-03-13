@@ -1,0 +1,63 @@
+<%= error_messages_for 'daily_status_reply' %>
+
+<div class = "new_daily_status" style="float:right">
+  <%= button_to "Back", project_daily_statuses_path(@project), :method => :get %>
+</div>
+</br></br></br>
+<div class="details issue">
+  <span>
+    <% subject = @daily_status.is_email_sent ? @daily_status.subject : @daily_status.daily_status_subject + @daily_status.subject %>
+    <h4><%= link_to subject, project_daily_status_path(@project,@daily_status) %></h4>
+        <%= @daily_status.author.name %> <b>Sent on <%= format_time(@daily_status.created_at) %>
+    <%= time_ago_in_words(@daily_status.created_at) %> ago </b>
+  </span></br>
+  <div>
+    <%= raw @daily_status.content %>
+  </div>
+  <%= link_to_attachments @daily_status, thumbnails: true %>
+</div>
+<div>
+  <% if User.current.admin? || User.current.allowed_to?(:view_daily_status_reply, @daily_status.project) %>
+    <% unless @daily_status.daily_status_replies.nil? %>
+      <div id="accordion">
+        <% @daily_status.daily_status_replies.each do |reply| %>
+          <h3 id='reply_<%= reply.id %>' class='reply-head'>Created by <%= reply.author.name %> <%= time_ago_in_words(reply.created_at) %> ago </h3>
+          <div>
+            <p><%= raw textilizable(reply, :message) %></p>
+            <%= link_to_attachments reply, thumbnails: true %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div></br>
+<% if @daily_status.is_email_sent %>
+  <div>
+    <% if User.current.admin? || User.current.allowed_to?(:manage_daily_status_reply, @daily_status.project) %>
+      <h2><%=l(:add_reply)%></h2>
+      <%= form_for [@project, @daily_status, DailyStatusReply.new] do |f| %>
+        <%= f.hidden_field :author_id, :value => User.current.id %>
+        <%= f.hidden_field :daily_status_id, :value => @daily_status.id %>
+        <%= f.text_area :message, placeholder: "Add a reply", :cols => 60,
+                         :rows => 10,
+                         :accesskey => "e",
+                         :class => 'wiki-edit',
+                         :no_label => true %>
+        <%= wikitoolbar_for 'daily_status_reply_message' %>
+        <!-- <div id="project_members" style="float:right;">
+          <input type='checkbox' name="daily_status_reply[is_email_sent]" value=1 /><%#= l(:label_send_reply_project_members) %></br>
+        </div> -->
+        <p id="attachments_form"><label><%= l(:label_attachment_plural) %></label><%= render :partial => 'attachments/form', :locals => {:container => @daily_status} %></p>
+        <%= f.submit "Add Reply" %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+</br>
+<%# if User.current.allowed_to?(:manage_daily_status, @project) ||
+  (@daily_status.setting.watchers.present? && User.current.allowed_to?(:manage_daily_status, @project)) %>
+  <!-- <div id="watchers"> -->
+    <%#= render :partial => 'daily_status_watchers/watchers', :locals => {:watched => @daily_status.setting} %>
+  <!-- </div> -->
+<%# end %>
+<!-- <div class="daily_status_email_note"><b>Note:&nbsp;</b><%#= l(:label_email_note) %></div></br> -->

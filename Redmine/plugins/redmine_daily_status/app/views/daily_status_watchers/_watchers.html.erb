@@ -1,0 +1,36 @@
+<% if User.current.allowed_to?(:manage_daily_status, @project) %>
+<!-- <div class="contextual"> -->
+<%#= link_to l(:button_add),
+      {:controller => 'daily_status_watchers', :action => 'new', :object_type => watched.class.name.underscore, :object_id => watched},
+      :remote => true,
+      :method => 'get' %>
+<!-- </div> -->
+<% end %>
+<%# @watched = watched %>
+<!-- <h3><%#= l(:label_issue_watchers) %> (<%#= watched.watcher_users.size %>)</h3> -->
+<%#= render :partial => 'daily_status_watchers/new', :locals => {:watched => watched} %>
+<div id="users_for_watcher">
+  <% if ['new', 'create', 'update'].include?(params[:action]) %>
+    <label title="select_all"><input name="select_all" id="select_all" type="checkbox"> Select All</label>
+  <% end %>
+  <%= watchers_checkboxes_tag 'watcher[user_ids][]', (watched ? get_all_watchers_list(watched) : User.active.all(:limit => 100)) %>
+</div>
+<%#= watchers_list(watched) %>
+
+<script type="text/javascript">
+  <% if @daily_status.new_record? %>
+    $('#select_all').prop('checked', true);
+    $('.users').prop('checked', true);
+  <% end %>
+
+  var users_length = <%= get_all_watchers_list(watched).count %>
+  if ($('.users:checked').length == users_length){
+    $('#select_all').prop('checked', true);
+  }
+
+  $('.users').on('change' , function() {
+    if ($('.users:checked').length != users_length){
+      $('#select_all').prop('checked', false);
+    }
+  });
+</script>

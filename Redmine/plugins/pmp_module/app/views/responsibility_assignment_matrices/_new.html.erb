@@ -1,0 +1,15 @@
+<h3 class="title"><%= l(:add_responsibility_assignment_matrix)%> </h3>
+
+<%= labelled_form_for [@project, @responsibility_assignment_matrix], :remote => true do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create), class: 'responsibility_assignment_matrice_form' %>
+<% end %>
+
+<style type="text/css">
+  .ui-dialog-content .box {
+    background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+    border: solid;
+    box-shadow: none;
+    padding: 15px 31px 0 0;
+  }
+</style>

@@ -1,0 +1,2 @@
+module HardwareSoftwareConfigurationsHelper
+end

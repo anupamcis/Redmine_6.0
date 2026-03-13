@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issues - Redmine Frontend Redesign</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- App Shell -->
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" aria-label="Toggle sidebar">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <a href="index.html" class="logo">
+                    <svg class="logo-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                    Redmine
+                </a>
+            </div>
+            <div class="header-center">
+                <div class="search-bar">
+                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search issues...">
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" aria-label="Create new issue">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="user-menu">
+                    <button class="user-menu-trigger">
+                        <div class="avatar">JD</div>
+                        <span class="text-sm font-medium">John Doe</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="app-sidebar">
+            <div class="sidebar-header">
+                <h2 class="text-sm font-semibold text-tertiary">Navigation</h2>
+            </div>
+            <div class="sidebar-nav">
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-group-title">Main</div>
+                    <a href="index.html" class="sidebar-nav-item">
+                        <svg class="sidebar-nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                        </svg>
+                        <span class="sidebar-nav-item-text">Dashboard</span>
+                    </a>
+                    <a href="projects.html" class="sidebar-nav-item">
+                        <svg class="sidebar-nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        <span class="sidebar-nav-item-text">Projects</span>
+                        <span class="sidebar-nav-item-badge">12</span>
+                    </a>
+                    <a href="issues.html" class="sidebar-nav-item active">
+                        <svg class="sidebar-nav-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <span class="sidebar-nav-item-text">Issues</span>
+                        <span class="sidebar-nav-item-badge">47</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="main-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item">
+                            <a href="index.html" class="breadcrumb-link">Dashboard</a>
+                        </div>
+                        <div class="breadcrumb-item">
+                            <span class="breadcrumb-current">Issues</span>
+                        </div>
+                    </div>
+                    <h1 class="page-title">Issues</h1>
+                    <p class="page-subtitle">Track and manage project issues</p>
+                </div>
+
+                <!-- View Toggle -->
+                <div class="page-actions">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-secondary">Project:</label>
+                            <select class="form-input" style="min-width: 12rem;">
+                                <option>All Projects</option>
+                                <option>E-commerce Platform</option>
+                                <option>Mobile App</option>
+                                <option>Admin Dashboard</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-secondary">Status:</label>
+                            <select class="form-input" style="min-width: 8rem;">
+                                <option>All</option>
+                                <option>Open</option>
+                                <option>In Progress</option>
+                                <option>Resolved</option>
+                                <option>Closed</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm font-medium text-secondary">Assignee:</label>
+                            <select class="form-input" style="min-width: 8rem;">
+                                <option>All</option>
+                                <option>Unassigned</option>
+                                <option>John Doe</option>
+                                <option>Jane Smith</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1 bg-neutral-100 rounded-lg p-1">
+                            <button class="quick-action-btn active" aria-label="Table view">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0V6a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </button>
+                            <button class="quick-action-btn" aria-label="Board view">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <button class="btn btn-primary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            New Issue
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Issues Table View -->
+                <div class="issues-container">
+                    <div class="issues-header">
+                        <h2 class="issues-title">All Issues</h2>
+                        <div class="issues-actions">
+                            <button class="btn btn-secondary btn-sm">Export</button>
+                            <button class="btn btn-secondary btn-sm">Bulk Edit</button>
+                        </div>
+                    </div>
+                    <div class="issues-filters">
+                        <div class="filter-group">
+                            <label class="filter-label">Priority:</label>
+                            <select class="form-input filter-select">
+                                <option>All</option>
+                                <option>High</option>
+                                <option>Medium</option>
+                                <option>Low</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Tracker:</label>
+                            <select class="form-input filter-select">
+                                <option>All</option>
+                                <option>Bug</option>
+                                <option>Feature</option>
+                                <option>Support</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Due Date:</label>
+                            <select class="form-input filter-select">
+                                <option>All</option>
+                                <option>Overdue</option>
+                                <option>Due Today</option>
+                                <option>Due This Week</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="issues-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 4rem;">
+                                    <input type="checkbox" class="form-input">
+                                </th>
+                                <th style="width: 4rem;">ID</th>
+                                <th>Subject</th>
+                                <th style="width: 8rem;">Status</th>
+                                <th style="width: 6rem;">Priority</th>
+                                <th style="width: 8rem;">Assignee</th>
+                                <th style="width: 6rem;">Due Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="issue-row">
+                                <td>
+                                    <input type="checkbox" class="form-input">
+                                </td>
+                                <td class="issue-id">#1234</td>
+                                <td>
+                                    <div class="issue-subject">Fix login authentication bug</div>
+                                    <div class="issue-meta">
+                                        <span class="issue-tag">bug</span>
+                                        <span class="issue-tag">authentication</span>
+                                        <span class="text-tertiary">E-commerce Platform</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="issue-status issue-status-in-progress">In Progress</span>
+                                </td>
+                                <td>
+                                    <span class="issue-priority issue-priority-high">High</span>
+                                </td>
+                                <td class="issue-assignee">
+                                    <div class="avatar avatar-sm">JS</div>
+                                    <span class="text-sm">Jane Smith</span>
+                                </td>
+                                <td class="issue-due-date">Dec 15, 2023</td>
+                            </tr>
+                            <tr class="issue-row">
+                                <td>
+                                    <input type="checkbox" class="form-input">
+                                </td>
+                                <td class="issue-id">#1233</td>
+                                <td>
+                                    <div class="issue-subject">Implement user dashboard</div>
+                                    <div class="issue-meta">
+                                        <span class="issue-tag">feature</span>
+                                        <span class="issue-tag">frontend</span>
+                                        <span class="text-tertiary">E-commerce Platform</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="issue-status issue-status-new">New</span>
+                                </td>
+                                <td>
+                                    <span class="issue-priority issue-priority-medium">Medium</span>
+                                </td>
+                                <td class="issue-assignee">
+                                    <div class="avatar avatar-sm">SW</div>
+                                    <span class="text-sm">Sarah Wilson</span>
+                                </td>
+                                <td class="issue-due-date overdue">Dec 10, 2023</td>
+                            </tr>
+                            <tr class="issue-row">
+                                <td>
+                                    <input type="checkbox" class="form-input">
+                                </td>
+                                <td class="issue-id">#1232</td>
+                                <td>
+                                    <div class="issue-subject">Fix button alignment on iOS</div>
+                                    <div class="issue-meta">
+                                        <span class="issue-tag">bug</span>
+                                        <span class="issue-tag">ios</span>
+                                        <span class="text-tertiary">Mobile App</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="issue-status issue-status-resolved">Resolved</span>
+                                </td>
+                                <td>
+                                    <span class="issue-priority issue-priority-low">Low</span>
+                                </td>
+                                <td class="issue-assignee">
+                                    <div class="avatar avatar-sm">JD</div>
+                                    <span class="text-sm">John Doe</span>
+                                </td>
+                                <td class="issue-due-date">Nov 25, 2023</td>
+                            </tr>
+                            <tr class="issue-row">
+                                <td>
+                                    <input type="checkbox" class="form-input">
+                                </td>
+                                <td class="issue-id">#1231</td>
+                                <td>
+                                    <div class="issue-subject">Add dark mode support</div>
+                                    <div class="issue-meta">
+                                        <span class="issue-tag">feature</span>
+                                        <span class="issue-tag">ui</span>
+                                        <span class="text-tertiary">Admin Dashboard</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="issue-status issue-status-in-progress">In Progress</span>
+                                </td>
+                                <td>
+                                    <span class="issue-priority issue-priority-medium">Medium</span>
+                                </td>
+                                <td class="issue-assignee">
+                                    <div class="avatar avatar-sm">MJ</div>
+                                    <span class="text-sm">Mike Johnson</span>
+                                </td>
+                                <td class="issue-due-date">Dec 20, 2023</td>
+                            </tr>
+                            <tr class="issue-row">
+                                <td>
+                                    <input type="checkbox" class="form-input">
+                                </td>
+                                <td class="issue-id">#1230</td>
+                                <td>
+                                    <div class="issue-subject">Optimize database queries</div>
+                                    <div class="issue-meta">
+                                        <span class="issue-tag">task</span>
+                                        <span class="issue-tag">performance</span>
+                                        <span class="text-tertiary">API Gateway</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="issue-status issue-status-new">New</span>
+                                </td>
+                                <td>
+                                    <span class="issue-priority issue-priority-high">High</span>
+                                </td>
+                                <td class="issue-assignee">
+                                    <div class="avatar avatar-sm">JS</div>
+                                    <span class="text-sm">Jane Smith</span>
+                                </td>
+                                <td class="issue-due-date">Dec 18, 2023</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay"></div>
+
+    <script>
+        // Simple JavaScript for basic interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar toggle
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.app-sidebar');
+            const main = document.querySelector('.app-main');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                    overlay.classList.toggle('open');
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('open');
+                });
+            }
+
+            // View toggle
+            const viewToggleButtons = document.querySelectorAll('.quick-action-btn');
+            viewToggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    viewToggleButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                });
+            });
+
+            // Issue row click handlers
+            const issueRows = document.querySelectorAll('.issue-row');
+            issueRows.forEach(row => {
+                row.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on checkboxes or interactive elements
+                    if (e.target.type === 'checkbox' || e.target.closest('button')) return;
+                    
+                    // Open issue detail panel
+                    console.log('Open issue detail panel');
+                });
+            });
+
+            // Select all checkbox
+            const selectAllCheckbox = document.querySelector('thead input[type="checkbox"]');
+            const rowCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    rowCheckboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

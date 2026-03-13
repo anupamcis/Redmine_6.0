@@ -1,0 +1,2 @@
+module VerificationPlansHelper
+end

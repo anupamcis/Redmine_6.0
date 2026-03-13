@@ -1,0 +1,16 @@
+<tr>
+  <% url = daily_status.is_email_sent ? project_daily_status_path(@project, daily_status) : new_project_daily_status_path %>
+  <% img = unread_email?(daily_status) ? 'disscusion_unread.png' : 'disscusion_read.jpeg' %>
+  <td class="icon"><%= link_to image_tag(img, :plugin => 'redmine_daily_status', height: '24px', width: '24px'), url %>
+  </td>
+  <td class="name">
+    <% subject = daily_status.is_email_sent ? daily_status.subject : daily_status.daily_status_subject + daily_status.subject.to_s %>
+    <%= link_to subject, url %></br>
+    <span class="details block">
+      <span class="no_break">Created by</span>
+        <%= daily_status.author.name %>
+        <%= time_ago_in_words(daily_status.created_at) %> ago
+    </span>
+  </td>
+  <td class="comments_count"><%= daily_status.replies_count %></td>
+</tr>

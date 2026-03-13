@@ -1,0 +1,41 @@
+<% if @project.try(:training_needs).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_training_type) %></th>
+          <th><%= l(:field_attendees) %></th>
+          <th><%= l(:field_name_of_training) %></th>
+          <th><%= l(:field_duration) %></th>
+          <th><%= l(:field_training_method) %></th>
+          <th><%= l(:field_expected_date) %></th>
+          <th><%= l(:field_actual_date) %></th>
+          <th><%= l(:field_status) %></th>
+          <th><%= l(:field_comment) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for training_need in @project.training_needs -%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="firstname"><%= training_need.training_type %></td>
+            <td><%= training_need.attendees.map(&:name).join(",")%></td>
+            <td class="lastname"><%= training_need.name_of_training %></td>
+            <td class="lastname"><%= training_need.duration %></td>
+            <td class="lastname"><%= training_need.training_method %></td>
+            <td class="lastname"><%= format_date(training_need.expected_date) %></td>
+            <td class="lastname"><%= format_date(training_need.actual_date) %></td>
+            <td class="lastname"><%= training_need.status %></td>
+            <td class="lastname"><%= training_need.comment %></td>
+            <td class="buttons">
+              <%= link_to l(:edit), edit_project_training_need_path(@project,training_need, :back_url => request.original_fullpath), class: "icon icon-edit", :title => "Edit", remote: true if User.current.allowed_to?(:update_training_needs, @project, global: true)%>
+              <%= delete_link project_training_need_path(@project,training_need, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_training_needs, @project, global: true)%>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

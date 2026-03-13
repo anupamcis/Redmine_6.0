@@ -1,0 +1,31 @@
+<% if @project.try(:standard_and_guidlines).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_document_name) %></th>
+          <th><%= l(:field_source) %></th>
+          <th><%= l(:field_version) %></th>
+          <th><%= l(:field_remarks) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for standard_and_guidline in @project.standard_and_guidlines -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= standard_and_guidline.document_name %></td>
+          <td class="lastname"><%= standard_and_guidline.source %></td>
+          <td class="lastname"><%= standard_and_guidline.version %></td>
+          <td class="lastname"><%= standard_and_guidline.remarks %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_standard_and_guidline_path(@project,standard_and_guidline, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_standard_and_guidlines, @project, global: true)%>
+            <%= delete_link project_standard_and_guidline_path(@project,standard_and_guidline, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_standard_and_guidlines, @project, global: true)%>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

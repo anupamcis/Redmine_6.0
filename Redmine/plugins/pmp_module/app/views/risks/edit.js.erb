@@ -1,0 +1,5 @@
+$('#ajax-modal').html('<%= escape_javascript(render :partial => 'edit') %>');
+showModal('ajax-modal', '50%');
+$('.exposure-text, .exposure-label').show();
+var exposureVal = $('.exposure-val').val();
+$('.exposure-label').text(exposureVal);

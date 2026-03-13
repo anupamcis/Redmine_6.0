@@ -1,0 +1,14 @@
+<%= error_messages_for 'hardware_software_plan' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "hardware_software_plan[project_id]", @project.id %>
+
+  <p>
+    <label for="profile_id">Profiles</label>
+    <%= select_tag :profile_id, options_from_collection_for_select(@hardware_software_profiles, 'id', 'name'), {:required => true, data: {remote: true, url: url_for(controller: 'hardware_software_plans', action: 'load_profile_data', project_id: @project.id) }, class: "small", multiple: true} %>
+  </p>
+
+  <div id="profile_data"></div>
+  
+</div>

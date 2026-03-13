@@ -1,0 +1,21 @@
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/date-3.4.1/ext/date
+/home/cis/.rbenv/versions/2.7.8/bin/ruby -I /home/cis/.rbenv/versions/2.7.8/lib/ruby/2.7.0 -r ./siteconf20250925-923196-1skmujv.rb extconf.rb
+checking for rb_category_warn()... no
+checking for timezone in time.h with  -Werror... yes
+checking for altzone in time.h with  -Werror... no
+creating Makefile
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/date-3.4.1/ext/date
+make "DESTDIR=" clean
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/date-3.4.1/ext/date
+make "DESTDIR="
+compiling date_core.c
+compiling date_parse.c
+compiling date_strftime.c
+compiling date_strptime.c
+linking shared-object date_core.so
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/date-3.4.1/ext/date
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 date_core.so ./.gem.20250925-923196-1x2q59q

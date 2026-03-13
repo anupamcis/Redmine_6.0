@@ -1,0 +1,8 @@
+<h2> Edit Description </h2>
+
+<%= labelled_form_for @scheduler_time do |f| %>
+  <p><%= f.text_area :description %></p>
+  <p><%= submit_tag l(:button_save) %></p>
+<% end %>
+
+

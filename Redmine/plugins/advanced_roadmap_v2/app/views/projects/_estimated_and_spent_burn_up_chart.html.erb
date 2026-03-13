@@ -1,0 +1,100 @@
+<%#
+  sql = "SELECT ISNULL(issues.start_date, GETDATE()), SUM(time_entries.hours), SUM(issues.estimated_hours) FROM issues INNER JOIN milestones ON milestones.id = issues.fixed_milestone_id INNER JOIN time_entries ON time_entries.issue_id = issues.id WHERE issues.project_id = #{@project.id}  group by issues.start_date"
+
+  @estimated_and_spent_hours = ActiveRecord::Base.connection.exec_query(sql).rows
+%>
+<%# if @estimated_and_spent_hours.present? %>
+<!--
+<div class="col-sm-6">
+  <div id="estimated_and_spent_hours_burn_up"></div>
+</div>
+-->
+<%# if User.current.is_client? %>
+<!--
+<script type="text/javascript">
+  var chart;
+  $(document).ready(function() {
+    chart = new Highcharts.Chart({
+        credits: {
+          enabled: false
+        },
+      chart: {
+        renderTo: 'estimated_and_spent_hours_burn_up',
+        type: 'line'
+      },
+      title: {
+        text: 'Burn Up For <%= t(:estim_hours)%>'
+      },
+      xAxis: {
+        categories: <%= @estimated_and_spent_hours.map{ |situacao| situacao.first}.inspect.html_safe %>,
+        crosshair: true
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Hours',
+        }
+      },
+      legend: {
+        enabled: true
+      },
+      tooltip: {
+        formatter: function() {
+          return '<b>'+ this.series.name +'</b><br/>'+ Highcharts.numberFormat(this.y, 2) + 'Hours';
+        }
+      },
+      series: [{
+        name: 'Estimated Hours',
+        data: <%= @estimated_and_spent_hours.map{ |situacao| situacao[2]} %>
+      }]
+    });
+  });
+</script>
+-->
+<%# else %>
+<!--
+<script type="text/javascript">
+  var chart;
+  $(document).ready(function() {
+    chart = new Highcharts.Chart({
+        credits: {
+          enabled: false
+        },
+      chart: {
+        renderTo: 'estimated_and_spent_hours_burn_up',
+        type: 'line'
+      },
+      title: {
+        text: 'Burn Up For <%= t(:estimated_and_spent_hours)%>'
+      },
+      xAxis: {
+        categories: <%= @estimated_and_spent_hours.map{ |situacao| situacao.first}.inspect.html_safe %>,
+        crosshair: true
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Hours',
+        }
+      },
+      legend: {
+        enabled: true
+      },
+      tooltip: {
+        formatter: function() {
+          return '<b>'+ this.series.name +'</b><br/>'+ Highcharts.numberFormat(this.y, 2) + 'Hours';
+        }
+      },
+      series: [{
+        name: 'Spent Hours',
+        data: <%= @estimated_and_spent_hours.map{ |situacao| situacao[1]} %>
+      },{
+        name: 'Estimated Hours',
+        data: <%= @estimated_and_spent_hours.map{ |situacao| situacao[2]} %>
+      }]
+    });
+  });
+</script>
+-->
+<%# end %>
+<%# end %>

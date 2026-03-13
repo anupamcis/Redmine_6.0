@@ -1,0 +1,6 @@
+$(".popup_roles").hide();
+ $(".roles-selection").find("label").each(function(){
+  $(this).show();
+ });
+$('#test-users').html('<%= escape_javascript(render_principals_for_new_members_default_company(@project)) %>');
+$('#test-clients').html('<%= escape_javascript(render_principals_for_new_members_client_company(@project)) %>');

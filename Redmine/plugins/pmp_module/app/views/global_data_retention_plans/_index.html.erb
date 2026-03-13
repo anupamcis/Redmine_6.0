@@ -1,0 +1,41 @@
+<div class="contextual">
+  <%= link_to l(:label_global_data_retention_plan_new), new_global_data_retention_plan_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_global_data_retention_plan_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_record_name) %></th>
+        <th><%= l(:field_min_retention) %></th>
+        <th><%= l(:field_type_of_record) %></th>
+        <th><%= l(:field_storage_path) %></th>
+        <th><%= l(:field_disposal) %></th>
+        <th><%= l(:field_remarks) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for global_data_retention_plan in @global_data_retention_plans -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="lastname"><%= global_data_retention_plan.record_name %></td>
+          <td class="firstname"><%= global_data_retention_plan.min_retention %></td>
+          <td class="lastname"><%= global_data_retention_plan.type_of_record %></td>
+          <td class="lastname"><%= global_data_retention_plan.storage_path %></td>
+          <td class="lastname"><%= global_data_retention_plan.disposal %></td>
+          <td class="lastname"><%= global_data_retention_plan.remarks %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_global_data_retention_plan_path(global_data_retention_plan), :class=>"icon icon-edit" %>
+            <%= delete_link global_data_retention_plan_path(global_data_retention_plan, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_global_back_up_detail_plural)) -%>

@@ -1,0 +1,11 @@
+<% if User.current.allowed_to?(:view_risks, @project, global: true)%>
+  <div class="management-row">
+    <h2><%= l(:risk) %></h2>
+    <%= render partial: "risks/index" %>
+  </div>
+  <div class="management-row">
+    <h2><%= l(:risk_mitigation_plan) %></h2>
+    <%= render 'risk_mitigation_plans/index' %>
+  </div>
+<%end%>
+

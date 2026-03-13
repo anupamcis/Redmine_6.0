@@ -1,0 +1,77 @@
+<div class="contextual">
+  <%= link_to l(:label_pmp_tab_new), new_pmp_tab_and_lock_configuration_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_pmp_tab_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_tab_name) %></th>
+        <th><%= l(:field_lock_percent) %></th>
+        <th><%= l(:field_position) %></th>
+        <th><%= l(:field_project_types)%></th>
+        <th><%= l(:field_hours)%></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for pmp_tab in @pmp_tab_and_lock_configurations -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="username"><%= pmp_tab.tab_name %></td>
+          <td class="firstname"><%= pmp_tab.lock_percent %>%</td>
+          <td class="firstname"><%= pmp_tab.position %></td>
+          <td class="firstname">
+            <% if pmp_tab.project_types.nil? || pmp_tab.project_types.empty? %>
+              <%= '-' %>
+            <% elsif pmp_tab.project_types.is_a?(Array) && pmp_tab.project_types.count >= 1 %>
+              <%= pmp_tab.project_types.join(", ") %>
+            <% else %>
+              <%= pmp_tab.project_types %>
+            <% end %>
+          </td>
+          <td class="firstname"><%= pmp_tab.hours %></td>
+          <td class="buttons">
+            <%= link_to "Edit", edit_pmp_tab_and_lock_configuration_path(pmp_tab), :class =>"icon icon-edit"  %>
+            <%= delete_link pmp_tab_and_lock_configuration_path(pmp_tab, :back_url => request.original_fullpath) unless pmp_tab.default_tab %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_pmp_tab_plural)) -%>
+<br><br>
+<% if @pmp_admin_configuration.present? %>
+<h2><%=l(:admin_configuration)%></h2>
+<div class="box tabular">
+  <legend><%= l(:skill_requirement_config)%></legend>
+  <br>
+  <table class="list">
+    <tr class="even">
+      <th><%= l(:field_skill_requirement_cale_differnce) %></th>
+      <td class="username"><%= @pmp_admin_configuration.skill_requirement_cale_differnce %></td>
+    </tr>
+  </table>
+</div>
+
+<div class="box tabular">
+  <legend><%= l(:risk_config)%></legend>
+  <br>
+  <table class="list">
+    <tr class="even">
+      <th><%= l(:field_risk_mitigation_difference) %></th>
+      <td class="firstname"><%= @pmp_admin_configuration.risk_mitigation_difference %></td>
+    </tr>
+    <tr class="even">
+      <th><%= l(:field_risk_contingency_difference) %></th>
+      <td class="firstname"><%= @pmp_admin_configuration.risk_contingency_difference %></td>
+    </tr>
+  </table>
+</div>
+<% end %>
+<%= link_to l(:edit_pmp_config), edit_admin_configuration_pmp_tab_and_lock_configurations_path(), class: "icon icon-edit", remote: true%>

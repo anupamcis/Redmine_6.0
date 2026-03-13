@@ -1,0 +1,3 @@
+$("tbody").find("tr").remove();
+$("tbody").append("<%= j render :partial => 'project', :collection => @projects %>");
+$(".pagination").html("<%= j pagination_links_full @project_pages, @project_count %>");

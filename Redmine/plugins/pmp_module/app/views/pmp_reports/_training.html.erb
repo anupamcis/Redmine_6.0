@@ -1,0 +1,21 @@
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_knowledge_and_skill_requirements, @project, global: true) %>
+    <h2><%= l(:knowledge_and_skill_requirements) %></h2>
+    <%= render partial: "knowledge_and_skill_requirements/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_knowledge_and_skill_requirements, @project, global: true)%>
+    <%= link_to l(:add_knowledge_and_skill_requirement), new_project_knowledge_and_skill_requirement_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_training_needs, @project, global: true) %>
+    <h2><%= l(:training_needs) %></h2>
+    <%= render partial: "training_needs/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_training_needs, @project, global: true)%>
+    <%= link_to l(:add_training_need), new_project_training_need_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>

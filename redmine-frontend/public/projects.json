@@ -1,0 +1,8 @@
+{
+  "projects": [
+    { "id": 1, "name": "ProjectA", "description": "Main product", "openIssues": 12, "progress": 0.42, "members": [{"id":2,"name":"Alice"},{"id":3,"name":"Bob"}] },
+    { "id": 2, "name": "ProjectB", "description": "Marketing site", "openIssues": 3, "progress": 0.76, "members": [{"id":4,"name":"Clara"}] }
+  ]
+}
+
+

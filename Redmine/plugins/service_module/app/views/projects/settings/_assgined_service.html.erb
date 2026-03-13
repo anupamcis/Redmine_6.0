@@ -1,0 +1,79 @@
+<% if User.current.allowed_to?(:remove_company_from_project, @project, global: true)%>
+  <div class="contextual">
+    <%= link_to(l(:remove_company), remove_company_project_path(@project, back_path: "to_project"), :method => :put, title: l(:remove_company_title), :class =>"remove_company") %>
+  </div>
+  <br>
+<% end %>
+<%= form_tag(settings_project_path(@project), :method => :get) do %>
+  <fieldset>
+    <legend><%= l(:label_filter_plural) %></legend>
+    <%= hidden_field_tag('tab', "assigned_service")  %>
+    <label for='status'><%= l(:field_status) %> :</label>
+    <%= select_tag 'service_status', options_for_select((["All"]+ALL_SERVICE_STATUS).map(&:capitalize), params[:service_status]), prompt: 'select status...', :class => "small select2", :onchange => "this.form.submit(); return false;"  %>
+    <% if User.current.allowed_to?(:show_company, nil, global: true) && @project.company.present? %>
+      <b>(Company: <%= @project.try(:company).try(:name) %>)</b>
+    <% end %>
+  </fieldset>
+<% end %>
+
+<% if @service_details.present? %>
+  <table class="list">
+    <thead>
+        <th><%= l(:field_master)%></th>
+      <th><%= l(:field_service_id) %></th>
+      <th><%= l(:field_service_author)%></th>
+      <th><%= l(:field_service_type) %></th>
+      <th><%= l(:field_service_status) %></th>
+      <th style="width:15%"></th>
+    </thead>
+    <tbody>
+      <%  @service_details.each do |service_detail| %>
+        <% unless service_detail.is_disabled %>
+          <tr id="<%= service_detail.transferred_or_project_basis %>">
+            <% if User.current.allowed_to?(:change_master, nil, :global => true) && service_detail.status == "IN-PROGRESS" %>
+              <td>
+                <%= form_tag(update_service_detail_master_path, :method => :get) do %>
+                  <%= hidden_field_tag('project_id', @project.id)  %>
+                  <%= hidden_field_tag('current_service_detail_id', service_detail.id)  %>
+                  <%= radio_button_tag 'is_master', service_detail.is_master, service_detail.is_master, :disabled => service_detail.transferred_by.present?, :onclick => "#{service_detail.transferred_by.present?} ? '' : this.form.submit();" %>
+                <% end %>
+              </td>
+            <% else %>
+              <td>-</td>
+            <% end %>
+              <td><%= service_detail.service_detail_name %></td>
+              <td><%= service_detail.name %></td>
+              <td><%= service_detail.service_detail_type %></td>
+              <td><%= service_detail.status %></td>
+              <td><%= link_to "Remove Service", remove_service_detail_path(service_detail), class: "btn btn-primary" if (service_detail.removable? && User.current.allowed_to?(:remove_service, nil, :global => true) || User.current.admin?) %></td>
+            </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+   <ul class="legend">
+    <li><span id="transferred"></span> Shared Service</li>
+    <li><span id="master_service"></span> Master Service</li>
+    <li><span id="project_basis"></span> Project Basis</li>
+  </ul>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<style type="text/css">
+  .btn {
+    padding: 0.55rem 1.2rem;
+    font-size: 0.60rem;
+    border-radius: 0.3rem;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+  }
+
+  .legend { list-style: none; }
+  .legend li { float: left;  }
+  .legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+</style>

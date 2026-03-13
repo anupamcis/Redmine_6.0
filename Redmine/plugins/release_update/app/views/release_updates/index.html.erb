@@ -1,0 +1,28 @@
+<% if User.current.allowed_to?(:add_release_update, nil, :global => true) || User.current.admin? %>
+  <div class="contextual">
+    <%= link_to l(:add_release_update), new_release_update_path, :class => 'icon icon-add' %>
+  </div>
+<% end %>
+
+<table class="list issue_statuses">
+  <tr>
+    <th><%= l(:title) %></th>
+    <th><%= l(:author) %></th>
+    <th><%= l(:like) %></th>
+  </tr>
+  <% @release_updates.each do |release_update| %>
+      <tr class="<%= unread_release(release_update) %>">
+        <td>
+          <%= link_to release_update.title, release_update_path(release_update) %>
+        </td>
+        <td>
+          <%= release_update.try(:user).try(:name) %>
+        </td>
+        <td>
+          <%= release_update.get_likes.size %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+<% html_title(l(:label_release_plural)) -%>

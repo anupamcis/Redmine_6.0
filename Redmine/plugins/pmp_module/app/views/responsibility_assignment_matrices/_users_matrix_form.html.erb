@@ -1,0 +1,137 @@
+<% project_matrix_fields = @project.project_responsibility_assignment_matrix_filter.matrix_filter%>
+<% work_types = RaciChart.where(id: project_matrix_fields) %>
+<% @user_ids = [] %>
+<% @user_names  = [] %>
+
+<% @project.users.where.not(firstname: "CIS").each do |user|
+  if project_matrix_fields.present?
+    @user_ids.push(user.id)
+    @user_names.push(user.name)
+  end
+end %>
+<div class="assignment_matrix_table">
+  <table class="list">
+      <tr>
+        <th>RACI Chart</th>
+        <th colspan="<%= @user_ids.size %>">RESOURCE</th>
+      </tr>
+      <tr>
+        <td>
+          Work
+        </td>
+        <% @user_names.each do |user_name| %>
+          <td><%=user_name%>
+          </td>
+        <% end %>
+      </tr>
+       <% work_types.each do |work_type| %>
+         <tr class="assignment_to">
+          <td><%=work_type.work_type%></td>
+          <% @user_ids.each do |user_id| %>
+            <% matrix = ResponsibilityAssignmentMatrix.where(user_id: user_id, project_id: @project.id).first %>
+            <td class="checkboxWrapper">
+              <% WORK_TYPE_RESPONSBILITY.each do |v|%>
+              <% is_present = matrix.present? && matrix.responsibility.has_key?(work_type.work_type) && matrix.responsibility[work_type.work_type].include?(v) %>
+              <div class="checkboxlist">
+                <%= hidden_field_tag "responsibility_assignment_matrix[#{user_id}][project_id]", @project.id %>
+                <%= hidden_field_tag "responsibility_assignment_matrix[#{user_id}][user_id]", user_id%>
+                <%= check_box_tag "responsibility_assignment_matrix[#{user_id}][responsibility][#{work_type.work_type}][]", v , is_present, class: "#{v == 'A' ? 'first-responsibility' : 'except-a'}" %><%= v %>
+                  <% if v == 'A' %><div class="checkboxOverlay" ></div><%end%>
+                </div>
+              <% end %>
+            </td>
+          <% end %>
+         </tr>
+      <% end %>
+  </table>
+</div>
+<style type="text/css">
+  .nodata_for_modal {
+    align-self: center;
+    left: 10px;
+    position: relative;
+  }
+
+  .checkboxWrapper {
+    position: relative;
+  }
+
+  .checkboxOverlay {
+    position: absolute;
+    left:0px;    
+    top: 3px;
+    bottom: 0;
+    width: 15px;
+    height: 15px;
+  }
+
+  .checkboxlist{ margin: 0 0 0px; position: relative;  }
+  .checkboxlist:last-child{ margin: 0 0;  }
+
+
+</style>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    // disable another A checbox if one is checked
+    $('.first-responsibility').on('change', function(){
+      var tr = $(this).parent().parent('tr');
+      if($(this).is(":checked")){
+        tr.find('.first-responsibility').attr('disabled', true);
+        $(this).removeAttr('disabled');
+      }else{
+        tr.find('.first-responsibility').removeAttr('disabled');
+      }
+    });
+
+    $('.first-responsibility').each(function(){
+      var tr = $(this).parent().parent().parent('tr');
+      if($(this).is(":checked")){
+        tr.find('.first-responsibility').attr('disabled', true);
+        $(this).removeAttr('disabled');
+      }
+    });
+
+      $('.first-responsibility').each(function(){
+      var tr = $(this).parent().parent('tr');
+      if($(this).is(":checked")){
+        tr.find('.first-responsibility').attr('disabled', true);
+        $(this).removeAttr('disabled');
+      }
+    });
+
+    $('.responsibility_assignment_matrice_form').on('click',function(e){
+      var isValid = true;
+      $('.assignment_matrix_table table tr.assignment_to').each(function(){
+        if($(this).find('input[type=checkbox].except-a').is(':checked')){
+          console.log($(this).find('input[type=checkbox].first-responsibility').is(':checked'))
+          if($(this).find('input[type=checkbox].first-responsibility').is(':checked') == false){
+            isValid = false
+          }
+        }
+      });
+
+      if(!isValid){
+        alert("Please select atleast one accountable");
+      }
+      return isValid
+    });
+  });
+
+
+  $('.checkboxOverlay').on('click',function(e){
+    var checkbox = $(this).parent().find('.first-responsibility');
+    var tr = $(this).parent().parent().parent('tr');
+    if($(checkbox).is(":checked")){
+      tr.find('.first-responsibility').removeAttr("disabled");
+      tr.find('.first-responsibility').prop("checked", false);
+      $(checkbox).prop("checked", false);
+    }else{
+      tr.find('.first-responsibility').attr("disabled", true);
+      tr.find('.first-responsibility').prop("checked", false);
+      $(checkbox).prop("checked", true);
+      $(checkbox).removeAttr('disabled');
+    }
+  });
+
+</script>

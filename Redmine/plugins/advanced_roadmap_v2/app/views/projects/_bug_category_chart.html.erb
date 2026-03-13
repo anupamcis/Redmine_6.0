@@ -1,0 +1,56 @@
+<%= render :partial => '/mc_menu/contentHeader' %>
+<% if @bug_categories.present? %>
+  <div id="containerColumn" class="double_chart"></div>
+<% end %>
+<%data = []%>
+<%@bug_categories.map do |cat| %>
+    <%data.push([cat.name, @issue_with_bug_percent[cat.name]])%>
+<%end%>
+<script type="text/javascript">
+var chart;
+$(document).ready(function() {
+  chart = new Highcharts.Chart({
+      credits: {
+      enabled: false
+    },
+    chart: {
+      renderTo: 'containerColumn',
+      type: 'pie'
+    },
+    title: {
+      text: '<%=t :bug_category %>'
+    },
+    legend: {
+      enabled: true
+    },
+    tooltip: {
+      formatter: function() {
+        return '<b>'+ this.point.name +'</b><br/>'+
+          '<%=t :tasks_label%> '+ this.y + '%';
+      }
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        depth: 50,
+        dataLabels: {
+          enabled: true,
+          color: '#000000',
+          connectorColor: '#000000',
+          style: {
+            font: 'normal 13px Verdana, sans-serif'
+          },
+          formatter: function() {
+            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage,1) +' %';
+          }
+        }
+      }
+    },
+    series: [{
+      type: 'pie',
+      data: <%=raw(data)%>
+    }]
+  });
+});
+</script>

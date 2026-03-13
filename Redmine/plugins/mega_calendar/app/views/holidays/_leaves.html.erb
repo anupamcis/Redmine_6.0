@@ -1,0 +1,40 @@
+<div class="contextual"><p class="buttons">
+  <a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/new" class = "icon icon-add" ><%= translate 'new' %></a></p>
+</div></br></br></br>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= translate 'user'%></th>
+        <th><%= translate 'reason' %></th>
+        <th><%= translate 'start' %></th>
+        <th><%= translate 'end' %></th>
+        <th><%= translate 'action' %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @res.each do |row| %>
+        <tr>
+          <td class="firstname" ><%= row.user.blank? ? '' : row.user.login.to_s %></td>
+          <td class="firstname" ><%= row.reason.blank? ? '' : row.reason.to_s %></td>
+          <td class="firstname"><%= row.start.blank? ? '' : format_date(row.start.to_date) %></td>
+          <td class="firstname" ><%= row.end_date.blank? ? '' : format_date(row.end_date.to_date) %></td>
+          <td class="firstname">
+            <%= link_to l(:edit), edit_holiday_path(row) %>
+            <%= delete_link holiday_path(row, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @pagination == true %>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/index?page=<%= @last_page.to_s %>"><%= translate 'prev' %></a>&nbsp;<a href="<%= Setting.plugin_mega_calendar['sub_path'] %>holidays/index?page=<%= @new_page.to_s %>"><%= translate 'next' %></a></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

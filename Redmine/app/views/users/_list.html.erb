@@ -1,0 +1,118 @@
+<style>
+/* Very light borders – native Redmine feel */
+table.users-bordered th,
+table.users-bordered td {
+  border: 1px solid #e6e6e6;
+}
+
+table.users-bordered th {
+  background-color: #f6f6f6;
+}
+
+table.users-bordered tr.group td {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+table.users-bordered tbody tr:hover {
+  background-color: #f9fbff;
+}
+</style>
+
+<% if User.current.admin? %>
+  <div class="contextual">
+    <%= link_to l(:label_user_new),
+                new_user_path,
+                class: 'icon icon-add' %>
+
+    <% if User.current.allowed_to?(:import_users, nil, global: true) %>
+      <%= link_to l(:button_import),
+                  new_users_import_path,
+                  class: 'icon icon-import' %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_tag({}, data: { cm_url: users_context_menu_path }) do -%>
+  <%= hidden_field_tag 'back_url',
+        url_for(params: request.query_parameters),
+        id: nil %>
+
+  <div class="autoscroll">
+    <table class="list odd-even users users-bordered">
+      <thead>
+        <tr>
+          <% if User.current.admin? %>
+            <th class="checkbox hide-when-print">
+              <%= check_box_tag 'check_all', '', false,
+                    class: 'toggle-selection',
+                    title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}" %>
+            </th>
+          <% end %>
+
+          <% @query.inline_columns.each do |column| %>
+            <%= column_header(@query, column) %>
+          <% end %>
+
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% grouped_query_results(users, @query) do |user, group_name, group_count, group_totals| -%>
+
+          <% if group_name %>
+            <% reset_cycle %>
+            <tr class="group open">
+              <td colspan="<%= @query.inline_columns.size + (User.current.admin? ? 2 : 1) %>">
+                <span class="expander" onclick="toggleRowGroup(this);">
+                  <%= sprite_icon('angle-down') %>
+                </span>
+                <span class="name"><%= group_name %></span>
+
+                <% if group_count %>
+                  <span class="count">(<%= group_count %>)</span>
+                <% end %>
+
+                <span class="totals"><%= group_totals %></span>
+              </td>
+            </tr>
+          <% end %>
+
+          <tr id="user-<%= user.id %>"
+              class="user <%= cycle('odd', 'even') %> hascontextmenu">
+
+            <% if User.current.admin? %>
+              <td class="checkbox hide-when-print">
+                <%= check_box_tag 'ids[]', user.id, false, id: nil %>
+              </td>
+            <% end %>
+
+            <% @query.inline_columns.each do |column| %>
+              <% if column.name == :login %>
+                <%= content_tag :td,
+                      User.current.admin? ?
+                        link_to(user.login, edit_user_path(user)) :
+                        user.login,
+                      class: column.css_classes %>
+              <% else %>
+                <%= content_tag :td,
+                      column_content(column, user),
+                      class: column.css_classes %>
+              <% end %>
+            <% end %>
+
+            <td class="buttons">
+              <% if User.current.admin? %>
+                <%= link_to_context_menu %>
+              <% end %>
+            </td>
+          </tr>
+
+        <% end -%>
+      </tbody>
+    </table>
+  </div>
+<% end -%>
+
+<%= context_menu %>

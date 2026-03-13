@@ -1,0 +1,135 @@
+<% project_matrix_fields = @project.project_responsibility_assignment_matrix_filter.matrix_filter%>
+<% work_types = RaciChart.where(id: project_matrix_fields) if project_matrix_fields.present? %>
+<% @raci_roles_ids = []%>
+<% @raci_roles_names = []%>
+
+<% raci_role_ids = @project.responsibility_assignment_matrices.map(&:role_id) if @project.responsibility_assignment_matrices.present? %>
+<% roles1 = RaciRole.where(id: raci_role_ids) if raci_role_ids.present? %>
+
+<%
+  if roles1.present?
+   roles1.each do |raci_role|
+    @raci_roles_ids << raci_role.id
+    @raci_roles_names << raci_role.name
+   end
+  end
+%>
+
+<% if roles1.present? && @raci_roles_names.present? && work_types.present? %>
+  <div class="assignment_matrix_table">
+    <table class="list">
+      <tr>
+        <th>RACI Chart</th>
+        <th colspan="<%= @raci_roles_names.size %>">RESOURCE</th>
+      </tr>
+      <tr>
+        <td>
+          Work
+        </td>
+        <% @raci_roles_names.each do |role_name| %>
+        <td><%= role_name %></td>
+        <% end %>
+      </tr>
+      <% work_types.each do |work_type| %>
+        <tr class="assignment_to">
+          <td><%=work_type.work_type%></td>
+          <% @raci_roles_ids.each do |role_id| %>
+          <% matrix = ResponsibilityAssignmentMatrix.where(role_id: role_id, project_id: @project.id).first %>
+          <td class="checkboxWrapperRole">
+            <% WORK_TYPE_RESPONSBILITY.each do |v|%>
+            <% is_present = matrix.present? && matrix.responsibility.has_key?(work_type.work_type) && matrix.responsibility[work_type.work_type].include?(v) %>
+            <div class="checkboxlistrole">
+              <%= hidden_field_tag "responsibility_assignment_matrix[#{role_id}][project_id]", @project.id %>
+              <%= hidden_field_tag "responsibility_assignment_matrix[#{role_id}][role_id]", role_id%>
+              <%= check_box_tag "responsibility_assignment_matrix[#{role_id}][responsibility][#{work_type.work_type}][]", v , is_present, class: "#{v == 'A' ? 'first-responsibility-role' : 'except-a'}" %><%= v %><% if v == 'A' %><div class="checkboxOverlayRole" ></div><%end%>
+            </div>
+            <% end %>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+<style type="text/css">
+  .nodata_for_modal {
+    align-self: center;
+    left: 10px;
+    position: relative;
+  }
+
+  .checkboxWrapperRole {
+    position: relative;
+  }
+
+  .checkboxOverlayRole {
+    position: absolute;
+    left:0px;    
+    top: 3px;
+    bottom: 0;
+    width: 15px;
+    height: 15px;
+  }
+
+  .checkboxlistrole{ margin: 0 0 0px; position: relative;  }
+  .checkboxlistrole:last-child{ margin: 0 0;  }
+
+</style>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    // disable another A checbox if one is checked
+    $('.checkboxOverlayRole').on('click',function(e){
+      var checkbox = $(this).parent().find('.first-responsibility-role');
+      var tr = $(this).parent().parent().parent('tr');
+      if($(checkbox).is(":checked")){
+        tr.find('.first-responsibility-role').removeAttr("disabled");
+        tr.find('.first-responsibility-role').prop("checked", false);
+        $(checkbox).prop("checked", false);
+      }else{
+        tr.find('.first-responsibility-role').attr("disabled", true);
+        tr.find('.first-responsibility-role').prop("checked", false);
+        $(checkbox).prop("checked", true);
+        $(checkbox).removeAttr('disabled');
+      }
+    });
+
+    // disable another A checbox on edit
+    $('.first-responsibility-role').each(function(){
+      var tr = $(this).parent().parent('tr');
+      if($(this).is(":checked")){
+        tr.find('.first-responsibility-role').attr('disabled', true);
+        $(this).removeAttr('disabled');
+      }
+    });
+
+     $('.first-responsibility-role').each(function(){
+      var tr = $(this).parent().parent().parent('tr');
+      if($(this).is(":checked")){
+        tr.find('.first-responsibility-role').attr('disabled', true);
+        $(this).removeAttr('disabled');
+      }
+    });
+
+
+
+
+    $(document).ready(function(){
+      $('.responsibility_assignment_matrice_form').on('click',function(e){
+        var isValid = true;
+        $('.assignment_matrix_table table tr.assignment_to').each(function(){
+          if($(this).find('input[type=checkbox].except-a').is(':checked')){
+            if($(this).find('input[type=checkbox].first-responsibility-role').is(':checked') == false){
+              isValid = false
+            }
+          }
+        });
+        console.log(isValid)
+        if(!isValid){
+          alert("Please select atleast one accountable");
+        }
+        return isValid
+      });
+    })
+  });
+</script>

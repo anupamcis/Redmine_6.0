@@ -1,0 +1,51 @@
+<%= error_messages_for 'hardware_software_plan' %>
+<div class="box tabular">
+  <p>
+    <%= hidden_field_tag "hardware_software_plan[profile_id]", @hardware_software_plan.hardware_and_software_profile_id %>
+    <%= f.select :profile_type, options_for_select(["Hardware", "Software"], @hardware_software_plan.profile_type),{required: true, prompt: "Select type"} %>
+  </p>
+  <p>
+    <%= f.text_field :resource, size: 25, placeholder: 'Enter resource...', :required => true %>
+  </p>
+
+  <p>
+    <%= f.text_field :configuration, size: 25, placeholder: 'Enter configuration...' %>
+  </p>
+  <p>
+    <%= f.select :environment, options_for_select(["Development", "Staging", "Production"], @hardware_software_plan.environment),{required: true,prompt: "select environment"} %>
+  </p>
+
+  <p>
+    <%= f.text_field :version, size: 25, placeholder: 'Enter version...' %>
+  </p>
+
+  <p>
+    <%= f.text_field :quantity, size: 25, placeholder: 'Enter quantity...' %>
+  </p>
+
+  <p>
+    <%= f.select :critical_resource, options_for_select([["Yes", true],["No", false]], @hardware_software_plan.critical_resource),{:required => true, class: "small", prompt: "select critical resource"} %>
+  </p>
+
+  <p>
+    <%= f.select :responsible_person_id, options_from_collection_for_select(Department.find(9).employees, 'id', 'name', @hardware_software_plan.responsible_person_id ),{:required => true, class: "small", prompt: "select responsible person"} %>
+  </p>
+
+  <p>
+    <%= f.text_field :remarks, size: 25, placeholder: 'Enter remarks...' %>
+  </p>
+
+  <p><%= f.text_field :start_date, value: !@hardware_software_plan.new_record? ? format_date(@hardware_software_plan.start_date) : '', size: 10 %>
+    <%= calendar_for("hardware_software_plan_start_date") %>
+  </p>
+
+  <p>
+    <%= f.text_field :end_date, value: !@hardware_software_plan.new_record? ? format_date(@hardware_software_plan.end_date) : '', size: 10 %>
+    <%= calendar_for("hardware_software_plan_end_date") %>
+  </p>
+  <p>
+    <%= f.check_box :is_visible_to_client %>
+  </p>
+
+  <br>
+</div>

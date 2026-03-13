@@ -1,0 +1,5 @@
+# English strings go here for Rails i18n
+en:
+  remove_company: Remove Company
+  remove_company_title: Remove company from this project.
+  removal_success_message: Company successfully removed from %{project}

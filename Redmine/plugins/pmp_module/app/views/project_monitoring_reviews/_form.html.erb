@@ -1,0 +1,10 @@
+<%= error_messages_for 'project_monitoring_review' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "project_monitoring_review[project_id]", @project.id %>
+  <p><%= f.select :milestone_id, options_from_collection_for_select(@project.milestones, 'id', 'name', @project_monitoring_review.milestone_id), prompt: 'select milestone...', class: "select2 small", :required => true %>
+  </p>
+  <p><%= f.text_field :frequency, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :remarks, :size => 25 %></p><br>
+</div>

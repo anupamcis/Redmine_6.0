@@ -1,0 +1,48 @@
+<% html_title l(:label_notification_email_templates) %>
+<div class="contextual">
+  <%= link_to l(:label_notification_email_template_new), new_notification_email_template_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%= l(:label_notification_email_templates) %></h2>
+
+<% if @templates.any? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_name) %></th>
+        <th><%= l(:field_template_type) %></th>
+        <th><%= l(:field_subject) %></th>
+        <th><%= l(:field_is_active) %></th>
+        <th><%= l(:field_updated_on) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @templates.each do |template| %>
+        <tr class="<%= cycle('odd', 'even') %>">
+          <td><%= link_to template.name, notification_email_template_path(template) %></td>
+          <td><%= template.template_type %></td>
+          <td><%= truncate(template.subject, :length => 50) %></td>
+          <td align="center">
+            <%= template.is_active ? image_tag('true.png') : image_tag('false.png') %>
+          </td>
+          <td><%= format_time(template.updated_at) %></td>
+          <td class="buttons">
+            <%= link_to l(:button_edit), edit_notification_email_template_path(template), :class => 'icon icon-edit' %>
+            <%= link_to l(:button_delete), notification_email_template_path(template), 
+                         :method => :delete, 
+                         :data => {:confirm => l(:text_are_you_sure)}, 
+                         :class => 'icon icon-del' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<p class="info">
+  <%= l(:text_notification_email_templates_info) %>
+</p>
+

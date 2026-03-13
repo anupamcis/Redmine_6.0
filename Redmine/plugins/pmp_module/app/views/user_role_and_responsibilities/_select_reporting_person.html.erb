@@ -1,0 +1,1 @@
+<%= select_tag "reporting_person_id", options_for_select((@project.users.joins(:company).where("companies.default_company = ? ", true) - [@user]).collect {|u| [u.name, u.id]}), {class: "select small reporting-person-select", user_id: "#{@user.id}", project_id: "#{@project.id}", prompt: "Select reporting person"} %>

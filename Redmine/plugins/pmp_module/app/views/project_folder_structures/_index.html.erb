@@ -1,0 +1,29 @@
+<% if @project.try(:project_folder_structures).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_folder_name) %></th>
+          <th><%= l(:field_configuration_item) %></th>
+          <th><%= l(:field_access_details) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for project_folder_structure in @project.project_folder_structures -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= project_folder_structure.folder_name %></td>
+          <td class="lastname"><%= project_folder_structure.configuration_item %></td>
+          <td class="lastname"><%= project_folder_structure.access_details %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_project_folder_structure_path(@project,project_folder_structure, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_project_folder_structures, @project, global: true)%>
+            <%= delete_link project_project_folder_structure_path(@project,project_folder_structure, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_project_folder_structures, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

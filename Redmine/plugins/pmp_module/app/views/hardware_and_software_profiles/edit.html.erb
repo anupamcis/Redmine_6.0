@@ -1,0 +1,6 @@
+<%= title [l(:global_profile_plural), global_pmp_profiles_path(tab: "hardware_and_software_profile")], l(:label_global_profile_new) %>
+
+<%= labelled_form_for @hardware_and_software_profile do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_save) %>
+<% end %>

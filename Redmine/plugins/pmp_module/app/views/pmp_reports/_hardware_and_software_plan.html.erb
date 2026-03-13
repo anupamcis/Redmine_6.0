@@ -1,0 +1,22 @@
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_hardware_software_suplied_by_clients, @project, global: true) %>
+    <h2><%= l(:hardware_software_suplied_by_client) %></h2>
+
+    <%= render partial: "hardware_software_suplied_by_clients/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_hardware_software_suplied_by_clients, @project, global: true)%>
+    <%= link_to l(:add_hardware_software_suplied_by_client), new_project_hardware_software_suplied_by_client_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_hardware_software_plans, @project, global: true) %>
+    <h2><%= l(:hardware_software_plan) %></h2>
+    <%= render partial: "hardware_software_plans/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_hardware_software_plans, @project, global: true)%>
+    <%= link_to l(:add_hardware_software_plan), new_project_hardware_software_plan_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', remote: true %>
+  <%end%>
+</div>

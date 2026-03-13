@@ -1,0 +1,9 @@
+# English strings go here for Rails i18n
+en:
+  label_department_name: Member Suffix Name
+  label_master_department_new: New Member Suffix
+  label_master_department_plural: Member Suffix
+  notice_success_delete_master_department: Member suffix deleted successfully
+  department: Member Suffix
+  label_change_manager: Change PM
+  label_client_new: Add New Client

@@ -1,0 +1,27 @@
+<%= error_messages_for 'knowledge_and_skill_requirement' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "knowledge_and_skill_requirement[project_id]", @project.id %>
+  <p><%= f.select :resource_name, options_from_collection_for_select(@project.users.joins(:company).where("firstname not like (?) and companies.default_company = ? ", "%cis%", true), 'name', 'name', @knowledge_and_skill_requirement.resource_name), {:required => true, prompt: "select resource...."}, {class: "select2 small"} %></p>
+
+  <p><%= f.select :skill_required, options_for_select(Pmp.skills, @knowledge_and_skill_requirement.skill_required),{:required => true, prompt: 'select required skill...'}, {class: "small select2"} %></p>
+
+  <p><%= f.select :competency_scale_required, options_for_select((1..5).to_a, @knowledge_and_skill_requirement.competency_scale_required),{}, { class: "small"} %></p>
+
+  <p><%= f.select :competency_available, options_for_select((1..5).to_a, @knowledge_and_skill_requirement.competency_available),{}, { class: "small"} %></p>
+
+  <p><%= f.text_area :gap, :size => 25 %></p>
+
+  <p><%= f.select :means_of_acquiring_skills, options_for_select(["Self-study", "Formal",
+    "On job", "E-learning"], @knowledge_and_skill_requirement.means_of_acquiring_skills),{:required => true, prompt: 'select means...'}, {class: "small"} %></p>
+  <br>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".select2").select2({width: '25%'});
+    $.ui.dialog.prototype._allowInteraction = function (e) {
+      return true;
+    };
+  });
+</script>

@@ -1,0 +1,72 @@
+<%= render partial: 'hierarchy_select_min_js_css'  %>
+<%
+  parent_ids = User.includes(:parent).map { |user| user.id if !user.parent }.compact.uniq if User.current.admin?
+
+  child_users = []
+    if parent_ids.present?
+      parent_ids.map do |id|
+        child_users << build_hierarchy([], id, 1)
+      end
+  else
+      child_users << build_hierarchy([], User.current.id, 1)
+  end
+
+  all_users =  all_value(child_users.flatten!)
+%>
+<% if all_users.any? %>
+  <form>
+    <div class="form-group">
+      <div class="btn-group hierarchy-select" data-resize="auto" id="user_hierarchy">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <span class="selected-label pull-left">&nbsp;</span>
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu open">
+          <div class="hs-searchbox">
+            <input type="text" class="form-control" autocomplete="off">
+          </div>
+            <ul class="dropdown-menu inner" role="menu">
+              <li data-value="" data-level="1" class="level-1">
+                <a href="#">Select Project Manager</a>
+              </li>
+              <%  all_users.each do |user| %>
+                <%=raw user if user.try(:employee).try(:status) == "active"%>
+              <% end %>
+            </ul>
+          </div>
+          <input class="hidden hidden-field" name="search_form[category]" readonly aria-hidden="true" type="text"/>
+        </div>
+    </div>
+  </form>
+<%end%>
+
+<script type="text/javascript">
+      $(window).on('load', function() {
+        $('#user_hierarchy  li.active').removeClass('active');
+        $("li[data-value='<%= params[:project_manager]%>']").addClass('active');
+        $('.selected-label').text($("li[data-value='<%= params[:project_manager]%>']").text())
+      });
+
+    $(document).ready(function() {
+        $('#user_hierarchy').hierarchySelect({
+            hierarchy: true,
+            search: true,
+            width: 250
+        });
+
+    });
+
+    $('#user_hierarchy').keyup(function(e){
+      if(e.which==13){
+        var user_href = $("#user_hierarchy").find(".active")[0]["firstChild"].href
+        window.location.href = user_href;
+      }
+    });
+
+
+
+    $('.onclick').on('click', function(e){
+      window.location.href = e.target.href;
+    })
+</script>

@@ -1,0 +1,46 @@
+<% stakeholder_management_plans = User.current.is_client? ? @project.stakeholder_management_plans.where(is_visible_to_client: true) : @project.stakeholder_management_plans %>
+<% if stakeholder_management_plans.any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_stakeholder_name) %></th>
+          <th><%= l(:field_unaware) %></th>
+          <th><%= l(:field_resistant) %></th>
+          <th><%= l(:field_netural) %></th>
+          <th><%= l(:field_supportive) %></th>
+          <th><%= l(:field_leading) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for stakeholder_management_plan in stakeholder_management_plans -%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="firstname"><%= stakeholder_management_plan.user_name %></td>
+            <td class="lastname"><%= stakeholder_management_plan.unaware.join(",") unless stakeholder_management_plan.unaware.nil? %></td>
+            <td class="lastname"><%= stakeholder_management_plan.resistant.join(",") unless stakeholder_management_plan.resistant.nil? %></td>
+            <td class="lastname"><%= stakeholder_management_plan.netural.join(",") unless stakeholder_management_plan.netural.nil? %></td>
+            <td class="lastname"><%= stakeholder_management_plan.supportive.join(",") unless stakeholder_management_plan.supportive.nil? %></td>
+            <td class="lastname"><%= stakeholder_management_plan.leading.join(",")unless stakeholder_management_plan.leading.nil?  %></td>
+            <td class="buttons">
+              <%#= link_to "edit", edit_project_stakeholder_management_plan_path(@project,stakeholder_management_plan, :back_url => request.original_fullpath), class: "icon icon-edit", remote: true if User.current.allowed_to?(:update_stakeholder_management_plans, @project, global: true)%>
+              <%= delete_link project_stakeholder_management_plan_path(@project,stakeholder_management_plan, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_stakeholder_management_plans, @project, global: true)%>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_stakeholder_management_plan) %></p>
+<% end %>
+
+
+
+
+<style type="text/css">
+  .engagement-table{
+    margin-left: 37%;
+    width: 24%!important;
+  }
+</style>

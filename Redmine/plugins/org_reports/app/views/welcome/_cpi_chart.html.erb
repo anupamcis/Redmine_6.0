@@ -1,0 +1,83 @@
+<% if @cpi_chart_data.present? %>
+  <div id="containerCpi" class="double_chart"></div>
+<% end %>
+
+<script>
+  $(function () {
+    var chart;
+    $(document).ready(function() {
+      chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'containerCpi',
+          type: 'column'
+        },
+        title: {
+          text: 'CPI Chart'
+        },
+        legend: {
+          enabled: false
+        },
+        exporting: {
+          enabled: false
+        },
+        xAxis: {
+          title: {
+            text: "Projects"
+          },
+          categories: <%= @cpi_chart_projects.inspect.html_safe %>
+        },
+        yAxis: {
+        //max: 15,
+        //min: -15
+          title: {
+            text: 'CPI'
+          },
+          min: -9,
+          offset: 1,
+          tickPositioner: function () {
+            var positions = [],
+            tick = -9,
+            increment = 5;
+
+            positions.push(1);
+
+            for (tick; tick - increment <= this.dataMax; tick += increment) {
+              positions.push(tick);
+            }
+            return positions;
+          },
+          startOnTick: false
+        },
+        plotOptions: {
+          series: {
+            threshold: 1,
+            minPointLength: 3,
+            pointWidth: 30,
+            dataLabels: {
+              enabled: true,
+              style: {
+                fontWeight: 'bold',
+                fontSize: 12
+              }
+            },
+            cursor: 'pointer',
+            point: {
+              events: {
+                click: function () {
+                  window.open('/projects/'+this.id +'/evms');
+                }
+              }
+            }
+          }
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          name: 'CPI CHART',
+          data: <%= @cpi_chart_data.to_json.html_safe  %>
+        }]
+      });
+    });
+  });
+</script>

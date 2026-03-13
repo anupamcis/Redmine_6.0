@@ -1,0 +1,6 @@
+<%= error_messages_for 'release_update' %>
+
+<%= labelled_form_for @release_update do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_update) %>
+<% end %>

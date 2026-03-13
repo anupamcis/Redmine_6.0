@@ -1,0 +1,45 @@
+<div class="contextual">
+  <%= link_to l(:label_global_back_up_detail_new), new_global_back_up_detail_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_global_back_up_detail_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_server_name) %></th>
+        <th><%= l(:field_backup_type) %></th>
+        <th><%= l(:field_data_detail) %></th>
+        <th><%= l(:field_media_label) %></th>
+        <th><%= l(:field_backup_frequency) %></th>
+        <th><%= l(:field_detail_of_media_storage) %></th>
+        <th><%= l(:field_role_responsible) %></th>
+        <th><%= l(:field_remarks) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for global_back_up_detail in @global_back_up_details -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="lastname"><%= global_back_up_detail.server_name %></td>
+          <td class="firstname"><%= global_back_up_detail.backup_type %></td>
+          <td class="lastname"><%= global_back_up_detail.data_detail %></td>
+          <td class="lastname"><%= global_back_up_detail.media_label %></td>
+          <td class="lastname"><%= global_back_up_detail.backup_frequency %></td>
+          <td class="firstname"><%= global_back_up_detail.detail_of_media_storage %></td>
+          <td class="lastname"><%= global_back_up_detail.role_responsible %></td>
+          <td class="lastname"><%= global_back_up_detail.remarks %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_global_back_up_detail_path(global_back_up_detail), :class=>"icon icon-edit" %>
+            <%= delete_link global_back_up_detail_path(global_back_up_detail, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_global_back_up_detail_plural)) -%>

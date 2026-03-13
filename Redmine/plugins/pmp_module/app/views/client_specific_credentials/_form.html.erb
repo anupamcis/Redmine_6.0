@@ -1,0 +1,13 @@
+<%= error_messages_for 'client_specific_credential' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "client_specific_credential[project_id]", @project.id %>
+  <p><%= f.text_field :site_path, :required => true, :size => 25 %></p>
+  <p><%= f.text_field :login_id, :size => 25 %></p>
+  <p><%= f.text_field :login_password, :size => 25 %></p>
+  <p><%= f.text_field :credentials_for, :size => 25 %></p>
+  <p><%= f.text_field :ip_address, :size => 25 %></p>
+  <br>
+</div>
+

@@ -1,0 +1,47 @@
+<%= error_messages_for 'milestone' %>
+
+<div class="box tabular custom-width">
+  <p><%= f.text_field :name, :size => 60, :required => true, :style => "max-width: -webkit-fill-available;" %></p>
+  <p><%= f.text_field :description, :size => 60, :style => "max-width: -webkit-fill-available;" %></p>
+
+  <!-- Effective date is taken as a planed start date -->
+  <p>
+  <p>
+    <%- if @milestone.persisted? %>
+      <%= f.label l('milestone_effective_date') %> <%= @milestone.try(:effective_date) %>
+    <% else %>
+      <%= f.text_field :effective_date, :size => 10, :required => true, label: :milestone_effective_date %><%= calendar_for('milestone_effective_date') %>
+    <% end %>
+  </p>
+
+
+  <p><%= f.text_field :planed_end_date, :size => 10, :required => true %><%= calendar_for('milestone_planed_end_date') %></p>
+  <%- if @milestone.persisted? && User.current.allowed_to?(:actual_dates, nil, global: true) %>
+    <p><%= f.label :actual_start_date %> <%= @milestone.try(:actual_start_date) %> </p>
+
+    <p><%= f.label :actual_end_date %> <%= @milestone.try(:actual_end_date) %> </p>
+  <% end %>
+  <p><%= f.select :version_id, options_from_collection_for_select(@project.versions.where(status: 'open'), :id, :name, @milestone.try(:version).try(:id)), { include_blank: 'Select Version' }, { class: 'custom-margin' }%></p>
+  <%= hidden_field_tag 'project_id', @project.id if @project %>
+  <% if @milestone.persisted? %>
+    <p class="comment_para" style="display:<%= @milestone.planed_end_date_changed? ? '' : 'none' %>;">
+      <label for="milestone_comment"><%=l(:milestone_comment)%> <span class="required">*</span></label>
+      <%= text_area_tag 'comment', params[:comment] %>
+    </p>
+  <% end %>
+</div>
+
+<style type="text/css">
+	.highlight-holidays{
+		background-color: #C0C0C0 !important;
+	}
+
+	.highlight-holidays a {
+		opacity: 0.7 !important;
+	}
+</style>
+<script type="text/javascript">
+  $("#milestone_planed_end_date").on('change', function(){
+    $(".comment_para").css("display", "")
+  });
+</script>

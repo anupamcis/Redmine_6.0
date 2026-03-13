@@ -1,0 +1,28 @@
+<% security_requirements = User.current.is_client? ? @project.customer_specific_security_requirements.where(is_visible_to_client: true) : @project.customer_specific_security_requirements %>
+<% if security_requirements.any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_security_requirement) %></th>
+          <th><%= l(:field_remarks) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for security_requirement in security_requirements -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= security_requirement.security_requirement %></td>
+          <td class="lastname"><%= security_requirement.remarks %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_customer_specific_security_requirement_path(@project,security_requirement, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_customer_specific_security_requirements, @project, global: true) %>
+            <%= delete_link project_customer_specific_security_requirement_path(@project,security_requirement, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_customer_specific_security_requirements, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

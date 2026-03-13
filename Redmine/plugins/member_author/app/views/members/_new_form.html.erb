@@ -1,0 +1,151 @@
+<% check_roles = []%>
+<% system_roles  = [] %>
+<% user_permissions_roles  = [] %>
+<% normal_roles  = [] %>
+
+<%
+  unless User.current.admin?
+    rolesname = User.current.members.collect{|m| m.roles.collect{|role| role}}
+    rolesname.flatten.each do |role|
+      check_roles << role.has_user_management_permissions?
+    end
+    # @project.members.find_by_user_id(User.current.id).roles.each do |role|
+    #   if role.has_user_management_permissions?
+    #     check_roles << [role,true ]
+    #   end
+    # end
+  end
+%>
+
+<% User.current.managed_roles(@project).each do |role| %>
+  <% if role.name.include?(SYSTEM_ROLES) %>
+      <% system_roles << [role, (@project.identifier == GLOBAL_PERMISSIONS_MODULE_NAME && (User.current.admin? || (@project.members.pluck("user_id").include?(User.current.id) && !role.has_user_management_permissions? ))) ] %>
+  <% else %>
+    <% if role.has_user_management_permissions? %>
+      <% user_permissions_roles << [role, (@project.identifier == GLOBAL_PERMISSIONS_MODULE_NAME && (User.current.admin? || @project.members.pluck("user_id").include?(User.current.id) && check_roles.include?(true))) ] %>
+    <% else %>
+      <% if User.current.allowed_to?(:add_manager, @project, global: true)%>
+        <% normal_roles << role unless @project.is_manager_present?(role) %>
+      <% else %>
+        <% normal_roles << role unless role.id.eql?(9)  %>
+      <% end %>
+    <% end %>
+  <% end %>
+<%end%>
+
+<fieldset class="box">
+  <legend><%= label_tag("principal_search", l(:label_principal_search)) %>
+    <span style="color: red; font-size: 14px;">(<%= label_tag("principal_search", l(:member_search_note)) %>)</span>
+  </legend><br>
+  <p><%= text_field_tag('principal_search', nil) %></p>
+  <%= javascript_tag "observeSearchfield('principal_search', null, '#{ escape_javascript autocomplete2_project_memberships_path(@project, :format => 'js') }')" %>
+  <div id="principals_for_new_member">
+    <div id="test-users">
+      <%= l(:intrenal_member_search) %>
+      <%#= render_principals_for_new_members_default_company(@project) %>
+    </div><hr/>
+    <div id="test-clients">
+      <%= l(:external_member_search) %>
+      <%#= render_principals_for_new_members_client_company(@project) %>
+    </div>
+  </div>
+</fieldset>
+
+<% if (system_roles+user_permissions_roles).size > 0 && @project.identifier == GLOBAL_PERMISSIONS_MODULE_NAME && system_roles.flatten.include?(true) %>
+  <fieldset class="box">
+    <legend><%= l(:label_system_role_plural) %> <%= toggle_checkboxes_link('.roles-selection input') %></legend>
+    <div class="roles-selection role-selection-new">
+      <% ((system_roles+user_permissions_roles)).each do |system_role| %>
+        <% if system_role[1] && system_role[0].name != DEFAULT_MEMBER_ROLE %>
+           <label><%= check_box_tag 'membership[role_ids][]', system_role[0].id, false, :id => nil %> <%= system_role[0] %></label>
+        <%end%>
+      <% end %>
+    </div>
+  </fieldset>
+<%end%>
+<% normal_roles = Role.givable.to_a %>
+<% if user_permissions_roles.size > 0 && user_permissions_roles.flatten.include?(true) || normal_roles.size > 0 && @project.identifier != GLOBAL_PERMISSIONS_MODULE_NAME %>
+  <fieldset class="box popup_roles">
+    <legend><%= l(:label_role_plural) if @project.identifier != GLOBAL_PERMISSIONS_MODULE_NAME%> <%= toggle_checkboxes_link('.roles-selection input') %></legend>
+    <div class="roles-selection">
+      <% user_permissions_roles.each do |user_permissions_role| %>
+        <% if user_permissions_role[1]%>
+          <label><%#= check_box_tag 'membership[role_ids][]', user_permissions_role[0].id, false, :id => nil %> <%#= user_permissions_role[0] %></label>
+        <% end %>
+      <% end %>
+      <% roles_for_display(system_roles, user_permissions_roles, normal_roles).each do |normal_role| %>
+        <% if @project.identifier != GLOBAL_PERMISSIONS_MODULE_NAME %>
+          <label class="<%= normal_role.name.start_with?('Client') ? 'client-role' : 'user-role' %>"><%= check_box_tag 'membership[role_ids][]', normal_role.id, false, :id => nil %> <%= normal_role %></label>
+        <% end %>
+      <% end %>
+    </div>
+  </fieldset>
+<%end%>
+
+<hr/>
+
+<fieldset class="box">
+  <label><b><%= l(:department) %>(Optional)</b></label>
+  <%= select_tag 'membership[master_department_id]', options_from_collection_for_select(MasterDepartment.all, 'id', 'name', params[:master_department].to_i), { prompt: 'select member suffix...', :class => "small", include_blank: true }  %>
+  <%#= text_field_tag('membership[department_name]') %>
+</fieldset>
+<script>
+(function () {
+
+  function selectedPrincipalType() {
+    const $checked = $("#principals input[type='checkbox']:checked");
+
+    if ($checked.length === 0) return null;
+
+    const types = new Set();
+
+    $checked.each(function () {
+      const $cb = $(this);
+
+      // Primary detection via data-attribute
+      if ($cb.data("principal-type")) {
+        types.add($cb.data("principal-type"));
+      } else {
+        // Fallback: DOM section
+        if ($cb.closest("#test-clients").length) {
+          types.add("client");
+        } else {
+          types.add("user");
+        }
+      }
+    });
+
+    return types.size === 1 ? [...types][0] : "mixed";
+  }
+
+  function toggleRoles() {
+    const type = selectedPrincipalType();
+
+    $(".popup_roles").hide();
+    $(".roles-selection label").hide();
+
+    if (!type) return;
+
+    $(".popup_roles").show();
+
+    if (type === "client") {
+      $(".roles-selection .client-role").show();
+    } else if (type === "user") {
+      $(".role-selection-new label").show();
+      $(".roles-selection .user-role").show();
+    } else {
+      alert("Please select either Users or Clients, not both.");
+      $("#principals input[type='checkbox']").prop("checked", false);
+      $(".popup_roles").hide();
+    }
+  }
+
+  $(document).on("change", "#principals input[type='checkbox']", toggleRoles);
+  $(document).on("dialogopen ajaxComplete", toggleRoles);
+
+})();
+</script>
+
+
+
+

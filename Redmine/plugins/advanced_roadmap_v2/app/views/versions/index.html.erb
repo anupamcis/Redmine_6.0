@@ -1,0 +1,48 @@
+<h2><%=l(:label_roadmap)%></h2>
+
+<% if @versions.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+<div id="roadmap">
+<%= render(:partial => "versions/total", :locals => {:project => @project, :totals => @totals, :versions => @versions}) %>
+<% @versions.each do |version| %>
+  <%= version.name %>
+  <%= render :partial => 'versions/info', :locals => {:version => version, :issues => version.sorted_fixed_issues(:trackers => @selected_tracker_ids), :totals => @totals} %>
+  </br>
+  <%= call_hook :view_projects_roadmap_version_bottom, :version => version %>
+  </br>
+<% end %>
+</div>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= form_tag({}, :method => :get) do %>
+    <h3><%= l(:label_roadmap) %></h3>
+    <% @trackers.each do |tracker| %>
+      <label><%= check_box_tag "tracker_ids[]", tracker.id, (@selected_tracker_ids.include? tracker.id.to_s), :id => nil %>
+      <%=h tracker.name %></label><br />
+    <% end %>
+    <p><%= submit_tag l(:button_apply), :class => 'button-small', :name => nil %></p>
+  <% end %>
+<br />
+<h3><%= l(:label_milestone_plural) %></h3>
+<ul>
+  <% @project.milestones.sort.each do |milestone| %>
+    <li>
+      <%= link_to(milestone.name, :controller => :milestones, :action => :show, :id => milestone.id) %>
+    </li>
+  <% end %>
+</ul>
+<h3><%= l(:label_version_plural) %></h3>
+  <ul>
+  <% @versions.each do |version| %>
+    <li>
+      <%= link_to(format_version_name(version), :controller => :versions, :action => :show, :id => version.id) %>
+    </li>
+  <% end %>
+  </ul>
+<% end %>
+
+<% html_title(l(:label_roadmap)) %>
+
+<%= context_menu %>

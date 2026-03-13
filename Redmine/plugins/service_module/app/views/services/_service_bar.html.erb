@@ -1,0 +1,56 @@
+<style type="text/css">
+
+  #menu2{
+        margin-bottom: 3%;
+  }
+
+  #menu2 ul {
+    padding: 5px;
+    margin: 0 auto;
+    float: left;
+    width: 100%;
+    background-color: #EDEDED;
+    list-style: none;
+    text-align: left;
+  }
+  ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+  }
+  #menu2 ul li{
+    padding: 2px 10px;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  nav ul li a:hover{
+    background-color: #D6D6D6;
+    border-bottom: 3px solid red;
+    text-decoration: none;
+  }
+  nav ul li:hover{
+    background-color: #D6D6D6;
+  }
+
+  #menu2 ul li a.migrate_pc {
+    padding: 2px 10px;
+    color: #333;
+    background-color:#D6D6D6;
+    color: #6D6D6D;
+    border-bottom:3px solid #0066FF;
+  }
+
+
+</style>
+<nav id="menu2">
+    <ul>
+        <li><%= link_to "Connect ERP Services with Exsiting/New PMS Project ", services_path, :class => ("services" == params[:controller] && "index" == params[:action] ? "migrate_pc": "")%></li>
+
+        <li><%= link_to "Connect ERP Client With Exsiting PMS Project" , services_migrate_project_company_path, :class => ("services" == params[:controller] && "migrate_project_company" == params[:action] ? "migrate_pc": "")%></li>
+    </ul>
+</nav>

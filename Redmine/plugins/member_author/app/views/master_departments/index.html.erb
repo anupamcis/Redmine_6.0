@@ -1,0 +1,42 @@
+<div class="contextual">
+<%= link_to l(:label_master_department_new), new_master_department_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_master_department_plural)%></h2>
+
+<%= form_tag(master_departments_path, :method => :get) do %>
+  <fieldset>
+    <legend><%= l(:label_filter_plural) %></legend>
+    <label for='name'><%= l(:field_name) %>:</label>
+    <%= text_field_tag 'name', params[:name], :size => 30 %>
+    <%= submit_tag l(:button_apply), :class => "small", :name => nil %>
+    <%= link_to l(:button_clear), master_departments_path, :class => 'icon icon-reload' %>
+  </fieldset>
+<% end %>
+&nbsp;
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <%= sort_header_tag('name', :caption => l(:field_name)) %>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for master_department in @master_departments -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="username"><%= link_to master_department.name, master_department_url(master_department) %></td>
+          <td class="buttons">
+          	<%= link_to(l(:button_edit), edit_master_department_url(master_department), :class => 'icon icon-edit') %>
+            <%= delete_link master_department_path(master_department, :back_url => request.original_fullpath) if User.current.admin? %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%= pagination_links_full @master_department_pages, @master_department_count %></span>
+
+<% html_title(l(:label_master_department_plural)) -%>

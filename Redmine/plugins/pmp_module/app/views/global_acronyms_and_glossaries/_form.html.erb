@@ -1,0 +1,9 @@
+<%= error_messages_for 'global_acronyms_and_glossary' %>
+
+<div>
+    <fieldset class="box tabular">
+      <legend><%=l(:label_information_plural)%></legend>
+      <p><%= f.text_field :abbreviation, :required => true, :size => 25  %></p>
+      <p><%= f.text_field :full_form, :required => true, :size => 25 %></p>
+    </fieldset><br>
+</div>

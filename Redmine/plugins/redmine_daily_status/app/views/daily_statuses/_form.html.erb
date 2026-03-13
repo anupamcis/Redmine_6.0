@@ -1,0 +1,57 @@
+<%= error_messages_for 'daily_status' %>
+  <div id="daily_status_content_form" class="box">
+    <h3><%= l(:label_edit_today_status) %></h3>
+      <%= f.hidden_field :author_id, :value => User.current.id %>
+      <%= f.hidden_field :project_id, :value => @project.id %>
+      <%= f.hidden_field :signature, class: 'signature-field' %>
+      <div class="main_content">
+        <div class = "left_content">
+          <%# if @daily_status.new_record? %>
+            <p>
+              <label>Subject: <%= @daily_status.daily_status_subject %></label>
+                <%= text_field(:daily_status, :subject , size: 60) %>
+                <!-- </p></br> -->
+                <%# else %>
+                <!-- <p> -->
+                  <%#= f.text_field :subject, size: 80 %>
+            </p>
+          <%# end %>
+          <p>
+            <%= f.text_area :content,
+                        :cols => 60,
+                        :rows => 10,
+                        :accesskey => "e",
+                        :class => 'wiki-edit',
+                        :no_label => true %>
+          </p>
+        </div>
+        <div class="right_content">
+          <%= wikitoolbar_for 'daily_status_content' %>
+          <!-- <div id="project_members" style="float:right;">
+            <div class="daily_status_email_checkbox">
+              <input type='checkbox' name="daily_status[is_email_sent]" value=1 /><%#= l(:label_send_email_project_members) %>
+              <%# if @daily_status %>
+                <%# if @daily_status.is_email_sent %>
+                <div class="daily_status_email_notification_text" style="color:red;"><b style="color:black;">Note:&nbsp;</b><%#= l(:label_sent_email) %></div>
+                <%#end%>
+              <%#end%>
+            </div>
+          # </div> -->
+          <div><!-- <input type='checkbox' name="add_signature" value=1 id='add_signature'/> --> <%#= l(:label_add_signature) %>
+            <!-- <a onclick='openSignatureModal();'><%#= l(:label_signature) %></a> -->
+            <%= link_to l(:label_signature), '#', onclick: "showModal('signature-modal', '600px'); return false;" %>
+          </div><!-- </br></br></br> -->
+          <%= link_to_attachments @daily_status, thumbnails: true %>
+
+          <p id="attachments_form"><label><%= l(:label_attachment_plural) %></label><%= render :partial => 'attachments/form', :locals => {:container => @daily_status} %></p>
+
+          <% if User.current.allowed_to?(:manage_daily_status, @project) ||
+            (@daily_status.setting.watchers.present? && User.current.allowed_to?(:manage_daily_status, @project)) %>
+            <div id="watchers">
+              <%= render :partial => 'daily_status_watchers/watchers', :locals => {:watched => @daily_status.setting} %>
+            </div>
+          <% end %>
+          <!-- <div class="daily_status_email_note"><b>Note:&nbsp;</b><%#= l(:label_email_note) %></div></br> -->
+        </div>
+      </div>
+  </div>

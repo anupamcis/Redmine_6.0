@@ -1,0 +1,53 @@
+<% if @final_data.present? %>
+  <div id="containerTechnology" class="double_charts"></div>
+<% end %>
+
+<script type="text/javascript">
+  $(function () {
+    var chart;
+    $(document).ready(function() {
+      chart = new Highcharts.Chart({
+        credits: {
+          enabled: false
+        },
+        chart: {
+          renderTo: 'containerTechnology',
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false
+        },
+        title: {
+          text: 'Technology Chart'
+        },
+        exporting: {
+          enabled: false
+        },
+        tooltip: {
+          formatter: function() {
+            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.y,0) +' Projects';
+          }
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              color: '#000000',
+              connectorColor: '#000000',
+              formatter: function() {
+                return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage,1) +' %';
+              }
+            }
+          }
+        },
+        series: [{
+          type: 'pie',
+          data: <%= @final_data.inspect.html_safe %>
+        }]
+      });
+    });
+    
+  });
+
+</script>

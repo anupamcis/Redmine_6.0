@@ -1,0 +1,21 @@
+<col>
+<colgroup span="2"></colgroup>
+<colgroup span="2"></colgroup>
+<thead>
+  <tr>
+    <th rowspan="2"> Project Name </th>
+    <th rowspan="2"> Project Manager </th>
+    <th rowspan="2"> Company </th>
+    <th colspan="8" scope="colgroup"> Tasks </th>
+    <th colspan="3">Burn Rate Variance %(+ve: Faster execution, -ve: Delayed)</th>
+  </tr>
+  <tr>
+    <% issue_sequence.each do |issue_name| %>
+      <th scope="col"> <%= issue_name %> </th>
+    <% end -%>
+    <th scope="col">By Estimated Hours</th>
+    <% if User.current.allowed_to?(:project_spent_hours_reports, nil, global: true)  %>
+      <th scope="col">By Spent Hours</th>
+    <%end%>
+  </tr>
+</thead>

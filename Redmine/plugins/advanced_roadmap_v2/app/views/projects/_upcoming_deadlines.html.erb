@@ -1,0 +1,36 @@
+<%
+  sql = "SELECT ISNULL(users.firstname, 'Anonymous'), issues.subject, issues.due_date, issues.done_ratio FROM issues LEFT JOIN users ON users.id = issues.assigned_to_id  WHERE issues.project_id = #{@project.id} AND issues.status_id != 5 AND issues.due_date BETWEEN  dateadd(DD, 0, cast(getdate() as date)) and dateadd(DD, +2, cast(getdate() as date)) ORDER BY issues.due_date DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY"
+  @upcoming_deadlines = ActiveRecord::Base.connection.exec_query(sql).rows
+%>
+<div class="col-sm-6">
+<div class="box">
+  <%if  @upcoming_deadlines.present? %>
+    <h3>Upcoming Deadlines </h3>
+      <table border='1' class="list issue-report">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Task</th>
+            <th>Deadline</th>
+            <th>Done Ratio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @upcoming_deadlines.each do |issue| %>
+            <tr>
+              <td><%= issue[0] %></td>
+              <td><%= issue[1] %></td>
+              <td><%= issue[2] %></td>
+              <td class="todo"><%= progress_bar(issue[3]) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+  <% else %>
+      <h3>Upcoming Deadlines </h3>
+      <h3>No deadlines is found.</h3>
+
+  <%end%>
+  </div>
+</div>

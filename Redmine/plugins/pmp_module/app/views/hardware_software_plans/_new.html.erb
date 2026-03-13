@@ -1,0 +1,15 @@
+<h3 class="title"><%= l(:add_hardware_software_plan)%> </h3>
+
+<%= labelled_form_for [@project, @hardware_software_plan], :remote => true do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>  
+<% end %>
+
+<style type="text/css">
+  .ui-dialog-content .box {
+    background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+    border: solid;
+    box-shadow: none;
+    padding: 15px 31px 0 0;
+  }
+</style>

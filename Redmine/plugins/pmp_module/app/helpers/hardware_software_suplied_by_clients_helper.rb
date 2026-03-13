@@ -1,0 +1,2 @@
+module HardwareSoftwareSupliedByClientsHelper
+end

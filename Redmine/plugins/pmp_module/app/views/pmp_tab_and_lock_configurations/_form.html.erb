@@ -1,0 +1,12 @@
+<%= error_messages_for 'pmp_tab_and_lock_configuration' %>
+
+<div class="pmp_tab_and_lock-configuration">
+    <fieldset class="box tabular">
+      <legend><%=l(:label_information_plural)%></legend>
+      <p><%= f.text_field :tab_name, :required => true, :size => 25  %></p>
+      <p><%= f.text_field :lock_percent %></p>
+      <p><%= f.text_field :position %></p>
+      <p><%= f.select :project_types, options_for_select(["Project", "Hourly", "Dedicated"], @pmp_tab_and_lock_configuration.project_types), {required: true}%></p>
+      <p><%= f.text_field :hours %></p>
+    </fieldset></br> 
+</div>

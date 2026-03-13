@@ -1,0 +1,8 @@
+<% if @raci_chart.errors.present? %>
+  $('#ajax-modal').html('<%= escape_javascript(render :partial => 'edit') %>');
+  showModal('ajax-modal', '50%');
+<% else %>
+  hideModal()
+  $("tr#raci_chart_<%= @raci_chart.id%>").replaceWith("<%= escape_javascript(render partial: 'raci_chart', locals: {raci_chart: @raci_chart}) %>");
+  $("tr#raci_chart_<%= @raci_chart.id%>").fadeIn(10000);
+<% end %>

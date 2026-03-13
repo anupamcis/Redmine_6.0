@@ -1,0 +1,8 @@
+<li>
+  <%= form_for [@project, @daily_status, @daily_status_reply] do |f| %>
+    <%= f.hidden_field :author_id, :value => User.current.id %>
+    <p id="attachments_form"><label><%= l(:label_attachment_plural) %></label><%= render :partial => 'attachments/form', :locals => {:container => @daily_status} %></p>
+    <%= f.text_area :message, placeholder: "Add a Reply" %><br/>
+    <%= f.submit "Reply"  %>
+  <% end %>
+</li>

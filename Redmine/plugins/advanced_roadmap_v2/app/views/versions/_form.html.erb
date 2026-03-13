@@ -1,0 +1,32 @@
+<%= back_url_hidden_field_tag %>
+<%= error_messages_for 'version' %> 
+
+<div class="box tabular">
+  <p><%= f.text_field :name, :size => 60, :required => true %></p>
+  <p><%= f.text_field :description, :size => 60 %></p>
+  <% if params[:action] == 'edit' || params[:action] == 'update'%>
+    <p><%= f.select :status, Version::VERSION_STATUSES.collect {|s| [l("version_status_#{s}"), s]} %></p>
+  <% else%>
+    <%= hidden_field_tag 'status', [l("version_status_open"), "open"] %>
+  <% end%>
+  <!-- <p><%#= f.text_field :wiki_page_title, :label => :label_wiki_page, :size => 60, :disabled => @project.wiki.nil? %></p> -->
+  <p><%= f.text_field :effective_date, :size => 10, :required => true %><%= calendar_for('version_effective_date') %></p>
+  <% if User.current.allowed_to?(:share_version, nil, global: true) || User.current.admin?%>
+    <p><%= f.select :sharing, @version.allowed_sharings.collect {|v| [format_version_sharing(v), v]} %></p>
+  <% end %>
+
+  <% @version.custom_field_values.each do |value| %>
+    <p><%= custom_field_tag_with_label :version, value %></p>
+  <% end %>
+
+</div>
+
+<style type="text/css">
+  .highlight-holidays{
+    background-color: #C0C0C0 !important;
+  }
+
+  .highlight-holidays a {
+    opacity: 0.7 !important;
+  }
+</style>

@@ -1,0 +1,29 @@
+<% if @project.try(:base_lining_plans).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_when_to_baseline) %></th>
+          <th><%= l(:field_trigger_for_baseline) %></th>
+          <th><%= l(:field_what_to_baseline) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for base_lining_plan in @project.base_lining_plans -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="lastname"><%= base_lining_plan.when_to_baseline %></td>
+          <td class="firstname"><%= base_lining_plan.trigger_for_baseline %></td>
+          <td class="lastname"><%= base_lining_plan.what_to_baseline %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_base_lining_plan_path(@project,base_lining_plan, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_base_lining_plans, @project, global: true)%>
+            <%#= delete_link project_base_lining_plan_path(@project,base_lining_plan, :back_url => request.original_fullpath) if User.current.allowed_to?(:delete_base_lining_plans, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

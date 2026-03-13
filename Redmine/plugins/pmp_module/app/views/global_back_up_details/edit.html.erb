@@ -1,0 +1,6 @@
+<%= title [l(:label_global_back_up_detail_plural), global_pmp_profiles_path(tab: "global_back_up_detail")], l(:edit) %>
+
+<%= labelled_form_for @global_back_up_detail do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>

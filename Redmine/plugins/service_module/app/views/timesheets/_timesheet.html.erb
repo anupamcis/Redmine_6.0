@@ -1,0 +1,13 @@
+<tr class="<%= cycle("odd", "even") %>">
+  <td class=""> <%= link_to timesheet.item_name, item_timesheet_path(timesheet.issue), :remote => true, :class => "icon icon-add" %></td>
+  <td class=""> <%= service_link(timesheet.timesheet_services, timesheet.item_id) %></td>
+  <td class=""> <%=  l_hours_short(timesheet.issue.total_timesheet_hours) %> </td>
+</tr>
+
+<script type="text/javascript">
+  function openModal(page_url) {
+    alert(page_url)
+    $('#ajax-modal').html(page_url);
+    showModal("ajax-modal", "70%", page_url);
+  }
+</script>

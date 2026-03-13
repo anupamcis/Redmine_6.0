@@ -1,0 +1,34 @@
+<% if @project.try(:client_specific_credentials).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_site_path) %></th>
+          <th><%= l(:field_login_id) %></th>
+          <th><%= l(:field_login_password) %></th>
+          <th><%= l(:field_credentials_for) %></th>
+          <th><%= l(:field_ip_address) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for client_specific_credential in @project.client_specific_credentials -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="lastname"><%= client_specific_credential.site_path %></td>
+          <td class="firstname"><%= client_specific_credential.login_id %></td>
+          <td class="lastname"><%= client_specific_credential.login_password %></td>
+          <td class="lastname"><%= client_specific_credential.credentials_for %></td>
+          <td class="lastname"><%= client_specific_credential.ip_address %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_client_specific_credential_path(@project,client_specific_credential, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_client_specific_credentials, @project, global: true)%>
+            
+            <%= delete_link project_client_specific_credential_path(@project,client_specific_credential, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_client_specific_credentials, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

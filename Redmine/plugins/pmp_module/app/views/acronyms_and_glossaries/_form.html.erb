@@ -1,0 +1,32 @@
+<%= error_messages_for 'acronyms_and_glossary' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "acronyms_and_glossary[project_id]", @project.id %>
+  <p>
+    <label for="acronyms_and_glossary_abbreviation"><%= l(:field_abbreviation)%></label>
+    <%= text_field_tag "acronyms_and_glossary[abbreviation]", @acronyms_and_glossary.try(:abbreviation) %>
+    <label for="acronyms_and_glossary_full_form" class="acronyms_and_glossary_full_form_label"><%= l(:field_full_form)%></label>
+    <%= text_field_tag "acronyms_and_glossary[full_form]", @acronyms_and_glossary.try(:full_form) %></p>
+</div>
+
+<%= javascript_tag do %>
+  observeAutocompleteField('acronyms_and_glossary_abbreviation', '<%= escape_javascript acronyms_and_glossaries_autocomplete_for_acronym_path %>', {
+      select: function(event, ui) {
+        $('input#acronyms_and_glossary_full_form').val(ui.item.full_form);
+      }
+    });
+<% end %>
+
+<style type="text/css">
+  .acronyms_and_glossary_full_form_label {
+    left: 295px;
+    position: relative;
+  }
+
+  #acronyms_and_glossary_full_form {
+    left: 80px;
+    position: relative;
+  }
+
+</style>

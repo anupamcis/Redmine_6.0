@@ -1,0 +1,119 @@
+<style>
+div.double_chart{
+ float: none !important;
+}
+.graph-row{ margin-bottom:50px; float:left; width:100%; }
+
+.graph-col-row:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.col-sm-6 {
+  float: left;
+  width: 50%;
+  padding-right: 15px;
+  padding-left: 15px;
+  box-sizing: border-box;
+}
+.graph-col-row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+
+.graph-title:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.graph-title {
+  margin-bottom:30px;
+}
+.graph-title a.icon-only.icon-zoom-in {
+  float: right;
+  color: #999;
+  font-size: 14px;
+}
+.graph-title h3 {
+  float: left;
+  font-size: 24px;
+  color:#444;
+  margin: 0;
+}
+
+table.list.issue-report{ border:1px solid #eee; text-align:left;  }
+table.list.issue-report thead th {
+  padding: 10px 8px;
+  border: 1px solid #eee;
+  border-width: 0 0 1px;
+  vertical-align: bottom;
+  font-size: 16px;
+  background:#5f5f5f; text-align:left;
+  font-weight: normal;    text-transform: capitalize;
+  color: #fff;
+}
+table.list.issue-report td{ border-bottom-color: #eee; }
+table.list.issue-report td a{ color:#333; }
+table.list.issue-report .odd {
+  background-color: #f7f7f7;
+}
+</style>
+<br>
+<% if User.current.admin? %>
+<div class="graph-row">
+    <div class="graph-col-row">
+      <div class="col-sm-6">
+        <div class="issues box">
+          <h3> <%=l(:field_priority)%>&nbsp; </h3>
+          <%= link_to l(:label_details),
+          project_issues_report_details_path(@project, :detail => 'priority'),
+          :class => 'icon-only icon-zoom-in',
+          :title => l(:label_details) %>
+          <%= render :partial => 'simple', :locals => { :data => @issues_by_priority, :field_name => "priority_id", :rows => @priorities } %>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <%= render :partial => 'issue_count_chart', :locals => { :data => @priorities, :type => "priority" } %>
+      </div>
+    </div>
+</div>
+
+<div class="graph-row">
+  <div class="graph-col-row">
+    <div class="col-sm-6">
+      <div class="issues box">
+        <h3> <%=l(:field_assigned_to)%>&nbsp; </h3>
+        <%= link_to l(:label_details),
+          project_issues_report_details_path(@project, :detail => 'assigned_to'),
+          :class => 'icon-only icon-zoom-in',
+          :title => l(:label_details) %>
+        <%= render :partial => 'simple', :locals => { :data => @issues_by_assigned_to, :field_name => "assigned_to_id", :rows => @assignees } %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <%= render :partial => 'issue_count_chart', :locals => { :data => @assignees, :type => "assigned_to" } %>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<%= call_hook(:view_reports_issue_report_split_content_left, :project => @project) %>
+
+<% if @project.children.any? %>
+<h3>
+  <%=l(:field_subproject)%>&nbsp;
+  <%= link_to l(:label_details),
+        project_issues_report_details_path(@project, :detail => 'subproject'),
+        :class => 'icon-only icon-zoom-in',
+        :title => l(:label_details) %>
+</h3>
+<%= render :partial => 'simple', :locals => { :data => @issues_by_subproject, :field_name => "project_id", :rows => @subprojects } %>
+<br />
+<% end %>
+
+<%= call_hook(:view_reports_issue_report_split_content_right, :project => @project) %>
+
+
+

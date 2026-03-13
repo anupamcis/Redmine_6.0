@@ -1,0 +1,40 @@
+<h2><%= l(:label_untouched_projects) %> List</h2>
+
+<%= form_tag(project_reports_path, :method => :get) do %>
+  <fieldset>
+    <legend><%= l(:label_filter_plural) %></legend>
+    <%= hidden_field_tag('tab', "untouched_projects")  %>
+    <label for='status'><%= l(:field_status) %> :</label>
+    <%= select_tag 'untoched_project_status', project_status_options_for_select(@untoched_project_status), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+  </fieldset>
+<% end %>
+
+<% if @projects.present? %>
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th> <%= l(:field_name)%> </th>
+        <th> <%= l(:field_project_lead)%> </th>
+        <th> <%= l(:field_project_manager)%> </th>
+        <th> <%= l(:field_untouched_from)%></th>
+        <th> <%= l(:field_open_issues_count)%> </th>
+        <th> <%= l(:field_close_issues_count)%> </th>
+        <th> <%= l(:field_total_issues_count)%></th>
+        <th> <%= l(:field_percetage)%> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render :partial => 'project', :collection => @projects %>
+    </tbody>
+  </table>
+</div>
+<span class="pagination" style="display: inline-block;">
+  <%= pagination_links_full @projects_pages, @projects_count %>
+</span>
+<span style="display: inline-block;">
+  <%= l(:label_x_of_y, :x => (@projects_offset + 1), :y => @projects_count) if @projects_count.to_i > 0 %>
+</span>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

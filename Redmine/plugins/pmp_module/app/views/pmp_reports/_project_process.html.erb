@@ -1,0 +1,45 @@
+<h2><%= l(:project_processes) %></h2>
+
+<% if @project.try(:project_processes).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <td><b><%= l(:field_sheet_name) %></b></td>
+          <td><b><%= l(:field_is_enabled) %></b></td>
+          <td><b><%= l(:field_tailoring)%></b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <% for project_process in @project.project_processes.joins(:pmp_tab_and_lock_configuration).order("pmp_tab_and_lock_configurations.position") -%>
+          <tr class="<%= cycle("odd", "even") %>">
+            <td class="firstname"><%= project_process.pmp_tab_and_lock_configuration.tab_name %></td>
+            <td class="lastname">
+              <%= check_box_tag :is_enabled, project_process.is_enabled,project_process.is_enabled, disabled: true  %>
+            </td>
+            <td><%= text_area_tag :tailoring, nil, id: "#{project_process.id}", class: "project_process", cols: 80, rows: 10 %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<script type="text/javascript">
+$('.project_process').on('change', function(){
+  var pp_id = $(this).attr('id');
+  var value = $(this).val();
+  if(value != null && value != undefined && value != ""){
+    $.ajax({
+      url: '<%= project_pmp_report_path(@project) %>',
+      dataType: "script",
+      data: { tailoring: value, id: pp_id },
+      method: "PATCH",
+      success:function(){
+      }
+    });
+  }
+ });
+</script>

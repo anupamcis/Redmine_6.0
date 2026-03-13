@@ -1,0 +1,9 @@
+<% if User.current.allowed_to?(:view_standard_and_guidlines, @project, global: true) %>
+  <h2><%= l(:standard_and_guidlines) %></h2>
+
+  <%= render partial: "standard_and_guidlines/index" %>
+<%end%>
+
+<% if User.current.allowed_to?(:create_standard_and_guidlines, @project, global: true)%>
+  <%= link_to l(:add_standard), new_project_standard_and_guidline_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => l(:add), remote: true %>
+<%end%>

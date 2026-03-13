@@ -1,0 +1,76 @@
+<% if @percent_chart_data.present? %>
+  <div id="containerStackedPercent" class="double_chart"></div>
+<% end %>
+
+<script type="text/javascript">
+  var data1 = <%= @percent_chart_data.to_json.html_safe %>
+
+  $(function () {
+    var chart;
+    $(document).ready(function() {
+      chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'containerStackedPercent',
+          type: 'column'
+        },
+        legend: {
+          enabled: false
+        },
+        credits: {
+          enabled: false
+        },
+        exporting: {
+          enabled: false
+        },
+        xAxis: {
+          title: {
+            text: "Projects"
+          },
+          categories: <%= @project_names.inspect.html_safe %>
+        },
+        yAxis: {
+          title: {
+            text: "Projects estimated and spent hours"
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:10px">{point.key}</span><br><br>'+ '<table>',
+          pointFormat: '<tr><td style="color:{series.color};padding:0"> {series.name}: </td>' +
+            '<td style="padding:0"><b>  {point.y:.2f}</b></td></tr>',
+          footerFormat: '</table>',
+          shared: false,
+          useHTML: true
+        },
+        plotOptions: {
+          column: {
+            pointWidth: 20,
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.y}</b>',
+              style: {
+                fontSize: "11px"
+              }
+            }
+          },
+          series: {
+            dataLabels: {
+              enabled: true
+            },
+            cursor: 'pointer',
+            point: {
+              events: {
+                click: function () {
+                  window.open('/projects/'+this.id +'/issues?utf8=✓&set_filter=1&f[]=status_id&op[status_id]=*');
+                }
+              }
+            }
+          }
+        },
+        title: {
+          text: 'Defect Density Chart(In hours)'
+        },
+        series: data1
+      });
+    });
+  });
+</script>

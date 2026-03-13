@@ -1,0 +1,40 @@
+<% if @issue_with_bug_percent.present? %>
+  <!--row start-->
+  <div class="graph-col-row ">
+    <!--left start-->
+    <div class="col-sm-6">
+        <div class="issues box">
+          <h3><%=l(:bug_category)%></h3>
+          <table class="list issue-report">
+            <thead>
+              <tr>
+                <th></th>
+                <th>%</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @issue_with_bug_percent.each do |bug_category_key, bug_category_value| %>
+              <tr class="<%= cycle("odd", "even") %>">
+                <td class="name">
+                  <%= bug_category_key %>
+                </td>
+                <td >
+                  <%= bug_category_value %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <!--left start-->
+    <!--right start-->
+    <div class="col-sm-6">
+      <div class="bug_category_chart_project">
+        <%= render partial: "bug_category_chart" %>
+      </div>
+    </div>
+    <!--right start-->
+  </div>
+  <!--row end-->
+<% end %>

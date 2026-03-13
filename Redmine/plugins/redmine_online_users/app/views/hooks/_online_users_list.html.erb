@@ -1,0 +1,41 @@
+<% if @project.present? %>
+  <% members = Member.project_members(@project).active.includes(:member_roles, :roles, :principal).to_a.sort
+   %>
+<% end %>
+<%if User.current.logged? && !@project.nil? %>
+  <h3>Who is Online?</h3>
+  <h4>People who were online in the last 15 minutes:</h4>
+  <% if @project.members.size > 0 %>
+    <% idle_time = Setting.plugin_redmine_online_users['set_user_idle_time'].to_i %>
+    <ul>
+      <% members.each do |member| %>
+        <% suffix = (member.master_department.present? ? "(" + member.master_department.name.to_s + ")" : "") %>
+        <% if !member.roles.map(&:name).include?(DEFAULT_MEMBER_ROLE) %>
+          <% if member.user.last_login %>
+            <li class="<%= (member.user.last_seen_at.nil? || member.user.last_seen_at > idle_time.minutes.ago) ? 'online-user' : 'idle-user' %>" title="<%= (member.user.last_seen_at.nil? || member.user.last_seen_at > idle_time.minutes.ago) ? 'Online' : 'Away' %>">&nbsp;<%= (member.user.try(:name)) %><%= suffix %><li>
+          <% else %>
+            <li class="offline-user" title="Offline">&nbsp;<%= (member.user.try(:name)) %><%= suffix %><li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
+
+<style type="text/css">
+ .online-user:before {
+    content: ' \25CF';
+    font-size: 20px;
+    color: green;
+}
+.offline-user:before {
+    content: ' \25CF';
+    font-size: 20px;
+    color: red;
+}
+.idle-user:before {
+    content: ' \25CF';
+    font-size: 20px;
+    color: #ffcc00;
+}
+</style>

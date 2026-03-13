@@ -1,0 +1,6 @@
+<%= raw @global_work_products.map {|global_work_product| {
+      'label' => "#{global_work_product.work_product}",
+      'value' => global_work_product.work_product
+      }
+    }.to_json
+%>

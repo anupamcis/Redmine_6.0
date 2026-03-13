@@ -1,0 +1,31 @@
+<div class="contextual">
+  <%= link_to l(:label_global_work_product_new), new_global_work_product_path, :class => 'icon icon-add' %>
+</div>
+
+<h2><%=l(:label_global_work_product_plural)%></h2>
+
+<div class="autoscroll">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_work_product) %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for global_work_product in @global_work_products -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="username"><%= global_work_product.work_product %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_global_work_product_path(global_work_product), :class=>"icon icon-edit"  %>
+            <%= delete_link global_work_product_path(global_work_product, :back_url => request.original_fullpath) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<span class="pagination"><%#= pagination_links_full @company_pages, @company_count %></span>
+
+<% html_title(l(:label_global_work_product_plural)) -%>

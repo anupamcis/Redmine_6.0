@@ -1,0 +1,22 @@
+<style type="text/css">
+  .ui-autocomplete {z-index:1000}
+</style>
+<%= error_messages_for 'verification_plan' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "verification_plan[project_id]", @project.id %>
+  <p><%= f.select :sdlc_phase, options_for_select(SDLC_PHASE, @verification_plan.sdlc_phase), {:required => true, prompt: "select sdlc phase" }, {class: "select small"} %>
+  </p>
+
+  <p><%= f.text_field :work_product, :required => true, :size => 25 %></p>
+
+  <p><%= f.select :verification_method, options_for_select(VERIFIATION_METHODS, @verification_plan.verification_method), {prompt: "select verification method"}, {class: "select small"} %>
+  </p>
+
+  <p><%= f.text_field :validation_technique, :size => 25 %></p><br>
+</div>
+
+<%= javascript_tag do %>
+  observeAutocompleteField('verification_plan_work_product', '<%= escape_javascript verification_plans_autocomplete_for_work_product_path %>', {});
+<% end %>

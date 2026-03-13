@@ -1,0 +1,44 @@
+
+<h2><%=l(:daily_status)%></h2>
+
+<div class = "new_daily_status" style="float:right">
+  <% if User.current.allowed_to?(:manage_daily_status, @project) && !DailyStatus.todays_mail_sent?(@project) %>
+    <%= link_to l(:label_add_update_today_status), new_project_daily_status_path, :class => "icon icon-add"%>
+  <% end %>
+</div></br>
+<input id="search_by_name" type="text" placeholder="Search by name">
+<!-- <button class="tab-right" type="button" id='search_btn'>Search</button> -->
+<div class="autoscroll">
+  <% unless @daily_statuses.nil? %>
+      <table class="list">
+        <thead>
+          <tr>
+            <th class="icon"></th>
+            <th class="name">Subject</th>
+            <th class="comments_count">Replies</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render :partial => 'daily_status', :collection => @daily_statuses %>
+        </tbody>
+      </table>
+  <% end %>
+</div>
+
+<span class="pagination"><%= pagination_links_full @daily_status_pages, @daily_status_count %></span>
+
+<% html_title(l(:daily_status)) -%>
+
+<script type="text/javascript">
+  $(document).on("keyup", "#search_by_name", function(){
+    var query = $(this).val();
+    $.ajax({
+      url: '<%= project_daily_statuses_url(@project) %>',
+      dataType: "script",
+      data: { query: query },
+      method: "GET",
+        success:function(){
+      }
+    });
+  });
+</script>

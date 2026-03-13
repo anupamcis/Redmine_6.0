@@ -1,0 +1,366 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "E-commerce Platform",
+      "description": "Modern e-commerce platform with advanced features",
+      "identifier": "ecommerce-platform",
+      "status": 1,
+      "is_public": true,
+      "created_on": "2023-01-15T10:30:00Z",
+      "updated_on": "2023-12-01T14:22:00Z",
+      "trackers": [
+        { "id": 1, "name": "Bug" },
+        { "id": 2, "name": "Feature" },
+        { "id": 3, "name": "Support" }
+      ],
+      "issue_categories": [
+        { "id": 1, "name": "Frontend" },
+        { "id": 2, "name": "Backend" },
+        { "id": 3, "name": "Database" }
+      ],
+      "enabled_modules": [
+        "issue_tracking",
+        "time_tracking",
+        "news",
+        "documents",
+        "files",
+        "wiki",
+        "repository",
+        "boards",
+        "calendar",
+        "gantt"
+      ],
+      "custom_fields": [],
+      "issue_count": 47,
+      "open_issue_count": 23,
+      "closed_issue_count": 24
+    },
+    {
+      "id": 2,
+      "name": "Mobile App",
+      "description": "Cross-platform mobile application",
+      "identifier": "mobile-app",
+      "status": 1,
+      "is_public": true,
+      "created_on": "2023-03-20T09:15:00Z",
+      "updated_on": "2023-11-28T16:45:00Z",
+      "trackers": [
+        { "id": 1, "name": "Bug" },
+        { "id": 2, "name": "Feature" }
+      ],
+      "issue_categories": [
+        { "id": 4, "name": "iOS" },
+        { "id": 5, "name": "Android" },
+        { "id": 6, "name": "API" }
+      ],
+      "enabled_modules": [
+        "issue_tracking",
+        "time_tracking",
+        "news",
+        "documents"
+      ],
+      "custom_fields": [],
+      "issue_count": 32,
+      "open_issue_count": 18,
+      "closed_issue_count": 14
+    },
+    {
+      "id": 3,
+      "name": "Admin Dashboard",
+      "description": "Administrative dashboard for system management",
+      "identifier": "admin-dashboard",
+      "status": 1,
+      "is_public": false,
+      "created_on": "2023-06-10T11:00:00Z",
+      "updated_on": "2023-12-02T08:30:00Z",
+      "trackers": [
+        { "id": 1, "name": "Bug" },
+        { "id": 2, "name": "Feature" },
+        { "id": 4, "name": "Task" }
+      ],
+      "issue_categories": [
+        { "id": 7, "name": "UI/UX" },
+        { "id": 8, "name": "Security" },
+        { "id": 9, "name": "Performance" }
+      ],
+      "enabled_modules": [
+        "issue_tracking",
+        "time_tracking",
+        "news",
+        "documents",
+        "files"
+      ],
+      "custom_fields": [],
+      "issue_count": 15,
+      "open_issue_count": 8,
+      "closed_issue_count": 7
+    }
+  ],
+  "issues": [
+    {
+      "id": 1234,
+      "project": { "id": 1, "name": "E-commerce Platform" },
+      "tracker": { "id": 1, "name": "Bug" },
+      "status": { "id": 2, "name": "In Progress" },
+      "priority": { "id": 3, "name": "High" },
+      "author": { "id": 1, "name": "John Doe" },
+      "assigned_to": { "id": 2, "name": "Jane Smith" },
+      "subject": "Fix login authentication bug",
+      "description": "Users are unable to log in with their credentials. The authentication system is not properly validating user passwords.",
+      "start_date": "2023-11-20",
+      "due_date": "2023-12-15",
+      "done_ratio": 60,
+      "is_private": false,
+      "estimated_hours": 8.0,
+      "spent_hours": 4.5,
+      "created_on": "2023-11-20T09:30:00Z",
+      "updated_on": "2023-12-01T14:22:00Z",
+      "closed_on": null,
+      "custom_fields": [],
+      "watchers": [
+        { "id": 1, "name": "John Doe" },
+        { "id": 3, "name": "Mike Johnson" }
+      ],
+      "journals": [
+        {
+          "id": 1,
+          "user": { "id": 1, "name": "John Doe" },
+          "notes": "Issue created",
+          "created_on": "2023-11-20T09:30:00Z",
+          "details": []
+        },
+        {
+          "id": 2,
+          "user": { "id": 2, "name": "Jane Smith" },
+          "notes": "Started working on this issue. Found the root cause in the authentication middleware.",
+          "created_on": "2023-11-25T10:15:00Z",
+          "details": [
+            {
+              "property": "attr",
+              "name": "status_id",
+              "old_value": "1",
+              "new_value": "2"
+            }
+          ]
+        }
+      ],
+      "attachments": [],
+      "relations": [],
+      "tags": ["bug", "authentication", "critical"]
+    },
+    {
+      "id": 1233,
+      "project": { "id": 1, "name": "E-commerce Platform" },
+      "tracker": { "id": 2, "name": "Feature" },
+      "status": { "id": 1, "name": "New" },
+      "priority": { "id": 2, "name": "Medium" },
+      "author": { "id": 3, "name": "Mike Johnson" },
+      "assigned_to": { "id": 4, "name": "Sarah Wilson" },
+      "subject": "Implement user dashboard",
+      "description": "Create a comprehensive user dashboard that displays order history, account settings, and preferences.",
+      "start_date": "2023-12-01",
+      "due_date": "2023-12-10",
+      "done_ratio": 0,
+      "is_private": false,
+      "estimated_hours": 16.0,
+      "spent_hours": 0.0,
+      "created_on": "2023-11-28T16:45:00Z",
+      "updated_on": "2023-11-28T16:45:00Z",
+      "closed_on": null,
+      "custom_fields": [],
+      "watchers": [
+        { "id": 3, "name": "Mike Johnson" },
+        { "id": 4, "name": "Sarah Wilson" }
+      ],
+      "journals": [
+        {
+          "id": 3,
+          "user": { "id": 3, "name": "Mike Johnson" },
+          "notes": "Feature request created",
+          "created_on": "2023-11-28T16:45:00Z",
+          "details": []
+        }
+      ],
+      "attachments": [],
+      "relations": [],
+      "tags": ["feature", "frontend", "dashboard"]
+    },
+    {
+      "id": 1232,
+      "project": { "id": 2, "name": "Mobile App" },
+      "tracker": { "id": 1, "name": "Bug" },
+      "status": { "id": 3, "name": "Resolved" },
+      "priority": { "id": 1, "name": "Low" },
+      "author": { "id": 2, "name": "Jane Smith" },
+      "assigned_to": { "id": 1, "name": "John Doe" },
+      "subject": "Fix button alignment on iOS",
+      "description": "The submit button is not properly aligned on iOS devices with smaller screens.",
+      "start_date": "2023-11-15",
+      "due_date": "2023-11-25",
+      "done_ratio": 100,
+      "is_private": false,
+      "estimated_hours": 4.0,
+      "spent_hours": 3.5,
+      "created_on": "2023-11-15T14:20:00Z",
+      "updated_on": "2023-11-24T11:30:00Z",
+      "closed_on": "2023-11-24T11:30:00Z",
+      "custom_fields": [],
+      "watchers": [
+        { "id": 2, "name": "Jane Smith" },
+        { "id": 1, "name": "John Doe" }
+      ],
+      "journals": [
+        {
+          "id": 4,
+          "user": { "id": 2, "name": "Jane Smith" },
+          "notes": "Bug report created",
+          "created_on": "2023-11-15T14:20:00Z",
+          "details": []
+        },
+        {
+          "id": 5,
+          "user": { "id": 1, "name": "John Doe" },
+          "notes": "Fixed the alignment issue by adjusting the CSS constraints.",
+          "created_on": "2023-11-24T11:30:00Z",
+          "details": [
+            {
+              "property": "attr",
+              "name": "status_id",
+              "old_value": "2",
+              "new_value": "3"
+            }
+          ]
+        }
+      ],
+      "attachments": [],
+      "relations": [],
+      "tags": ["bug", "ios", "ui", "mobile"]
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "login": "john.doe",
+      "firstname": "John",
+      "lastname": "Doe",
+      "mail": "john.doe@company.com",
+      "created_on": "2023-01-01T00:00:00Z",
+      "last_login_on": "2023-12-01T08:30:00Z",
+      "api_key": "abc123def456",
+      "status": 1,
+      "avatar_url": null,
+      "initials": "JD"
+    },
+    {
+      "id": 2,
+      "login": "jane.smith",
+      "firstname": "Jane",
+      "lastname": "Smith",
+      "mail": "jane.smith@company.com",
+      "created_on": "2023-01-15T00:00:00Z",
+      "last_login_on": "2023-12-01T09:15:00Z",
+      "api_key": "def456ghi789",
+      "status": 1,
+      "avatar_url": null,
+      "initials": "JS"
+    },
+    {
+      "id": 3,
+      "login": "mike.johnson",
+      "firstname": "Mike",
+      "lastname": "Johnson",
+      "mail": "mike.johnson@company.com",
+      "created_on": "2023-02-01T00:00:00Z",
+      "last_login_on": "2023-11-30T16:45:00Z",
+      "api_key": "ghi789jkl012",
+      "status": 1,
+      "avatar_url": null,
+      "initials": "MJ"
+    },
+    {
+      "id": 4,
+      "login": "sarah.wilson",
+      "firstname": "Sarah",
+      "lastname": "Wilson",
+      "mail": "sarah.wilson@company.com",
+      "created_on": "2023-03-01T00:00:00Z",
+      "last_login_on": "2023-12-01T10:20:00Z",
+      "api_key": "jkl012mno345",
+      "status": 1,
+      "avatar_url": null,
+      "initials": "SW"
+    }
+  ],
+  "issue_statuses": [
+    { "id": 1, "name": "New", "is_closed": false, "is_default": true },
+    { "id": 2, "name": "In Progress", "is_closed": false, "is_default": false },
+    { "id": 3, "name": "Resolved", "is_closed": false, "is_default": false },
+    { "id": 4, "name": "Feedback", "is_closed": false, "is_default": false },
+    { "id": 5, "name": "Closed", "is_closed": true, "is_default": false },
+    { "id": 6, "name": "Rejected", "is_closed": true, "is_default": false }
+  ],
+  "priorities": [
+    { "id": 1, "name": "Low", "is_default": false },
+    { "id": 2, "name": "Medium", "is_default": true },
+    { "id": 3, "name": "High", "is_default": false },
+    { "id": 4, "name": "Urgent", "is_default": false },
+    { "id": 5, "name": "Immediate", "is_default": false }
+  ],
+  "trackers": [
+    { "id": 1, "name": "Bug", "is_in_chlog": true, "is_in_roadmap": false },
+    { "id": 2, "name": "Feature", "is_in_chlog": true, "is_in_roadmap": true },
+    { "id": 3, "name": "Support", "is_in_chlog": false, "is_in_roadmap": false },
+    { "id": 4, "name": "Task", "is_in_chlog": true, "is_in_roadmap": true }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "author": { "id": 1, "name": "John Doe" },
+      "event_type": "issue_updated",
+      "created_on": "2023-12-01T14:22:00Z",
+      "data": {
+        "issue_id": 1234,
+        "issue_subject": "Fix login authentication bug",
+        "changes": {
+          "status": { "from": "New", "to": "In Progress" }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "author": { "id": 3, "name": "Mike Johnson" },
+      "event_type": "issue_created",
+      "created_on": "2023-11-28T16:45:00Z",
+      "data": {
+        "issue_id": 1233,
+        "issue_subject": "Implement user dashboard",
+        "project": "E-commerce Platform"
+      }
+    },
+    {
+      "id": 3,
+      "author": { "id": 1, "name": "John Doe" },
+      "event_type": "issue_closed",
+      "created_on": "2023-11-24T11:30:00Z",
+      "data": {
+        "issue_id": 1232,
+        "issue_subject": "Fix button alignment on iOS",
+        "project": "Mobile App"
+      }
+    }
+  ],
+  "dashboard_stats": {
+    "total_issues": 1247,
+    "open_issues": 623,
+    "closed_issues": 624,
+    "total_projects": 12,
+    "active_projects": 8,
+    "total_users": 45,
+    "active_users": 38,
+    "issues_this_month": 89,
+    "issues_last_month": 76,
+    "completion_rate": 78.5,
+    "average_resolution_time": "3.2 days"
+  }
+}

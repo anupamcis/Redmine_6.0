@@ -1,0 +1,29 @@
+<% if @project.try(:coordination_plans).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_stackholder_name) %></th>
+          <th><%= l(:field_coordination_need) %></th>
+          <th><%= l(:field_planed_date_of_receivables) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for coordination_plan in @project.coordination_plans -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= coordination_plan.stackholder_name %></td>
+          <td class="lastname"><%= coordination_plan.coordination_need %></td>
+          <td class="lastname"><%= format_date(coordination_plan.planed_date_of_receivables) %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_coordination_plan_path(@project,coordination_plan, :back_url => request.original_fullpath), class: "icon icon-edit", :title => "Edit", remote: true if User.current.allowed_to?(:update_coordination_plans, @project, global: true) %>
+            <%= delete_link project_coordination_plan_path(@project,coordination_plan, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_coordination_plans, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_coordination_plans) %></p>
+<% end %>

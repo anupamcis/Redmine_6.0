@@ -1,0 +1,2 @@
+module GlobalTypeOfTestingsHelper
+end

@@ -1,0 +1,15 @@
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/racc-1.8.1/ext/racc/cparse
+/home/cis/.rbenv/versions/2.7.8/bin/ruby -I /home/cis/.rbenv/versions/2.7.8/lib/ruby/2.7.0 -r ./siteconf20250925-923196-b6nyzf.rb extconf.rb
+creating Makefile
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/racc-1.8.1/ext/racc/cparse
+make "DESTDIR=" clean
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/racc-1.8.1/ext/racc/cparse
+make "DESTDIR="
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/racc-1.8.1/ext/racc/cparse
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20250925-923196-ghbfjz/racc

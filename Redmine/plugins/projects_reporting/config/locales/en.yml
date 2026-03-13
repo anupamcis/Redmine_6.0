@@ -1,0 +1,32 @@
+# English strings go here for Rails i18n
+en:
+  will_paginate:
+    models:
+      result:
+        zero:  Results
+        one:   Result
+        few:   Results
+        other: Results
+  project_report: "Project Reports"
+  label_untouched_projects: Untouched Projects
+  label_delayed_by_projects: Delayed By
+  label_user_projects: Find User Projects
+  label_hierarchy_projects: Hierarchy Projects
+  label_projects: Projects
+  delayed_by_projects: Delayed By Projects
+  field_name: Name
+  field_issues_count: Issue Count
+  field_status_count: Daily Status Count
+  field_project_manager: Manager
+  field_project_lead: Lead
+  field_percetage: "%Done"
+  field_delayed_by: Delayed By
+  field_project_end_date: End Date
+  field_total_issues_count: Total Issue
+  field_roles: Roles
+  field_open_issues_count: Open Issue
+  field_close_issues_count: Close Issue
+  field_untouched_from: Untouched From
+  set_untouched_project_days_message: If there is no activity in project from last given days then will display that project in untouched project list.
+  set_untouched_project_days: Make Project Untouched in Days
+  user_projects_list: "is associated with following project"

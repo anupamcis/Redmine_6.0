@@ -1,0 +1,23 @@
+<%= error_messages_for 'risk_mitigation_plan' %>
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <p>
+    <% risk_id = @risk_mitigation_plan.new_record? ? params[:risk_id].to_i : @risk_mitigation_plan.risk_id %>
+    <%= hidden_field_tag "risk_mitigation_plan[risk_id]", risk_id %>
+  </p>
+  <p><%= f.select :assigned_to, options_for_select((@project.users.where.not(firstname: "CIS")).collect {|u| [u.name, u.id]},f.object.assigned_to), {class: "select small", :required => true} %>
+  </p>
+  <p>
+    <%= f.text_field :date_occurred, :required => true, value: !@risk_mitigation_plan.new_record? ? format_date(@risk_mitigation_plan.date_occurred) : ''%>
+    <%= calendar_for("risk_mitigation_plan_date_occurred") %>
+  </p>
+  <% if params[:action] == "edit" || params[:action] == "update" %>
+    <p><%= f.text_field :closed_date, value: !@risk_mitigation_plan.new_record? ? format_date(@risk_mitigation_plan.closed_date) : '' %>
+      <%= calendar_for("risk_mitigation_plan_closed_date") %>
+    </p>
+  <% end %>
+  <p><%= f.text_field :action_taken, :class => 'wiki-edit' %>
+  <p><%= f.text_area :comment, :rows => 5, cols: 5 %></p>
+  <br>
+</div>
+

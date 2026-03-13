@@ -1,0 +1,11 @@
+<%= error_messages_for 'global_type_of_testing' %>
+
+<div>
+    <fieldset class="box tabular">
+      <legend><%=l(:label_information_plural)%></legend>
+      <p><%= f.text_field :type_of_testing_name, :required => true, :size => 25  %></p>
+      <p><%= f.text_area :testing_method, :required => true %>
+         <%= wikitoolbar_for 'global_type_of_testing_testing_method' %>
+      </p>
+    </fieldset><br>
+</div>

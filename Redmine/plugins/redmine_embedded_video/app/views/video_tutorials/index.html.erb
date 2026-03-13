@@ -1,0 +1,34 @@
+<h3><%= l(:tutorial_page_title) %></h3>
+<%# if (User.current.company_id.nil? || User.current.company.default_company) && User.current.admin? %>
+  <%# @video_links.each do |video|%>
+    <%# video = eval(video) %>
+    <%# <table> %>
+      <%# <tbody> %>
+        <%# <tr> %>
+          <%# <td class="video_link" > %>
+            <%#= link_to video[:name], video[:link], target: '_blank' %>
+          <%# </td>
+        </tr>
+      </tbody>
+    </table> %>
+  <%# end %>
+<%# else %>
+  <% if @video_tutorials.blank? %>
+    <h1>There is no tutorial available for PMS.</h1>
+  <% else %>
+    <% @video_tutorials.each do |video_tutorial| %>
+      <table>
+        <tbody>
+          <tr>
+            <td class="video_tutorials">
+              <h4><%= video_tutorial.title %></h4>
+              <%= video_tag url_for(video_tutorial.video.url), controls: true, size: "320x240" %><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+  <%# end %>
+<% end %>
+<% html_title(l(:tutorial_page_title)) -%>
+

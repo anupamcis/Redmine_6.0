@@ -1,0 +1,13 @@
+<%= error_messages_for 'deployment_strategy' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "deployment_strategy[project_id]", @project.id %>
+  <p><%= f.text_field :release_plan, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :details, :rows => 5, cols: 5 %>
+    <%#= wikitoolbar_for 'deployment_strategy_details' %>
+  </p>
+   <p><%= f.text_field :release_date, :size => 25, :required => true, value: !@deployment_strategy.new_record? ? format_date(@deployment_strategy.release_date) : '' %>
+   <%= calendar_for('deployment_strategy_release_date') %>
+   </p><br>
+</div>

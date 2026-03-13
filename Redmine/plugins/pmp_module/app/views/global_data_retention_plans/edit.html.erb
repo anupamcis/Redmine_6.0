@@ -1,0 +1,6 @@
+<%= title [l(:label_global_data_retention_plan_plural), global_pmp_profiles_path(tab: "global_data_retention_plan")], l(:edit) %>
+
+<%= labelled_form_for @global_data_retention_plan do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= submit_tag l(:button_create) %>
+<% end %>

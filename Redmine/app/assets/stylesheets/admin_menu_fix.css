@@ -1,0 +1,476 @@
+/* Fix for overlapping admin menu items - Force override all existing styles */
+#admin-menu {
+  position: relative !important;
+  z-index: 1000 !important;
+  clear: both !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+#admin-menu ul {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  width: 100% !important;
+}
+
+#admin-menu li {
+  margin: 0 !important;
+  padding: 0 0 6px 0 !important;
+  list-style-type: none !important;
+  position: relative !important;
+  clear: both !important;
+  display: block !important;
+  width: 100% !important;
+  float: none !important;
+  overflow: visible !important;
+}
+
+#admin-menu a {
+  display: flex !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  text-decoration: none !important;
+  color: #333 !important;
+  background: #fff !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  margin-bottom: 2px !important;
+  line-height: 1.4 !important;
+  font-size: 13px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  clear: both !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  min-height: 32px !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+#admin-menu a:hover {
+  background: #f5f5f5 !important;
+  border-color: #999 !important;
+}
+
+#admin-menu a.selected {
+  background: #e6f3ff !important;
+  border-color: #4a90e2 !important;
+  color: #2c5aa0 !important;
+  font-weight: bold !important;
+}
+
+/* Add selected/active styling for plugin menu items */
+#admin-menu a.bug-category.selected,
+#admin-menu a.department.selected,
+#admin-menu a.raci-chart.selected,
+#admin-menu a.pmp-global-profiles.selected,
+#admin-menu a.label-pmp-tab-plural.selected,
+#admin-menu a.agile.selected,
+#admin-menu a.dmsf-approvalworkflows.selected,
+#admin-menu a.add-tutorial.selected,
+#admin-menu a.find-repository.selected,
+#admin-menu a.untracked-mail.selected,
+#admin-menu a.company.selected,
+#admin-menu a.redmine-customize-core-fields.selected,
+/* Also handle if they use different active classes */
+#admin-menu a.bug-category.active,
+#admin-menu a.department.active,
+#admin-menu a.raci-chart.active,
+#admin-menu a.pmp-global-profiles.active,
+#admin-menu a.label-pmp-tab-plural.active,
+#admin-menu a.agile.active,
+#admin-menu a.dmsf-approvalworkflows.active,
+#admin-menu a.add-tutorial.active,
+#admin-menu a.find-repository.active,
+#admin-menu a.untracked-mail.active,
+#admin-menu a.company.active,
+#admin-menu a.redmine-customize-core-fields.active {
+  background: #e6f3ff !important;
+  border-color: #4a90e2 !important;
+  color: #2c5aa0 !important;
+  font-weight: bold !important;
+}
+
+/* Add hover styling for plugin menu items */
+#admin-menu a.bug-category:hover,
+#admin-menu a.department:hover,
+#admin-menu a.raci-chart:hover,
+#admin-menu a.pmp-global-profiles:hover,
+#admin-menu a.label-pmp-tab-plural:hover,
+#admin-menu a.agile:hover,
+#admin-menu a.dmsf-approvalworkflows:hover,
+#admin-menu a.add-tutorial:hover,
+#admin-menu a.find-repository:hover,
+#admin-menu a.untracked-mail:hover,
+#admin-menu a.company:hover,
+#admin-menu a.redmine-customize-core-fields:hover {
+  background: #f5f5f5 !important;
+  border-color: #999 !important;
+}
+
+/* Ensure all plugin menu items get proper active styling when they have the selected class */
+#admin-menu a.bug-category.selected,
+#admin-menu a.department.selected,
+#admin-menu a.raci-chart.selected,
+#admin-menu a.pmp-global-profiles.selected,
+#admin-menu a.label-pmp-tab-plural.selected,
+#admin-menu a.agile.selected,
+#admin-menu a.dmsf-approvalworkflows.selected,
+#admin-menu a.add-tutorial.selected,
+#admin-menu a.find-repository.selected,
+#admin-menu a.untracked-mail.selected,
+#admin-menu a.company.selected,
+#admin-menu a.redmine-customize-core-fields.selected {
+  background: #e6f3ff !important;
+  border-color: #4a90e2 !important;
+  color: #2c5aa0 !important;
+  font-weight: bold !important;
+}
+
+/* Remove all icon-related styling that might cause issues */
+#admin-menu a.icon {
+  padding-left: 12px !important;
+  background-image: none !important;
+  background-position: initial !important;
+  background-repeat: no-repeat !important;
+  background-size: initial !important;
+}
+
+#admin-menu a.icon:before {
+  display: none !important;
+  content: "" !important;
+}
+
+#admin-menu a[class*="icon"] {
+  background-image: none !important;
+  padding-left: 12px !important;
+}
+
+#admin-menu a[class*="icon"]:before {
+  content: "" !important;
+  display: none !important;
+}
+
+#admin-menu a[style*="background-image"] {
+  background-image: none !important;
+}
+
+/* Ensure proper spacing between menu items */
+#admin-menu li:not(:last-child) {
+  margin-bottom: 4px !important;
+}
+
+/* Fix for any overlapping text */
+#admin-menu a span {
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Ensure menu items don't overlap */
+#admin-menu li {
+  float: none !important;
+  clear: both !important;
+}
+
+/* Fix for weird display issues */
+#admin-menu * {
+  box-sizing: border-box !important;
+}
+
+/* Remove any pseudo-elements that might be causing issues */
+#admin-menu a:before,
+#admin-menu a:after {
+  display: none !important;
+  content: "" !important;
+}
+
+/* Fix for broken icon display */
+.icon-add {
+  background-image: none !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+.icon-add:before {
+  content: "+" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  color: #333 !important;
+  margin-right: 4px !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+/* Fix for other broken icons */
+.icon-reload {
+  background-image: none !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+.icon-reload:before {
+  content: "↻" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  color: #333 !important;
+  margin-right: 4px !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+/* Fix for any dark square artifacts */
+.contextual {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.contextual * {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Remove any potential dark backgrounds from icons */
+.icon {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.icon:before {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Fix for any dark square artifacts in the main content area */
+#content {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+#content > * {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Fix for any elements that might be creating dark squares */
+div[style*="background"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Fix for specific dark square artifacts - more targeted approach */
+.contextual a.icon-add {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.contextual a.icon-add:before {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Fix for any pseudo-elements that might be creating dark squares */
+.contextual:before,
+.contextual:after {
+  display: none !important;
+  content: "" !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Ensure proper display for contextual elements */
+.contextual {
+  display: block !important;
+  float: right !important;
+  clear: both !important;
+}
+
+.contextual a {
+  display: inline-block !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Ensure consistent icon spacing for all menu items */
+#admin-menu a .icon-svg {
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a .icon-label {
+  flex: 1 !important;
+}
+
+/* Add default icons for admin menu items that don't have them */
+#admin-menu a.bug-category:before {
+  content: "🐛" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.department:before {
+  content: "👤" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.raci-chart:before {
+  content: "📊" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.pmp-global-profiles:before {
+  content: "📋" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.label-pmp-tab-plural:before {
+  content: "📋" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.agile:before {
+  content: "📋" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.dmsf-approvalworkflows:before {
+  content: "✅" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.add-tutorial:before {
+  content: "🎥" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.find-repository:before {
+  content: "📁" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.untracked-mail:before {
+  content: "📧" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+#admin-menu a.company:before {
+  content: "🏢" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Add icons for remaining menu items without icons */
+#admin-menu a.redmine-customize-core-fields:before {
+  content: "📄" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  margin-right: 8px !important;
+  font-size: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Fix for responsive design */
+@media screen and (max-width: 768px) {
+  #admin-menu a {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  
+  #admin-menu li {
+    padding-bottom: 4px !important;
+  }
+}

@@ -1,0 +1,11 @@
+<%= error_messages_for 'type_of_testing' %>
+
+<div class="box tabular">
+  <%= hidden_field_tag "back_url", params[:back_url] %>
+  <%= hidden_field_tag "type_of_testing[project_id]", @project.id %>
+  <p><%= f.text_field :type_of_testing, :required => true, :size => 25 %></p>
+  <p><%= f.text_area :testing_method, :required => true, :rows => 5, cols: 5, :class => 'wiki-edit' %>
+    <%#= wikitoolbar_for 'type_of_testing_testing_method' %>
+  </p>
+  <br>
+</div>

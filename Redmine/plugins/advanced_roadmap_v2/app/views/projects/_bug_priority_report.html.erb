@@ -1,0 +1,46 @@
+<%
+  sql = "SELECT  ISNULL(enumerations.name, 'other'), COUNT(*) FROM issues LEFT JOIN enumerations ON enumerations.id = issues.priority_id  WHERE issues.project_id = #{@project.id} AND issues.tracker_id = 1 group by enumerations.name"
+  @bug_priorities = ActiveRecord::Base.connection.exec_query(sql).rows
+%>
+<%if @bug_priorities.present? %>
+  <div class="col-sm-6">
+    <div id='bugPriorities'></div>
+  </div>
+
+  <script type="text/javascript">
+    var chart;
+    $(document).ready(function() {
+      chart = new Highcharts.Chart({
+          credits: {
+          enabled: false
+        },
+        chart: {
+          renderTo: 'bugPriorities',
+          type: 'pie'
+        },
+        title: {
+          text: '<%=t :bug_priority %>'
+        },
+        legend: {
+          enabled: true
+        },
+        tooltip: {
+          formatter: function() {
+            return '<b>'+ this.point.name +'</b><br/>'+
+              '<%=t :bugs %> '+ this.y;
+          }
+        },
+        plotOptions: {
+          pie: {
+            innerSize: 100,
+            depth: 45
+          }
+        },
+        series: [{
+          type: 'pie',
+          data: <%=raw(@bug_priorities)%>
+        }]
+      });
+    });
+  </script>
+<%end%>

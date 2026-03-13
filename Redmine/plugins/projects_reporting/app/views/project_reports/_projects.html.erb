@@ -1,0 +1,24 @@
+<%
+  user = User.current
+  is_admin = user.admin?
+%>
+<% if user.allowed_to?(:project_paid_hours_reports, nil, global: true)  %>
+  <%#=render partial: "project_manager_filter"  unless User.current.is_client? %>
+
+  <div class="project_table">
+    <% issue_sequence = IssueStatus.order(:position).pluck(:name) %>
+    <% if @projects.present? %>
+      <h2>Projects<%#= heading %></h2>
+      <table class="list">
+        <%= render partial: "project_table_header", locals: {issue_sequence: issue_sequence} %>
+
+
+        <%= render partial: "project_table", locals: {projects: @projects, heading: "Projects", project_pages: @project_pages, project_count: @project_count, limit: @limit, offset: @offset, issue_sequence: issue_sequence, project_managers: @project_managers } %>
+
+      </table>
+      <span class="pagination"><%= pagination_links_full @project_pages, @project_count %></span>
+    <% end -%>
+
+   
+  </div>
+<% end %>

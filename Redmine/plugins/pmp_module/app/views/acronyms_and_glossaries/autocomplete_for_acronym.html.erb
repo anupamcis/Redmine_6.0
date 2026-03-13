@@ -1,0 +1,7 @@
+<%= raw @global_acronyms_and_glossaries.map {|global_acronyms_and_glossary| {
+      'label' => "#{global_acronyms_and_glossary.full_form} (#{global_acronyms_and_glossary.abbreviation})",
+      'value' => global_acronyms_and_glossary.abbreviation,
+      'full_form' => global_acronyms_and_glossary.full_form
+      }
+    }.to_json
+%>

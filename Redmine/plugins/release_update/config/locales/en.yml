@@ -1,0 +1,11 @@
+# English strings go here for Rails i18n
+en:
+  button_release_update_unvote: Dislike
+  button_release_update_vote: Like
+  title: Title
+  description: Description
+  add_release_update: Add Release
+  release_update: Release Update
+  like: Like
+  label_release_plural: Release
+  author: Author

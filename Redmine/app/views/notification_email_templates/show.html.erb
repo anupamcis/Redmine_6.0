@@ -1,0 +1,57 @@
+<% html_title @template.name %>
+
+<div class="contextual">
+  <%= link_to l(:button_edit), edit_notification_email_template_path(@template), :class => 'icon icon-edit' %>
+  <%= link_to l(:button_delete), notification_email_template_path(@template), 
+               :method => :delete, 
+               :data => {:confirm => l(:text_are_you_sure)}, 
+               :class => 'icon icon-del' %>
+</div>
+
+<h2><%= @template.name %></h2>
+
+<div class="box">
+  <table>
+    <tr>
+      <td><strong><%= l(:field_name) %>:</strong></td>
+      <td><%= @template.name %></td>
+    </tr>
+    <tr>
+      <td><strong><%= l(:field_template_type) %>:</strong></td>
+      <td><%= @template.template_type %></td>
+    </tr>
+    <tr>
+      <td><strong><%= l(:field_subject) %>:</strong></td>
+      <td><%= @template.subject %></td>
+    </tr>
+    <tr>
+      <td><strong><%= l(:field_is_active) %>:</strong></td>
+      <td><%= @template.is_active ? l(:general_text_Yes) : l(:general_text_No) %></td>
+    </tr>
+    <tr>
+      <td><strong><%= l(:field_created_on) %>:</strong></td>
+      <td><%= format_time(@template.created_at) %></td>
+    </tr>
+    <tr>
+      <td><strong><%= l(:field_updated_on) %>:</strong></td>
+      <td><%= format_time(@template.updated_at) %></td>
+    </tr>
+  </table>
+</div>
+
+<% if @template.body_html.present? %>
+  <h3><%= l(:field_body_html) %></h3>
+  <div class="box">
+    <div class="wiki">
+      <%= raw @template.body_html %>
+    </div>
+  </div>
+<% end %>
+
+<% if @template.body_text.present? %>
+  <h3><%= l(:field_body_text) %></h3>
+  <div class="box">
+    <pre><%= h(@template.body_text) %></pre>
+  </div>
+<% end %>
+

@@ -1,0 +1,155 @@
+<% if User.current.allowed_to?(:view_issues, @project) %>
+  <!--row start-->
+  <div class="graph-col-row ">
+    <!--left start-->
+    <div class="col-sm-6">
+        <div class="issues box">
+          <h3><%=l(:tracker_issue_label_title)%></h3>
+          <% if @trackers.present? %>
+          <table class="list issue-report">
+            <thead>
+              <tr>
+                <th></th>
+                <th><%=l(:label_open_issues_plural)%></th>
+                <th><%=l(:label_closed_issues_plural)%></th>
+                <th><%=l(:label_total)%></th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @trackers.each do |tracker| %>
+              <tr class="<%= cycle("odd", "even") %>">
+                <td class="name">
+                  <%= link_to tracker.name, project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id) %>
+                </td>
+                <td class="open-issue-count">
+                  <%= link_to @open_issues_by_tracker[tracker].to_i, project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id) %>
+                </td>
+                <td class="closed-issue-count">
+                  <%= link_to (@total_issues_by_tracker[tracker].to_i - @open_issues_by_tracker[tracker].to_i), project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id, :status_id => 'c') %>
+                </td>
+                <td class="total-issue-count">
+                  <%= link_to @total_issues_by_tracker[tracker].to_i, project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id, :status_id => '*') %>
+                </td>
+              </tr>
+            <% end %>
+              <tr>
+                <th><%=l(:label_total)%></th>
+                <td id="open_total"></td>
+                <td id="close_total"></td>
+                <td id="grand_total"></td>
+              </tr>
+            </tbody>
+          </table>
+          <% end %>
+          <p>
+            <%= link_to l(:label_issue_view_all), project_issues_path(@project, :set_filter => 1) %>
+            <% if User.current.allowed_to?(:view_calendar, @project, :global => true) %>
+              | <%= link_to l(:label_calendar), project_calendar_path(@project) %>
+            <% end %>
+            <% if User.current.allowed_to?(:view_gantt, @project, :global => true) %>
+              | <%= link_to l(:label_gantt), project_gantt_path(@project) %>
+            <% end %>
+          </p>
+        </div>
+    </div>
+    <!--left start-->
+
+
+    <!--right start-->
+    <div class="col-sm-6">
+      <%= render :partial => 'issue_count_chart',  :locals => { :data => @trackers, :type => "tracker" } %>
+    </div>
+    <!--right start-->
+  </div>
+  <!--row end-->
+  <!--row start-->
+  <br>
+  <div class="graph-col-row ">
+
+    <!--left start-->
+    <div class="col-sm-6">
+      <% if @project.milestones.present? %>
+        <div class="issues box">
+          <h3><%=l(:milestone_issue_label_title)%></h3>
+          <table class="list issue-report">
+            <thead>
+              <tr>
+                <th></th>
+                <th><%=l(:label_open_issues_plural)%></th>
+                <th><%=l(:label_closed_issues_plural)%></th>
+                <th><%=l(:label_total)%></th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @project.milestones.each do |milestone| %>
+              <tr class="<%= cycle("odd", "even") %>">
+                <td class="name">
+                  <%= milestone.name %>
+                </td>
+                <td class="open-issue-count1">
+                  <%= link_to @open_issues_by_milestone[milestone].to_i, project_issues_path(@project, :set_filter => 1, :status_id => 'o', :fixed_milestone_id => milestone) %>
+                </td>
+                <td class="closed-issue-count1">
+                  <%= link_to (@total_issues_by_milestone[milestone].to_i - @open_issues_by_milestone[milestone].to_i), project_issues_path(@project, :set_filter => 1, :status_id => 'c', :fixed_milestone_id => milestone) %>
+                </td>
+                <td class="total-issue-count1">
+                  <%= link_to @total_issues_by_milestone[milestone].to_i, project_issues_path(@project, :set_filter => 1, :status_id => '*', :fixed_milestone_id => milestone) %>
+                </td>
+              </tr>
+            <% end %>
+              <tr>
+                <th><%=l(:label_total)%></th>
+                <td id="open_total1"></td>
+                <td id="close_total1"></td>
+                <td id="grand_total1"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    <!--right start-->
+    <!--right start-->
+      <% end %>
+    </div>
+    <% if @project.milestones.present? %>
+    <div class="col-sm-6">
+      <%= render :partial => 'estimated_and_spent_hours', :locals => { :data => @milestones, :type => "milestone" } %>
+    </div>
+    <% end %>
+  </div>
+  <!--row end-->
+<%end%>
+
+
+<script type="text/javascript">
+  var open_total = 0;
+  var close_total = 0;
+  var final_total = 0;
+  var open_total1 = 0;
+  var close_total1 = 0;
+  var final_total1 = 0
+  $('.open-issue-count').each(function() {
+      open_total += parseFloat($(this).text());
+  });
+  $('.closed-issue-count').each(function() {
+      close_total += parseFloat($(this).text());
+  });
+  $('.total-issue-count').each(function() {
+      final_total += parseFloat($(this).text());
+  });
+  $('.open-issue-count1').each(function() {
+      open_total1 += parseFloat($(this).text());
+  });
+  $('.closed-issue-count1').each(function() {
+      close_total1 += parseFloat($(this).text());
+  });
+  $('.total-issue-count1').each(function() {
+      final_total1 += parseFloat($(this).text());
+  });
+
+  $('#grand_total').html(final_total)
+  $('#open_total').html(open_total)
+  $('#close_total').html(close_total)
+  $('#grand_total1').html(final_total1)
+  $('#open_total1').html(open_total1)
+  $('#close_total1').html(close_total1)
+</script>

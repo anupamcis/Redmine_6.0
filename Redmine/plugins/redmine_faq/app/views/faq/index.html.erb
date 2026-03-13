@@ -1,0 +1,32 @@
+<div class="contextual">
+    <%= link_to(l(:label_faq_new), {:action => 'new'}, :class => 'icon icon-add') if User.current.admin? %>
+</div>
+<h2><%=l(:label_faq_header) %></h2>
+<% delete_allowed = User.current.admin? %>
+
+<div class="autoscroll">
+  <div id="faq-accordion">
+    <% @faqs.each do |faq| %>
+      <h3><%= faq.short_question(50) %>
+     </h3>
+      <div>
+        <% if (delete_allowed) %>
+          <span style="float:right;">
+            <%= link_to(image_tag('edit.png'), {:controller => 'faq', :action => 'edit', :id => faq}) %>
+          </span>
+          <span style="float:right;">
+            <%= link_to(image_tag('delete.png'), {:controller => 'faq', :action => 'destroy', :id => faq},
+            data: {:confirm => l(:text_are_you_sure)}, :method => :delete) %>
+          </span>
+        <% end %>
+        <p><%= raw textilizable(faq, :short_answer) %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  $('#faq-accordion').accordion({});
+});
+</script>

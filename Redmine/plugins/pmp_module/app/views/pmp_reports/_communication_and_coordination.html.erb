@@ -1,0 +1,42 @@
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_communication_plans, @project, global: true) %>
+    <h2><%= l(:communication_plans) %></h2>
+
+    <%= render partial: "communication_plans/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_communication_plans, @project, global: true)%>
+    <%= link_to l(:add_communication_plan), new_project_communication_plan_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_coordination_plans, @project, global: true) %>
+    <h2><%= l(:coordination_plans) %></h2>
+    <%= render partial: "coordination_plans/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_coordination_plans, @project, global: true)%>
+    <%= link_to l(:add_coordination_plan), new_project_coordination_plan_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_stakeholder_management_plans, @project, global: true) %>
+    <h2><%= l(:stakeholder_management_plans) %></h2>
+
+    <%= render partial: "stakeholder_management_plans/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_stakeholder_management_plans, @project, global: true)%>
+    <%= link_to @project.stakeholder_management_plans.blank? ? l(:add_stakeholder_management_plan) : l(:edit_stakeholder_management_plan), new_project_stakeholder_management_plan_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<br>
+<table class="list engagement-table">
+  <tbody>
+    <tr><td>C</td><td>Current Engagement</td></tr>
+    <tr><td>D</td><td>Desired Engagement</td></tr>
+  </tbody>
+</table>

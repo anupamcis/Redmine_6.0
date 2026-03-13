@@ -1,0 +1,181 @@
+<div id="w">
+  <h1>Release</h1>
+  <div id="container">
+    <ul id="comments">
+      <li class="cmmnt">
+        <div class="cmmnt-content">
+          <header><%= @release_update.try(:user).try(:name) %> - <span class="pubdate">Created <%= time_ago_in_words(@release_update.created_on) %> ago</span></header>
+          <b><%= @release_update.title %></b><br>
+          <%= raw @release_update.description %><br>
+          <%= link_to(l(:button_edit), edit_release_update_path(@release_update), :class => 'icon icon-edit') if (@release_update.user == User.current || User.current.admin?) %>
+          <%=  link_to "Add Comment", "javascript:void(0);", id: "add_comment"%>
+          <span id="release_update_like">
+            <%= render "release_update_like" %>
+          </span>
+        </div>
+        <div id="create_comment" style="display:none;">
+          <%= labelled_form_for @release_update_comment, url: create_release_update_comment_release_update_path do |f| %>
+            <%= render "release_update_form", f: f%>
+          <% end %>
+        </div>
+
+        <ul class="replies">
+          <% @release_update.release_update_comments.each do |release_update_comment| %>
+            <li class="cmmnt">
+              <div class="cmmnt-content">
+                <header><%= release_update_comment.try(:user).try(:name) %> - <span class="pubdate">Commented <%= time_ago_in_words(release_update_comment.created_on) %> ago</span></header>
+                <p>  <%= release_update_comment.comment %></p>
+                <% voted = User.current.voted_up_on?(release_update_comment) %>
+                <%= link_to(l(:button_edit), "javascript:void(0);", :class => 'icon icon-edit edit_comment', :id =>  "edit_release_update_comment_#{release_update_comment.id}" ) if (release_update_comment.user == User.current || User.current.admin?) %>
+                <%=  link_to "Add Reply", "javascript:void(0);", id: "#{release_update_comment.id}", :class => "add_reply"%>
+                <span id='<%= "comment_like_#{release_update_comment.id}"%>' >
+                  <%= render "comment_like", release_update_comment: release_update_comment%>
+                </span>
+              </div>
+
+              <div class="show_edit_comment" id=<%= "show_edit_release_update_comment_#{release_update_comment.id}"%> style="display:none;">
+                <%= labelled_form_for release_update_comment, url: update_release_update_comment_path(@release_update, release_update_comment) do |f| %>
+                  <%= f.hidden_field :user_id, value: User.current.id %>
+                  <%= f.text_area :comment, class: "wiki-edit release_update_comment", rows: 5, label: "Edit Comment" %>
+                  <%= submit_tag l(:button_update), class: "submit_edit_comment" %>
+                  <%= link_to l(:button_cancel), "javascript:void(0);", :class => "cancel", id: "release_update_comment_#{release_update_comment.id}" %>
+                <% end %>
+              </div>
+
+              <div class="create_reply" id=<%= "create_relpy_#{release_update_comment.id}" %> style="display:none;">
+                <%= labelled_form_for @release_update_comment, url: create_release_update_comment_reply_path(release_update_comment) do |f| %>
+                  <%= f.hidden_field :user_id, value: User.current.id %>
+                  <%= f.text_area :comment, class: "wiki-edit release_add_reply", rows: 5, label: "Add Reply" %><br>
+                  <%= submit_tag l(:button_create), class: "submit_reply" %>
+                  <%= link_to l(:button_cancel), "javascript:void(0);" , :class => "reply_cancel", id: "relpy_#{release_update_comment.id}" %>
+                  <%#= render "release_update_form", f: f%>
+                <% end %>
+              </div>
+
+                <ul class="replies">
+                  <% release_update_comment.release_update_comments.each do |reply| %>
+                    <li class="cmmnt">
+                      <div class="cmmnt-content">
+                        <header><%= reply.try(:user).try(:name) %> - <span class="pubdate">Replied <%= time_ago_in_words(reply.created_on) %> ago</span></header>
+                        <p>  <%= reply.comment %></p>
+                        <%= link_to(l(:button_edit), "javascript:void(0);", :class => 'icon icon-edit edit_comment', :id =>  "edit_release_update_comment_#{reply.id}" ) if (reply.user == User.current || User.current.admin?) %>
+                        <spam id='<%= "comment_like_#{reply.id}"%>' >
+                          <%= render "comment_like", release_update_comment: reply %>
+                        </span>
+                      </div>
+
+                      <div  class="show_edit_comment" id=<%= "show_edit_release_update_comment_#{reply.id}"%> style="display:none;">
+                        <%= labelled_form_for reply, url: update_release_update_comment_reply_path(release_update_comment, reply) do |f| %>
+                          <%= f.hidden_field :user_id, value: User.current.id %>
+                          <%= f.text_area :comment, class: "wiki-edit release_update_reply", rows: 5, label: "Edit Reply" %>
+                          <%= submit_tag l(:button_update), class: "submit_edit_reply" %>
+                          <%= link_to l(:button_cancel), "javascript:void(0);", :class => "cancel", id: "release_update_comment_#{reply.id}" %>
+                        <% end %>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <%= link_to "Back", release_updates_path %>
+</div>
+
+<% html_title(l(:label_release_plural)) -%>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    $("#add_comment").click(function(){
+       $("#create_comment").css('display', '');
+       console.log($(".release_update_comment_1"))
+       $(".release_update_comment_1").hide();
+       $(".create_reply").hide();
+       $(".add_reply").show();
+       $(".show_edit_comment").hide();
+       $(".edit_comment").show();
+       $("#add_comment").hide();
+    });
+
+    $(".edit_comment").click(function(e){
+      id = e.target.id
+      $(".show_edit_comment").hide();
+      $(".edit_comment").show();
+      comment_id = "#show_" + id
+      $(comment_id).css('display', '');
+      $("#create_comment").hide();
+      $("#add_comment").show();
+      $(".create_reply").hide();
+      $(".add_reply").show();
+      $(this).hide();
+    });
+
+    $(".cancel").click(function(e){
+      id = e.target.id
+      comment_id = "#show_edit_"+id
+      console.log($(comment_id).attr)
+      $(comment_id).hide();
+      $(".edit_comment").show();
+    })
+
+    $(".add_reply").click(function(e){
+      id = e.target.id
+      $(".create_reply").hide()
+      $(".add_reply").show()
+      comment_id = "#create_relpy_" + id
+      $(comment_id).css('display', '');
+      $("#create_comment").hide();
+      $("#add_comment").show();
+      $(".show_edit_comment").hide();
+       $(".edit_comment").show();
+      $(this).hide();
+    });
+
+    $(".create_cancel").click(function(e){
+      id = e.target.id
+      comment_id = "#create_" + id
+      console.log(comment_id)
+      $(comment_id).hide();
+      $("#add_comment").show();
+    })
+
+    $(".reply_cancel").click(function(e){
+      id = e.target.id
+      comment_id = "#create_" + id
+      console.log(comment_id)
+      $(comment_id).hide();
+      $(".add_reply").show();
+    })
+    $(".submit_reply").on("click", function(e){
+      comment = $(this).parent().find("textarea").val()
+      new_comment = $.trim(comment);
+      if (new_comment == null || new_comment == ""){
+        alert("Reply can not be blank")
+        return false
+      }
+    })
+
+    $(".submit_edit_reply").on("click", function(){
+      comment = $(this).parent().find("textarea").val()
+      new_comment = $.trim(comment);
+      if (new_comment == null || new_comment == ""){
+        alert("Reply can not be blank")
+        return false
+      }
+    })
+
+    $(".submit_edit_comment").on("click", function(){
+      comment = $(this).parent().find("textarea").val()
+      new_comment = $.trim(comment);
+      if (new_comment == null || new_comment == ""){
+        alert("Comment can not be blank")
+        return false
+      }
+    })
+  });
+
+</script>
+
+<%= stylesheet_link_tag("release_update", :plugin => "release_update", :media => "all") %>

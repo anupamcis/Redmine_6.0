@@ -1,0 +1,29 @@
+<% if @project.try(:deployment_strategies).any? %>
+  <div class="autoscroll">
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= l(:field_release_plan) %></th>
+          <th><%= l(:field_details) %></th>
+          <th><%= l(:field_release_date) %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for deployment_strategy in @project.deployment_strategies -%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="firstname"><%= deployment_strategy.release_plan %></td>
+          <td class="lastname"><%= deployment_strategy.details.html_safe %></td>
+          <td class="lastname"><%= format_date(deployment_strategy.release_date) %></td>
+          <td class="buttons">
+            <%= link_to l(:edit), edit_project_deployment_strategy_path(@project,deployment_strategy, :back_url => request.original_fullpath), class: "icon icon-edit", :title => l(:edit), remote: true if User.current.allowed_to?(:update_deployment_strategies, @project, global: true) %>
+            <%= delete_link project_deployment_strategy_path(@project,deployment_strategy, :back_url => request.original_fullpath), :title => "Delete" if User.current.allowed_to?(:delete_deployment_strategies, @project, global: true) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else%>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

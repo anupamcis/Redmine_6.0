@@ -1,0 +1,56 @@
+<% if @project.milestones.any? %>
+<table class="list">
+  <thead>
+    <th><%= l(:label_milestone) %></th>
+    <th><%= l(:milestone_effective_date) %></th>
+    <th><%= l(:field_planed_end_date) %></th>
+    <%- if User.current.allowed_to?(:actual_dates, nil, global: true) %>
+      <th><%= l(:field_actual_start_date) %></th>
+      <th><%= l(:field_actual_end_date) %></th>
+    <% end %>
+    <th><%= l(:field_description) %></th>
+    <th><%= l(:label_version_plural) %></th>
+    <th><%= l(:label_issues_count) %></th>
+    <th style="width:15%"></th>
+  </thead>
+  <tbody>
+  <% for milestone in @project.milestones.sort %>
+    <tr class="<%= cycle 'odd', 'even' %>">
+      <td>
+        <%- if User.current.allowed_to?(:show_milestone, nil, global: true) %>
+          <%= link_to h(milestone.name), :controller => :milestones, :action => :show, :id => milestone.id %>
+        <% else %>
+          <%= h(milestone.name) %>
+        <% end %>
+      </td>
+      <td align="center"><%= format_date(milestone.effective_date) %></td>
+      <td align="center"><%= format_date(milestone.planed_end_date) %></td>
+      <%- if User.current.allowed_to?(:actual_dates, nil, global: true) %>
+        <td align="center"><%= format_date(milestone.actual_start_date) %></td>
+        <td align="center"><%= format_date(milestone.actual_end_date) %></td>
+      <% end %>
+      <td><%=h milestone.description %></td>
+      <td align="center">
+         <%- if User.current.allowed_to?(:show_milestone, nil, global: true) && milestone.version.present? %>
+          <%= link_to milestone.version.name, :controller => :versions, :action => :show, :id => milestone.version%>
+        <% else %>
+            <%= milestone.try(:version).try(:name) %>
+        <% end %>
+      </td>
+      <td align="center"><%= milestone.fixed_issues.present? ? milestone.fixed_issues.size : 0 %></td>
+      <td class="buttons">
+        <%= link_to_if_authorized l(:button_edit), { :controller => :milestones, :action => :edit, :id => milestone.id }, :class => 'icon icon-edit' %>
+        <%= link_to_if_authorized l(:button_delete), {:controller => :milestones, :action => :destroy, :id => milestone.id }, data: {confirm: l(:text_are_you_sure)}, :method => :delete, :class => 'icon icon-del' %>
+        <% if milestone.milestone_comments.present? && User.current.allowed_to?(:view_milestone_date_logs, @project, global: true)%>
+          <%= link_to l(:button_check_logs), dates_log_milestone_path(milestone) %>
+        <% end %>
+      </td>
+    </tr>
+  <% end; reset_cycle %>
+  </tbody>
+</table>
+<% else %>
+<p class="nodata"><%= @project.versions.present? ? l(:label_no_data) : l(:label_no_data_milestone) %></p>
+<% end %>
+
+<p><%= link_to l(:label_milestone_new), new_project_milestone_path(@project, :back_url => ''), :class => 'icon icon-add' if User.current.allowed_to?(:manage_milestones, @project) && @project.versions.where(status: 'open').present? %></p>

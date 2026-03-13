@@ -1,0 +1,15 @@
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/erb-4.0.4/ext/erb/escape
+/home/cis/.rbenv/versions/2.7.8/bin/ruby -I /home/cis/.rbenv/versions/2.7.8/lib/ruby/2.7.0 -r ./siteconf20250925-923196-648nuu.rb extconf.rb
+creating Makefile
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/erb-4.0.4/ext/erb/escape
+make "DESTDIR=" clean
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/erb-4.0.4/ext/erb/escape
+make "DESTDIR="
+compiling escape.c
+linking shared-object erb/escape.so
+
+current directory: /home/cis/pms/new-pms-cursur/redmine-4.2/plugins/redmine_ckeditor/vendor/bundle/ruby/2.7.0/gems/erb-4.0.4/ext/erb/escape
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 escape.so ./.gem.20250925-923196-1hackgu/erb

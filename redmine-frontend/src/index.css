@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom smooth pulse animation for number changes */
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 0.3s ease-in-out;
+}
+
+/* Smooth number transition */
+.number-transition {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}

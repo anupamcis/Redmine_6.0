@@ -1,0 +1,75 @@
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_project_folder_structures, @project, global: true) %>
+    <h2><%= l(:project_folder_structure) %></h2>
+    <%= render partial: "project_folder_structures/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_project_folder_structures, @project, global: true)%>
+    <%= link_to l(:add_project_folder_structure), new_project_project_folder_structure_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<!-- <%# if User.current.allowed_to?(:view_configuration_items, @project, global: true) %>
+  <h2><%#= l(:configuration_item) %></h2>
+  <%#= render partial: "configuration_items/index" %>
+<%#end%>
+
+<%# if User.current.allowed_to?(:create_configuration_items, @project, global: true)%>
+  <%#= link_to l(:add_configuration_item), new_project_configuration_item_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', remote: true %>
+<%#end%>
+
+<br><br> -->
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_back_up_details, @project, global: true) %>
+    <h2><%= l(:back_up_detail) %></h2>
+    <%= render partial: "back_up_details/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_back_up_details, @project, global: true)%>
+    <%= link_to l(:add_back_up_detail), new_project_back_up_detail_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_configuration_audits, @project, global: true) %>
+    <h2><%= l(:configuration_audit) %></h2>
+    <%= render partial: "configuration_audits/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_configuration_audits, @project, global: true)%>
+    <%= link_to l(:add_configuration_audit), new_project_configuration_audit_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_data_retention_plans, @project, global: true) %>
+    <h2><%= l(:data_retention_plan) %></h2>
+    <%= render partial: "data_retention_plans/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:create_data_retention_plans, @project, global: true)%>
+    <%= link_to l(:add_data_retention_plan), new_project_data_retention_plan_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_base_lining_plans, @project, global: true) %>
+    <h2><%= l(:base_lining_plan) %></h2>
+    <%= render partial: "base_lining_plans/index" %>
+  <%end%>
+</div>
+
+<%# if User.current.allowed_to?(:create_base_lining_plans, @project, global: true)%>
+  <%#= link_to l(:add_base_lining_plan), new_project_base_lining_plan_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', remote: true %>
+<%#end%>
+
+<div class="management-row">
+  <% if User.current.allowed_to?(:view_client_specific_credentials, @project, global: true) %>
+    <h2><%= l(:client_specific_credential) %></h2>
+    <%= render partial: "client_specific_credentials/index" %>
+  <%end%>
+
+  <% if User.current.allowed_to?(:view_client_specific_credentials, @project, global: true)%>
+    <%= link_to l(:add_client_specific_credential), new_project_client_specific_credential_path(@project, :back_url => request.original_fullpath), :class => 'icon icon-add', :title => "Add", remote: true %>
+  <%end%>
+</div>
