@@ -53,6 +53,11 @@ module ServiceModule
               @issue_custom_fields = IssueCustomField.sorted.to_a
               @trackers = Tracker.sorted.to_a
               @project = Project.new
+              service_detail = ServiceDetail.find_by(id: params[:selected_service_ids].first)
+
+              if service_detail.present?
+                @project.project_type = service_detail.service_detail_type
+              end
               @service_details = ServiceDetail.where(id: service_ids) if service_ids.present?
               if params[:selected_client_company].present?
                 begin

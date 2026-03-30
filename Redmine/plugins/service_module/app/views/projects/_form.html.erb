@@ -25,7 +25,15 @@
     <p><%= label(:project, :parent_id, l(:field_parent)) %><%= parent_project_select_tag(@project) %></p>
   <% end %>
 <% end %>
-
+<% disabled = !User.current.admin? %>
+<% select_service_project_type %>
+<p>
+  <%= f.select :project_type,
+    options_for_select(['Hourly', 'Project', 'Dedicated'], @project.project_type),
+    {},
+    class: 'select',
+    disabled: disabled %>
+</p>
 <% if params[:parent_id].present? %>
   <% parent_project = Project.find(params[:parent_id]) %>
   <p><%= label(:project, :parent_id, l(:field_parent)) %><b><%= parent_project.name %></b></p>
